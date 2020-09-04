@@ -1,0 +1,138 @@
+JavaScript defines seven built-in types:
+null
+undefined
+boolean
+number
+string
+object
+symbol -- added in ES6!
+Note: All of these types except object are called "primitives".
+typeof undefined === "undefined"; // true
+typeof true === "boolean"; // true
+typeof 42 === "number"; // true
+typeof "42" === "string"; // true
+typeof { life: 42 } === "object"; // true
+// added in ES6!
+typeof Symbol() === "symbol"; // true
+
+typeof null === "object"; // true
+It would have been nice (and correct!) if it returned "null" , but this original bug in JS has
+persisted for nearly two decades, and will likely never be fixed because there's too much
+existing web content that relies on its buggy behavior that "fixing" the bug would create more
+"bugs" and break a lot of web software.
+If you want to test for a null value using its type, you need a compound condition:
+var a = null;
+(!a && typeof a === "object"); // true
+null is the only primitive value that is "falsy" (aka false-like) but that also
+returns "object" from the typeof check.
+typeof function a(){ /* .. */ } === "function"; // true
+
+In JavaScript, variables don't have types -- values have types. Variables can hold any
+value, at any time.
+
+The typeof operator always returns a string. So:
+typeof typeof 42; // "string"
+
+a function is referred to as a "callable object" -- an object
+that has an internal [[Call]] property that allows it to be invoked.
+
+function a(b,c) {
+/* .. */
+}
+
+The function object has a length property set to the number of formal parameters it is
+declared with.
+a.length; // 2
+
+If you use typeof against a variable, it's not asking "what's the type of the variable?" as it
+may seem, since JS variables have no types. Instead, it's asking "what's the type of the
+value in the variable?"
+
+Variables that have no value currently, actually have the undefined value. Calling typeof
+against such variables will return "undefined" 
+
+undefined is a value that a declared variable can hold.
+"Undeclared" means a variable has never been declared.
+JavaScript unfortunately kind of conflates these two terms, not only in its error messages
+("ReferenceError: a is not defined") but also in the return values of typeof , which is
+"undefined" for both cases.
+
+Array.from(..) has several powerful capabilities, refer to ES6
+
+strings and array are not same in javascript
+strings are immutable while arraya are mutable.
+
+array.reverse() is valid but string.reverse() is not.  refer to https://github.com/mathiasbynens/esrever
+
+It would be much more accurate to think of NaN as being
+"invalid number," "failed number," or even "bad number," than to think of it as "not a number."
+var a = 2 / "foo"; // NaN
+typeof a === "number"; // true
+
+NaN is a very special value in that it's never equal to another NaN value (i.e., it's never
+equal to itself). It's the only value, in fact, that is not reflexive (without the Identity
+characteristic x === x ). So, NaN !== NaN .
+
+-0 === 0 //true
+
+Object.is(..) for special equality
+var a = 2 / "foo";
+var b = -3 * 0;
+Object.is( a, NaN ); // true
+Object.is( b, -0 ); // true
+Object.is( b, 0 ); // false
+
+polyfills is needed for prees-6 environment
+
+Object.is(..) probably shouldn't be used in cases where == or === are known to be
+safe
+
+
+
+there are no Null() or Undefined() native constructors, but nevertheless
+the "Null" and "Undefined" are the internal [[Class]] values exposed.
+Object.prototype.toString.call( null ); // "[object Null]"
+Object.prototype.toString.call( undefined ); // "[object Undefined]"
+
+But for the other simple primitives like string , number , and boolean , another behavior
+actually kicks in, which is usually called "boxing"
+Object.prototype.toString.call( "abc" ); // "[object String]"
+Object.prototype.toString.call( 42 ); // "[object Number]"
+Object.prototype.toString.call( true ); // "[object Boolean]"
+
+These object wrappers serve a very important purpose. Primitive values don't have
+properties or methods, so to access .length or .toString() you need an object wrapper
+around the value.
+
+There are some gotchas with using the object wrappers directly that you should be aware of
+if you do choose to ever use them.
+For example, consider Boolean wrapped values:
+var a = new Boolean( false );
+if (!a) {
+ console.log( "Oops" ); // never runs
+}
+The problem is that you've created an object wrapper around the false value, but objects
+themselves are "truthy"
+
+
+Note: An array with at least one "empty slot" in it is often called a "sparse array."
+
+
+shift and unshift in js
+let abc = [3,5,6,7];
+abc.shift(); //ouput  = 3
+now abc is [5,6,7]
+abc.unshift(10);
+now abc id [10,5,6,7]
+
+
+
+https://blog.bitsrc.io/understanding-the-for-of-loop-in-javascript-8aded97d7ef8  . ..for--of
+https://blog.bitsrc.io/6-javascript-user-authentication-libraries-for-2019-6c7c45fbe458 ...libs for authentication
+https://blog.bitsrc.io/a-beginners-guide-to-regular-expressions-regex-in-javascript-9c58feb27eb4   ---for regexp
+https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a  ----
+https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0   
+
+https://www.wix.com/website-template/view/html/1805?siteId=733ce9cc-b0e8-4784-82be-3d8baf44addf&metaSiteId=8d7b455a-a520-428b-9cad-e896cc99abad&originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Frestaurants-food%2Frestaurant ..............food website template
+
+https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460  --webpack

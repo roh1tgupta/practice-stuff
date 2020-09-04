@@ -1,0 +1,78 @@
+The alt attribute specifies an alternative text to be used, if an image cannot be displayed.
+The value of the alt attribute can be read by screen readers.
+
+The language of the document can be declared in the <html> tag.
+The language is declared with the lang attribute.
+Declaring a language is important for accessibility applications (screen readers) and search engines:
+<html lang="en-US">
+The first two letters specify the language (en). If there is a dialect, add two more letters (US)
+
+The HTML5 standard does not require lowercase attribute names.
+The title attribute can be written with uppercase or lowercase like title or TITLE.
+W3C recommends lowercase in HTML, and demands lowercase for stricter document types like XHTML.
+
+
+Search engines use the headings to index the structure and content of your web pages.
+Use HTML headings for headings only. Don't use headings to make text BIG or bold.
+
+Metadata typically define the document title, character set, styles, scripts, and other meta information
+
+Browsers automatically add some white space (a margin) before and after a paragraph.
+
+Dropping the end tag can produce unexpected results or errors.
+
+Browsers display <strong> as <b>, and <em> as <i>. However, there is a difference in the meaning of
+these tags: <b> and <i> defines bold and italic text, but <strong> and <em> means that the text is "important".
+
+CSS stands for Cascading Style Sheets.
+CSS describes how HTML elements are to be displayed on screen, paper, or in other media.
+
+CSS can be added to HTML elements in 3 ways:
+Inline - by using the style attribute in HTML elements
+Internal - by using a <style> element in the <head> section
+External - by using an external CSS file....<head><link rel="stylesheet" href="styles.css"></head>
+
+A link does not have to be text. It can be an image or any other HTML element.
+
+<a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
+Without a forward slash at the end of subfolder addresses, you might generate two requests to the server.
+Many servers will automatically add a forward slash to the end of the address, and then create a new request.
+
+A local link (link to the same web site) is specified with a relative URL (without https://www....).
+<a href="https://www.w3schools.com/" target="_blank">Visit W3Schools!</a> The target attribute can have one of the following values:
+_blank - Opens the linked document in a new window or tab
+_self - Opens the linked document in the same window/tab as it was clicked (this is default)
+_parent - Opens the linked document in the parent frame
+_top - Opens the linked document in the full body of the window
+framename - Opens the linked document in a named frame
+
+HTML Links - Create a Bookmark: First, create a bookmark with the id attribute: <h2 id="C4">Chapter 4</h2>
+Then, add a link to the bookmark ("Jump to Chapter 4"), from within the same page: <a href="#C4">Jump to Chapter 4</a>
+Or, add a link to the bookmark ("Jump to Chapter 4"), from another page: <a href="html_demo.html#C4">Jump to Chapter 4</a>
+
+The <img> tag is empty, it contains attributes only, and does not have a closing tag.
+The alt attribute is required. A web page will not validate correctly without it.
+Always specify the width and height of an image. If width and height are not specified, the page might flicker while the image loads.
+
+A screen reader is a software program that reads the HTML code, converts the text, and allows the user to 
+"listen" to the content. Screen readers are useful for people who are visually impaired or learning disabled.
+
+A URL is another word for a web address.A URL can be composed of words (w3schools.com),
+or an Internet Protocol (IP) address (192.68.20.50).
+A web address like https://www.w3schools.com/html/default.asp follows these syntax rules:
+scheme://prefix.domain:port/path/filename
+scheme - defines the type of Internet service (most common is http or https)
+prefix - defines a domain prefix (default for http is www)
+domain - defines the Internet domain name (like w3schools.com)
+port - defines the port number at the host (default for http is 80)
+path - defines a path at the server (If omitted: the root directory of the site)
+filename - defines the name of a document or resource
+
+common url scheme: http/https/ftp(Downloading or uploading files)/file(A file on your computer)
+
+
+
+
+
+
+

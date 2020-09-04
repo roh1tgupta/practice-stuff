@@ -1,0 +1,19 @@
+{
+  "name": "practice-stuff",
+  "version": "1.0.0",
+  "description": "\"# practice-stuff\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roh1tgupta/practice-stuff.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roh1tgupta/practice-stuff/issues"
+  },
+  "homepage": "https://github.com/roh1tgupta/practice-stuff#readme"
+}

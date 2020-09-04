@@ -1,0 +1,285 @@
+javascript libraries
+socket.io,chart.js,D3.js,pdf.js,Foundation js framework,react bootstrap, echart.js,
+Moment.js,Nuxt.js(vue.js metaframework),video.js,
+
+
+console.log("javascript everywhere" instanceof String);
+// false ...string literal is not an object
+
+console.log(new String("javascript everywhere") instanceof Object);  // true
+console.log(new String("javascript everywhere") instanceof String); // true
+
+console.log(new Array(3).toString()); // ",,"
+console.log(new Array(4).toString()); // ",,"
+
+console.log([1] + [] + "javascript".split('')); // 1j,a,v,a,s,c,r,i,p,t
+console.log([1] + [] + [5]); // 15
+
+console.log('1' - - '1'); // 2
+console.log('1' + '1'); // 11
+console.log('1' + 1); // 11
+console.log(1 + '1'); // 11
+console.log(1 + 1); // 2
+console.log('1' + + + + ... '1'); //11
+console.log('1' + + + +  1); //11
+console.log(1 + + + +  1); // 2
+console.log(1 + + + +  '1');//2
+console.log(1 + +'1');//2
+console.log('1' ++ '1'); // syntax error
+
+var arry = [10,20,20]; arry[5]=78; 
+arry; // [10, 20, 20, empty � 2, 78]
+arry.push(66);
+arry // [10, 20, 20, empty � 2, 78, 66]
+arry[3] // undefined
+arry[4] // undefined
+arry[5] // 78
+
+let arr = ['a', 'b', 'c'];
+arr.unshift('d'); o/p: 4 // now arr is [d,a,b,c]
+arr.shift(); o/p: d // now arr is [a,b,c];
+arr.unshift('e'); o/p: 4 // now arr is ['e','a','b','c']
+
+console.log(1 - - true) // 2
+let a = true + false; // a = 1
+let b = 1 + true; // b = 2
+console.log(a>b); // false
+
+
+function testscope() {
+if (true) {
+const a = 10;
+}
+return a;
+}
+console.log(testscope()); // referenceError: a is not defined
+
+console.log(null == undefined) // true
+console.log(null == '') // false
+console.log(null == 0) // false
+console.log(null === undefined) // false
+
+console.log([10,20,30,20,50][1]) // 20
+console.log([10,20,30,20,50][2]) // 30
+console.log([10,20,30,20,50][0]) // 10
+console.log([10,20,30,20,50][4]) // 50
+
+var a = 1, b = a = typeof b;console.log(a); // undefined
+let a = 1, b = a = typeof b;console.log(a); // referrenceError: b is not defined
+
+typeof undefined // "undefined"
+typeof null // "object"
+typeof Object // "function"
+
+function abs () {};
+typeof abs // "function"
+var a = {name: "rohit"};
+typeof a // "object"
+a instanceof Object // true
+a instanceof Function // false
+abs instanceof Object // true
+a instanceof Function // true
+
+let a=2, b=7;
+console.log(a + (--b + a) + b++); // 16
+
+let a = 10, b=20;
+a=a+b; b =a-b;, a=a-b;// swaping without using third variable
+
+console.log('1' - - '1'); or console.log('1'- -'1') // 2
+
+let arr = [1,2,3,4,5]; arr.legnth//5
+arr.pop();// 5 and arr.lenght//4
+arr.length = 1;// now arr is [1];
+arr.length = 6;
+console.log(arr)//[1, empty x 5]
+arr.toString(); // "1,,,,,";
+
+var a = 6; var b = a ^ 2 * 2;
+console.log(a,b); // 6 2 // mulitplication (*) has more precedence to xor (^)
+console.log(1^1*3) // 2
+
+console.log('1' == '01'); // false
+console.log(true == '1'); // true
+console.log(true == '001');// true
+console.log(false == '000'); // true
+console.log(1 == '1'); // true
+console.log(10 == 5+5); // ture
+console.log(10 == '5+5');// false
+
+
+Math.pow(2,3); // 8
+in short 2**3 // 8
+
+var val = �123� or "134.788"
+console.log(Math.floor(val)) // 123 or 134
+in short ~~val // 123 or 134
+
+filter() returns an array of matched objects while find() will return the first matched object
+
+every() spits back a boolean.This makes it good for quickly checking whether everything inside an array meets the criteria
+let animals = [
+    {name: 'Tibbers', type: 'cat', isNeutered: true, age: 2},
+    {name: 'Fluffball', type: 'rabbit', isNeutered: false, age: 1},
+    {name: 'Strawhat', type: 'cat', isNeutered: true, age: 5}
+  ]
+let allNeutered = animals.every(animal => {return animal.isNeutered});
+console.log(allNeutered) // false
+ animals = [
+    {name: 'Tibbers', type: 'cat', isNeutered: true, age: 2},
+    {name: 'Fluffball', type: 'rabbit', isNeutered: true, age: 1},
+    {name: 'Strawhat', type: 'cat', isNeutered: true, age: 5}
+  ]
+console.log(animals.every(animal => {return animal.isNeutered}));  // true
+
+some() works the same way as every() but only at least one of the conditions needs to evaluate to true.
+
+
+const arr = [10,20,10,40];
+const arr2 = [10,20,40,50,17];
+console.log(...new Set([...arr, ...arr2])); // 10 20 40 50 17
+
+https://javascript.info/map-set
+Map:
+Map is a collection of keyed data items, just like an Object.
+But the main difference is that Map allows keys of any type.
+new Map() – creates the map.
+map.set(key, value) – stores the value by the key.
+map.get(key) – returns the value by the key, undefined if key doesn’t exist in map.
+map.has(key) – returns true if the key exists, false otherwise.
+map.delete(key) – removes the value by the key.
+map.clear() – removes everything from the map.
+map.size – returns the current element count.
+
+map[key] isn’t the right way to use a Map
+Although map[key] also works, e.g. we can set map[key] = 2,
+this is treating map as a plain JavaScript object, so it implies all corresponding
+limitations (no object keys and so on).
+So we should use map methods: set, get and so on
+
+How Map compares keys
+To test keys for equivalence, Map uses the algorithm SameValueZero.
+It is roughly the same as strict equality ===, but the difference is that NaN is considered equal to NaN.
+So NaN can be used as the key as well.
+This algorithm can’t be changed or customized.
+
+Chaining
+Every map.set call returns the map itself, so we can “chain” the calls:
+let map= new Map();
+map.set('1', 'str1').set(1, 'num1').set(true, 'bool1');
+
+
+Set:
+A Set is a special type collection – “set of values” (without keys),
+where each value may occur only once.
+
+Its main methods are:
+new Set(iterable) – creates the set, and if an iterable object is provided (usually an array),
+  copies values from it into the set.
+set.add(value) – adds a value, returns the set itself.
+set.delete(value) – removes the value, returns true if value existed at the moment of the call,
+  otherwise false.
+set.has(value) – returns true if the value exists in the set, otherwise false.
+set.clear() – removes everything from the set.
+set.size – is the elements count.
+
+The main feature is that repeated calls of set.add(value) with the same value don’t do anything.
+  That’s the reason why each value appears in a Set only once.
+
+question on set
+function unique(arr) {
+  /* your code */
+}
+let values = ["Hare", "Krishna", "Hare", "Krishna",
+  "Krishna", "Krishna", "Hare", "Hare", ":-O"
+];
+alert( unique(values) ); // Hare, Krishna, :-O
+--------------------------------------------------------
+question
+let arr = ["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"];
+function aclean(arr) {
+???
+};
+alert( aclean(arr) ); // "nap,teachers,ear" or "PAN,cheaters,era"
+
+---------------------------------------------------------
+
+for...in, used to loop over an enumerable
+for...of, used to loop over an iterable
+
+An iterable has an internal order to the pieces whereas an enumerable has distinct parts,
+but they are unordered. eg:
+•A pile of books is an enumerable
+•A row of books on a shelf is an iterable
+•JSON objects are enumerables
+•JSON arrays are iterables
+all iterables are enumerables; however, not all enumerables are iterables
+
+let scores = [43,58,28,69,38];
+for(const item in scores) {
+   console.log(item);
+}
+/*
+"0"
+"1"
+"2"
+"3"
+"4"
+*/
+
+
+Nullish coalescing operator '??'
+|| returns the first truthy value.
+?? returns the first defined value
+let height = 0;
+alert(height || 100); // 100
+alert(height ?? 100); // 0
+
+
+let a = new Number(100);
+let b = parseInt(100);
+console.log(a == b); // true
+console.log(a === b); // false
+a // Number{100}
+b // 100
+
+
+// static methods and factory method as well
+class Article {
+  constructor(title, date) {
+    this.title = title;
+    this.date = date;
+  }
+  static createTodays() {
+    // remember, this = Article
+    return new this("Today's digest", new Date());
+  }
+}
+let article = Article.createTodays();
+alert( article.title ); // Today's digest
+
+
+Static methods are used for the functionality that belongs to the class “as a whole”.
+It doesn’t relate to a concrete class instance. For example, a method for comparison Article.compare(article1, article2)
+or a factory method Article.createTodays().
+
+syntax:
+class MyClass {
+  static property = ...;
+  static method() {
+    ...
+  }
+}
+
+In terms of OOP, delimiting of the internal interface from the external one is called encapsulation.
+
+Normally, when one class extends another, both static and non-static methods are inherited.
+But built-in classes are an exception. They don’t inherit statics from each other.
+
+
+As defined in Wikipedia, a mixin is a class containing methods that can be used by other classes without a need to inherit from it.
+In other words, a mixin provides methods that implement a certain behavior, but we do not use it alone,
+we use it to add the behavior to other classes. https://javascript.info/mixins
+
+
+

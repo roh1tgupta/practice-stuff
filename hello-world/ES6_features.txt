@@ -1,0 +1,198 @@
+ES6 features
+
+1> defualt parameters in es6
+	earlier we used to do like below for handling(default values) if we are not getting in parameteres
+	var link = function (height, color, url) {
+		var height = height || 50
+		var color = color || 'red'
+		var url = url || 'http://azat.co'
+		...
+	}
+	
+	
+	now we can put the default values right in the signature of the funciton.
+	var link = function(height = 50, color = 'red', url = 'http://azat.co') {
+		...
+	}
+	
+2> 	template literals in es6
+	earlier we had to break the string like below:
+	var name = 'Your name is ' + first + ' ' + last + '.'
+	var url = 'http://localhost:3000/api/messages/' + id
+	
+	now in ES6 we can use a new syntax ${NAME} inside of the back-ticked string:
+	var name = `Your name is ${first} ${last}.`
+	var url = `http://localhost:3000/api/messages/${id}`
+
+3> multiline strings in es6
+	earlier we had to use one of these approaches:
+	var roadPoem = 'Then took the other, as just as fair,\n\t'
+		+ 'And having perhaps the better claim\n\t'
+		+ 'Because it was grassy and wanted wear,\n\t'
+		+ 'Though as for that the passing there\n\t'
+		+ 'Had worn them really about the same,\n\t'
+
+	var fourAgreements = 'You have the right to be you.\n\
+		You can only be you when you do your best.'
+	
+	While in ES6, simply utilize the backticks:
+	var roadPoem = `Then took the other, as just as fair,
+		And having perhaps the better claim
+		Because it was grassy and wanted wear,
+		Though as for that the passing there
+		Had worn them really about the same,`
+
+	var fourAgreements = `You have the right to be you.
+		You can only be you when you do your best.`
+
+4> destructuring in es6
+	var a, b, rest;
+	[a, b, ...rest] = [10, 20, 30, 40, 50];
+	console.log(a); // expected output: 10
+	console.log(rest); // expected output: [30,40,50]
+	
+	({a, b, ...rest} = {a: 10, b: 20, c: 30, d: 40});
+	console.log(a); // 10
+	console.log(b); // 20
+	console.log(rest); // {c: 30, d: 40}
+	
+	default values:
+	[a=5, b=7] = [1];
+	console.log(a); // 1
+	console.log(b); // 7
+	
+	swapping variables
+	var a = 1;
+	var b = 3;
+
+	[a, b] = [b, a];
+	console.log(a); // 3
+	console.log(b); // 1
+	
+	
+	var o = {p: 42, q: true};
+	var {p: foo, q: bar} = o;
+	console.log(foo); // 42 
+	console.log(bar); // true
+	Here, for example, var {p: foo} = o takes from the object o the property named p and assigns it to a local variable named foo
+	
+	
+	setting function parameter's default values
+	function drawES2015Chart({size = 'big', coords = {x: 0, y: 0}, radius = 25} = {}) {
+		console.log(size, coords, radius);
+		// do some chart drawing
+	}
+	drawES2015Chart({
+		coords: {x: 18, y: 30},
+		radius: 30
+	});
+	In the function signature for drawES2015Chart above, the destructured left-hand side is assigned to an empty object literal on the right-hand side: {size = 'big', coords = {x: 0, y: 0}, radius = 25} = {}. You could have also written the function without the right-hand side assignment. However, if you leave out the right-hand side assignment, the function will look for at least one argument to be supplied when invoked, whereas in its current form, you can simply call drawES2015Chart() without supplying any parameters. The current design is useful if you want to be able to call the function without supplying any parameters, the other can be useful when you want to ensure an object is passed to the function.
+	
+	
+	Computed object property names and destructuring
+	let key = 'z';
+	let {[key]: foo} = {z: 'bar'};
+	console.log(foo); // "bar"
+	
+	Combined Array and Object Destructuring
+	const props = [
+		{ id: 1, name: 'Fizz'},
+		{ id: 2, name: 'Buzz'},
+		{ id: 3, name: 'FizzBuzz'}
+	];
+	const [,, { name }] = props;
+	console.log(name); // "FizzBuzz";
+	
+	
+	Nested object and array destructuring
+	const metadata = {
+		title: 'Scratchpad',
+		translations: [
+			{
+				locale: 'de',
+				localization_tags: [],
+				last_edit: '2014-04-14T08:43:37',
+				url: '/de/docs/Tools/Scratchpad',
+				title: 'JavaScript-Umgebung'
+			}
+		],
+		url: '/en-US/docs/Tools/Scratchpad'
+	};
+
+	let {
+		title: englishTitle, // rename
+		translations: [
+			{
+				title: localeTitle, // rename
+			},
+		],
+	} = metadata;
+
+	console.log(englishTitle); // "Scratchpad"
+	console.log(localeTitle);  // "JavaScript-Umgebung"
+	
+	
+	For of iteration and destructuring
+	var people = [
+		{
+			name: 'Mike Smith',
+			family: {
+				mother: 'Jane Smith',
+				father: 'Harry Smith',
+				sister: 'Samantha Smith'
+			},
+			age: 35
+		},
+		{
+			name: 'Tom Jones',
+			family: {
+				mother: 'Norah Jones',
+				father: 'Richard Jones',
+				brother: 'Howard Jones'
+			},
+			age: 25
+		}
+	];
+	for (var {name: n, family: {father: f}} of people) {
+		console.log('Name: ' + n + ', Father: ' + f);
+	}
+	// "Name: Mike Smith, Father: Harry Smith"
+	// "Name: Tom Jones, Father: Richard Jones"
+
+	
+5> arrow functions in es6
+	
+	
+6> promises in es6
+	var promise1 = new Promise(function(resolve, reject) {
+		setTimeout(function() {
+			resolve('foo');
+		}, 300);
+	});
+	promise1.then(function(value) {
+		console.log(value);
+		// expected output: "foo"
+	});
+	console.log(promise1);
+	// expected output: [object Promise]
+	
+	properties: 
+	Promise.length
+		Length property whose value is always 1 (number of constructor arguments).
+	Promise.prototype
+		Represents the prototype for the Promise constructor.
+	Methods:
+		Promise.all(iterable)
+		Promise.race(iterable)
+		Promise.reject()
+		Promise.resolve()
+		
+		
+		
+		
+7> Block scoped constructs let and const
+
+8> classes in es6
+
+9> modules in es6
+	

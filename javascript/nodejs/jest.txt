@@ -1,0 +1,18 @@
+jest
+setup Files configuration in jest:
+in package.json
+{
+ "name": ...,
+ "version": ...,
+ .
+ .
+ .
+ "jest": {
+  "setupFiles": [
+   "./jest/mockAppEnv.js"  //location of the file
+   ]
+ },
+ .
+ .
+ .
+}

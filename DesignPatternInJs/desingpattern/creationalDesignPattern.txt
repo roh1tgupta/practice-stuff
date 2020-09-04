@@ -1,0 +1,345 @@
+SOLID: https://itnext.io/solid-principles-explanation-and-examples-715b975dcad4
+S: Single responsibility principle
+O: Open/closed principle
+L: Liskov substitution principle
+I: Interface segregation principle
+D: Dependency inversion principle
+
+
+creational desing pattern...
+Abstract factory
+Builder
+Factory method
+Prototype
+Singleton
+
+
+
+
+
+Abstract factory...
+'use strict';
+
+class AbstractFactory {
+    constructor() {
+    }
+
+    createProductA (product) {
+    }
+
+    createProductB (product) {
+    }
+}
+
+class ConcreteFactory1 extends AbstractFactory {
+    constructor() {
+        super()
+        facade.log("ConcreteFactory1 class created");
+    }
+
+    createProductA (product) {
+        facade.log('ConcreteFactory1 createProductA')
+        return new ProductA1()
+    }
+
+    createProductB (product) {
+        facade.log('ConcreteFactory1 createProductB')
+        return new ProductB1()
+    }
+}
+
+class ConcreteFactory2 extends AbstractFactory {
+    constructor() {
+        super()
+        facade.log("ConcreteFactory2 class created");
+    }
+
+    createProductA (product) {
+        facade.log('ConcreteFactory2 createProductA')
+        return new ProductA2()
+    }
+
+    createProductB (product) {
+        facade.log('ConcreteFactory2 createProductB')
+        return new ProductB2()
+    }
+}
+
+class AbstractProductA {
+    constructor() {
+    }
+}
+
+class AbstractProductB {
+    constructor() {
+    }
+}
+
+
+class ProductA1 extends AbstractProductA {
+    constructor() {
+        super()
+        facade.log('ProductA1 created')
+    }
+}
+
+class ProductA2 extends AbstractProductA {
+    constructor() {
+        super()
+        facade.log('ProductA2 created')
+    }
+}
+
+class ProductB1 extends AbstractProductB {
+    constructor() {
+        super()
+        facade.log('ProductB1 created')
+    }
+}
+
+class ProductB2 extends AbstractProductB {
+    constructor() {
+        super()
+        facade.log('ProductB2 created')
+    }
+}
+
+function init_AbstractFactory() {
+    var factory1 = new ConcreteFactory1()
+    var productB1 = factory1.createProductB()
+    
+    var factory2 = new ConcreteFactory2()
+    var productA2 = factory2.createProductA()
+}
+
+
+
+
+Builder...
+'use strict';
+
+class Director {
+    constructor() {
+        this.structure = ['Maze','Wall','Door'];
+        facade.log("Director class created");
+    }
+
+    Construct (){
+        for(var all in this.structure){
+            let builder = new ConcreteBuilder()
+            builder.BuildPart(this.structure[all]);
+            builder.GetResult()
+        }
+    }
+}
+
+class Builder {
+    constructor() {
+    }
+
+    BuildPart (){
+    }
+}
+
+class ConcreteBuilder extends Builder {
+    constructor() {
+        super()
+        facade.log("ConcreteBuilder class created");
+    }
+
+    BuildPart (rawmaterial){
+        facade.log("ConcreteBuilder BuildPart()");
+        var material = rawmaterial
+        this.product = new Product(material)
+    }
+
+    GetResult (){
+        facade.log(JSON.stringify(this.product))
+        return this.product
+    }
+}
+
+class Product {
+    constructor(material) {
+        facade.log("Product class created");
+        this.data = material
+    }
+}
+
+function init_Builder() {
+    let director = new Director()
+    director.Construct()
+}
+
+//output
+Director class created
+ConcreteBuilder class created
+ConcreteBuilder BuildPart()
+Product class created
+{"data":"Maze"}
+ConcreteBuilder class created
+ConcreteBuilder BuildPart()
+Product class created
+{"data":"Wall"}
+ConcreteBuilder class created
+ConcreteBuilder BuildPart()
+Product class created
+{"data":"Door"}
+
+
+Factory method......
+'use strict';
+
+class Productt {
+    constructor() {
+    }
+}
+
+class ConcreteProduct extends Productt {
+    constructor() {
+        super()
+        facade.log('ConcreteProduct created')
+    }
+}
+
+class Creator {
+    constructor() {
+    }
+
+    FactoryMethod (){
+
+    }
+
+    AnOperation (){
+        facade.log("AnOperation()")
+        this.product = this.FactoryMethod()
+        facade.log(this.product instanceof ConcreteProduct)
+    }
+}
+
+class ConcreteCreator extends Creator {
+
+    constructor() {
+        super()
+        facade.log('ConcreteCreator created')
+    }
+
+    FactoryMethod (){
+        return new ConcreteProduct();
+    }
+}
+
+function init_FactoryMethod() {
+    var factory = new ConcreteCreator()
+    factory.AnOperation()
+}
+// output.......
+ConcreteCreator created
+AnOperation()
+ConcreteProduct created
+true
+
+
+Prototype..........
+'use strict';
+
+class Prototype {
+    constructor(prototype) {
+    }
+
+    Clone (){
+    }
+}
+
+class ConcretePrototype1 extends Prototype {
+    constructor() {
+        facade.log("ConcretePrototype1 created");
+        super()
+        this.feature = "feature 1"
+    }
+
+    setFeature(key, val) {
+        this[key] = val
+    }
+
+    Clone (){
+        facade.log('custom cloning function')
+        let clone = new ConcretePrototype1()
+        let keys = Object.keys(this)
+
+        keys.forEach(k => clone.setFeature(k, this[k]))
+
+        facade.log("ConcretePrototype1 cloned");
+        return clone;
+    }
+}
+
+class ConcretePrototype2 extends Prototype {
+    constructor() {
+        facade.log("ConcretePrototype2 created");
+        super()
+    }
+
+    Clone (){
+        facade.log("ConcretePrototype2 cloned");
+        return clone;
+    }
+}
+
+function init_Prototype () {
+    var proto1 = new ConcretePrototype1()
+    proto1.setFeature('feature', "feature 22")
+    var clone1 = proto1.Clone()
+    facade.log(clone1.feature)
+}
+// output
+ConcretePrototype1 created
+custom cloning function
+ConcretePrototype1 created
+ConcretePrototype1 cloned
+feature 22
+
+
+
+Singleton..........
+'use strict';
+
+let _singleton = null
+
+class Singleton {
+    constructor (data) {
+        if(!_singleton) {
+            this.data = data
+            _singleton = this
+        }
+        else
+            return _singleton
+        facade.log("Singleton class created")
+    }
+
+    SingletonOperation () {
+        facade.log('SingletonOperation')
+    }
+
+    GetSingletonData () {
+        return this.data
+    }
+}
+
+function init_Singleton() {
+    var singleton1 = new Singleton("data1")
+    var singleton2 = new Singleton("data2")
+    facade.log(singleton1.GetSingletonData())
+    facade.log(singleton2.GetSingletonData())
+    facade.log(singleton1 instanceof Singleton)
+    facade.log(singleton2 instanceof Singleton)
+    facade.log(singleton1 === singleton2)
+}
+// output
+Singleton class created
+data1
+data1
+true
+true
+true
+

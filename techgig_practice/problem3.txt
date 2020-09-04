@@ -1,0 +1,16 @@
+All A's Well (100 Marks)
+Given an input string with duplicate characters generate a string which does have all A's together in the front and other characters maintain their respective position.
+
+Input Format
+You will be given a function with String as argument.
+
+Constraints
+1 <= |S| <= 10^6
+
+Output Format
+You need to return the string from the given function.
+Sample TestCase 1
+Input
+ababacada
+Output
+aaaaabbcd

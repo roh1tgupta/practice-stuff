@@ -1,0 +1,21 @@
+Find The Culprit (100 Marks) // 0 scored dont know why techgig shows test cases fails
+You will be given two arrays and a number and you are asked to find whether the number is present in either of the arrays or not. 
+
+Input Format
+Your function will have two arguments. Argument 1 will be an integer array 1 while argument will represent another integer array 2. 
+
+Constraints
+1 <= Ai <= 1000
+
+Output Format
+You need to return 1 from the function if the number is found in the array 1, 2 if the number is present in the array 2, else return -1. 
+
+Sample TestCase 1
+Input
+6
+70 69 44 -28 -16 79
+5
+10 20 30 40 50
+110
+Output
+-1

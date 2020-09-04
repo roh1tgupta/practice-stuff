@@ -1,0 +1,42 @@
+const getShallowComponent = (props) => {
+        return shallow(<UsersRow {...props} />);
+    }
+test('render', () => {
+        const wrapper = getShallowComponent(defaultProps);
+        const checkbox = wrapper.find({ type: 'checkbox' });
+        expect(checkbox.props().checked).to.equal(defaultProps.checked);
+    })
+
+
+// below using shallow when component is used with connect(mapstatetoprops.....)
+const wrapper1 = shallow(<EbcBlade {...props1} store={data} />);
+
+// when we have ref and using that ref.current.parentElement.parentElement...
+// for that case two extra div are provided in below
+const wrapper1 = MountWithStore(<div><div><PrintOptionsMainContainer /></div></div>, data);
+
+// mocking scrollintoview of htmlElement, this can be used if 
+// we are using useref as well
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+mocking window.performance.navigation.type
+ jest.spyOn(window, 'performance', 'get')
+      .mockImplementation(() => ({ navigation: {type: 1} }));
+
+
+class component instance when using mountwithstore or component with connect
+const component = wrapper.find('cod-designer-container').first();
+component.instance().initData(tempState, true, true);
+initData is class method/ we can use lifecucle method here as well
+for setting state
+component.setState({..})
+
+import logSplunk from '../../global/utils/splunk';
+jest.mock('../../global/utils/splunk');
+now we can use logSplunk in expect..
+
+mocking more than one usestate :
+ const spyOn1 = () => jest.spyOn(React, 'useState').mockImplementationOnce(() => ([[1], dummyFn]))
+      .mockImplementationOnce(() => ([true, dummyFn])).mockImplementationOnce(() => (['3', dummyFn]))
+      .mockImplementationOnce(() => ([false, dummyFn]))
+      .mockImplementationOnce(() => ([1, dummyFn]));

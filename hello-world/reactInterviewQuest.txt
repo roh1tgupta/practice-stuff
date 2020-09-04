@@ -1,0 +1,8 @@
+https://medium.com/@juliuskoronci/react-interview-questions-13f8839f2711
+https://blog.usejournal.com/how-to-apply-solid-principles-in-react-applications-6c964091a982
+SOLID principle: 
+Single responsibility principle
+Open closed principle
+Liskov substituion principle
+Interface segregation principle
+Dependency inversion principle

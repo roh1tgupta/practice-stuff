@@ -1,0 +1,411 @@
+The ECMA-262 specification defines scope as: a lexical environment in which a Function object is executed in client-side web scripts
+
+Angular 4 released in March 2017,Angular 5 was released on November 1, 2017,Angular 6 was released on 3rd May 2018,
+Angular 7 was released on 18th October 2018,
+
+Although ngModel is a valid Angular directive, it isn't available by default.
+
+It belongs to the optional FormsModule and you must opt-in to using it.
+
+The Angular class binding makes it easy to add and remove a CSS class conditionally. Just add [class.some-css-class]="some-condition" to the element you want to style.
+[class.selected]="hero === selectedHero"
+When the current row hero is the same as the selectedHero, Angular adds the selected CSS class. When the two heroes are different, Angular removes the class.
+
+
+
+Add the @Input() hero property
+The HeroDetailComponent template binds to the component's hero property which is of type Hero.
+
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+Amend the @angular/core import statement to include the Input symbol.
+
+import { Component, OnInit, Input } from '@angular/core';
+
+export class HeroDetailComponent implements OnInit {
+  @Input() hero: Hero;
+
+That's the only change you should make to the HeroDetailComponent class. There are no more properties. There's no presentation logic. This component simply receives a hero object through its hero property and displays it.
+
+[hero]="selectedHero" is an Angular property binding.
+
+It's a one way data binding from the selectedHero property of the HeroesComponent to the hero property of the target element, which maps to the hero property of the HeroDetailComponent.
+
+
+
+@Injectable() services
+Notice that the new service imports the Angular Injectable symbol and annotates the class with the @Injectable() decorator.
+
+The @Injectable() decorator tells Angular that this service might itself have injected dependencies. It doesn't have dependencies now but it will soon. Whether it does or it doesn't, it's good practice to keep the decorator.
+
+The Angular style guidelines strongly recommend keeping it and the linter enforces this rule.
+
+
+
+
+
+
+That's such a popular choice that you could have told the CLI to provide it there automatically by appending --module=app.
+ng generate service hero --module=app
+
+
+HttpClient.get() returns an Observable.
+
+
+of(HEROES) returns an Observable<Hero[]> that emits a single value, the array of mock heroes.
+
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+
+
+getHeroes(): void {
+  this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes);
+}
+Observable.subscribe()
+subscribe passes the emitted array to the callback, which sets the component's heroes property.
+
+
+
+constructor(public messageService: MessageService) {}
+The messageService property must be public because you're about to bind to it in the template.
+
+Angular only binds to public component properties.
+
+
+
+
+ng generate module app-routing --flat --module=app
+--flat puts the file in src/app instead of its own folder.
+--module=app tells the CLI to register it in the imports array of the AppModule.
+
+
+ng generate component dashboard
+
+
+{ path: 'dashboard', component: DashboardComponent },
+{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+This route redirects a URL that fully matches the empty path to the route whose path is '/dashboard'.
+
+
+
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+constructor(
+  private route: ActivatedRoute,
+  private location: Location
+) {}
+
+The ActivatedRoute holds information about the route to this instance of the HeroDetailComponent. This component is interested in the route's bag of parameters extracted from the URL. The "id" parameter is the id of the hero to display.
+The location is an Angular service for interacting with the browser. You'll use it later to navigate back to the view that navigated here.
+
+const id = +this.route.snapshot.paramMap.get('id');
+The route.snapshot is a static image of the route information shortly after the component was created.
+The paramMap is a dictionary of route parameter values extracted from the URL. The "id" key returns the id of the hero to fetch.
+Route parameters are always strings. The JavaScript (+) operator converts the string to a number, which is what a hero id should be.
+
+
+
+getHero(id: number): Observable<Hero> {
+  this.messageService.add(`HeroService: fetched hero id=${id}`);
+  return of(HEROES.find(hero => hero.id === id));
+}
+Note the backticks ( ` ) that define a JavaScript template literal for embedding the id.
+
+
+By clicking the browser's back button, you can go back to the hero list or dashboard view, depending upon which sent you to the detail view.
+It would be nice to have a button on the HeroDetail view that can do that.
+<button (click)="goBack()">go back</button>
+goBack(): void {
+  this.location.back();
+}
+
+
+
+
+Enable HTTP services
+HttpClient is Angular's mechanism for communicating with a remote server over HTTP.
+To make HttpClient available everywhere in the app,
+open the root AppModule,
+import the HttpClientModule symbol from @angular/common/http,
+add it to the @NgModule.imports array.
+
+
+
+
+
+All HttpClient methods return an RxJS Observable of something.
+HTTP is a request/response protocol. You make a request, it returns a single response.
+In general, an Observable can return multiple values over time. An Observable from HttpClient always emits a single value and then completes, never to emit again.
+
+
+
+
+import { catchError, map, tap } from 'rxjs/operators';
+
+/** GET heroes from the server */
+getHeroes (): Observable<Hero[]> {
+  return this.http.get<Hero[]>(this.heroesUrl)
+    .pipe(
+      tap(heroes => this.log(`fetched heroes`)),
+      catchError(this.handleError('getHeroes', []))
+    );
+}
+
+private handleError<T> (operation = 'operation', result?: T) {
+  return (error: any): Observable<T> => {
+    // TODO: send the error to remote logging infrastructure
+    console.error(error); // log to console instead
+    // TODO: better job of transforming error for user consumption
+    this.log(`${operation} failed: ${error.message}`);
+    // Let the app keep running by returning an empty result.
+    return of(result as T);
+  };
+}
+
+The HeroService methods will tap into the flow of observable values and send a message (via log()) to the message area at the bottom of the page.
+They'll do that with the RxJS tap operator, which looks at the observable values, does something with those values, and passes them along. The tap call back doesn't touch the values themselves
+
+
+
+/** GET hero by id. Will 404 if id not found */
+getHero(id: number): Observable<Hero> {
+  const url = `${this.heroesUrl}/${id}`;
+  return this.http.get<Hero>(url).pipe(
+    tap(_ => this.log(`fetched hero id=${id}`)),
+    catchError(this.handleError<Hero>(`getHero id=${id}`))
+  );
+}
+///////////////refer http in angular tutorial
+
+
+
+
+/** PUT: update the hero on the server */
+updateHero (hero: Hero): Observable<any> {
+  return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
+    tap(_ => this.log(`updated hero id=${hero.id}`)),
+    catchError(this.handleError<any>('updateHero'))
+  );
+}
+
+The HttpClient.put() method takes three parameters
+the URL
+the data to update (the modified hero in this case)
+options
+The URL is unchanged. The heroes web API knows which hero to update by looking at the hero's id.
+The heroes web API expects a special header in HTTP save requests. That header is in the httpOptions constant defined in the HeroService.
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
+
+
+
+add(name: string): void {
+  name = name.trim();
+  if (!name) { return; }
+  this.heroService.addHero({ name } as Hero)
+    .subscribe(hero => {
+      this.heroes.push(hero);
+    });
+}
+
+addHero (hero: Hero): Observable<Hero> {
+  return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
+    tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
+    catchError(this.handleError<Hero>('addHero'))
+  );
+}
+
+
+
+As a rule, an Observable does nothing until something subscribes!
+
+
+<li *ngFor="let hero of heroes$ | async" >
+The $ is a convention that indicates heroes$ is an Observable, not an array.
+The *ngFor can't do anything with an Observable. But there's also a pipe character (|) followed by async, which identifies Angular's AsyncPipe.
+The AsyncPipe subscribes to an Observable automatically so you won't have to do so in the component class.
+
+
+import { Subject }    from 'rxjs/Subject';
+import {
+   debounceTime, distinctUntilChanged, switchMap
+ } from 'rxjs/operators';
+ 
+export class HeroSearchComponent implements OnInit {
+  heroes$: Observable<Hero[]>;
+  private searchTerms = new Subject<string>();
+  constructor(private heroService: HeroService) {}
+  // Push a search term into the observable stream.
+  search(term: string): void {
+    this.searchTerms.next(term);
+  }
+  ngOnInit(): void {
+    this.heroes$ = this.searchTerms.pipe(
+      // wait 300ms after each keystroke before considering the term
+      debounceTime(300),
+      // ignore new term if same as previous term
+      distinctUntilChanged(),
+      // switch to new search observable each time the term changes
+      switchMap((term: string) => this.heroService.searchHeroes(term)),
+    );
+  }
+}
+
+A Subject is both a source of observable values and an Observable itself. You can subscribe to a Subject as you would any Observable.
+
+You can also push values into that Observable by calling its next(value) method as the search() method does.
+
+debounceTime(300) waits until the flow of new string events pauses for 300 milliseconds before passing along the latest string. You'll never make requests more frequently than 300ms.
+distinctUntilChanged ensures that a request is sent only if the filter text changed.
+switchMap() calls the search service for each search term that makes it through debounce and distinctUntilChanged. It cancels and discards previous search observables, returning only the latest search service observable.
+
+With the switchMap operator, every qualifying key event can trigger an HttpClient.get() method call. 
+
+
+
+
+ <label>Hero name:
+    <input #heroName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(heroName.value); heroName.value=''">
+    add
+  </button>
+
+
+
+  
+  
+  View Encapsulation
+
+View encapsulation defines whether the template and styles defined within the component can affect the whole application or vice versa. Angular provides three encapsulation strategies:
+
+    Emulated (default) - styles from main HTML propagate to the component. Styles defined in this component's @Component decorator are scoped to this component only.
+    Native - styles from main HTML do not propagate to the component. Styles defined in this component's @Component decorator are scoped to this component only.
+
+    None - styles from the component propagate back to the main HTML and therefore are visible to all components on the page. Be careful with apps that have None and Native components in the application. All components with None encapsulation will have their styles duplicated in all components with Native encapsulation.
+
+    @Component({
+    // ...
+    encapsulation: ViewEncapsulation.None,
+    styles: [
+      // ...
+    ]
+    })
+    export class HelloComponent {
+    // ...
+    }
+
+
+output directive  link1=https://stackoverflow.com/questions/40992140/passing-data-from-child-component-into-parent-component
+link2=https://angular.io/api/core/Directive
+When an output property emits an event, an event handler attached to that event the template is invoked.
+The outputs property defines a set of directiveProperty to bindingProperty configuration:
+directiveProperty specifies the component property that emits events.
+bindingProperty specifies the DOM property the event handler is attached to.  
+  
+child:
+import {Output}       from '@angular/core'
+import {EventEmitter} from '@angular/core'
+@Component({
+  selector: 'page-login',
+  templateUrl: 'login.html'
+})
+export class LoginPage {
+    @Output() on_user_has_logged_in : EventEmitter<any> = new EventEmitter()
+
+    login(MyValue) {
+        this.on_user_has_logged_in.emit(MyValue)
+    }
+}
+parent:
+<page-login (on_user_has_logged_in)="userNow = $event"></page-login>
+
+
+
+child routes nested routes----https://www.tektutorialshub.com/angular-child-routes-nested-routes/  
+custom directive ----https://www.codementor.io/christiannwamba/build-custom-directives-in-angular-2-jlqrk7dpw
+custom pipes --- https://alligator.io/angular/custom-pipes-angular/
+file upload --- https://stackoverflow.com/questions/45160884/file-upload-and-download-in-angular-4-typescript
+awt-auth --- https://ryanchenkie.com/angular-authentication-using-the-http-client-and-http-interceptors
+overlayint angular ....https://blog.thoughtram.io/angular/2017/11/20/custom-overlays-with-angulars-cdk.html
+https://blog.angularindepth.com/angular-cdk-portals-b02f66dd020c
+Angular 5 modal popup using bootstrap---https://www.youtube.com/watch?v=xgc1vnEcPCw
+
+for theming in angular: https://coursetro.com/posts/code/116/Create-your-own-Angular-5-Material-Theme
+for data-table : https://l-lin.github.io/angular-datatables/#/basic/server-side-angular-way
+..http://tphangout.com/angular-5-data-tables-revisited/
+..
+event binding ....https://coursetro.com/posts/code/59/Angular-4-Event-Binding
+a11y
+
+event.prevendDefault();
+
+[ngClass]="{active:selectOrAdd === 'selectPayee'}"
+[ngStyle]="{'background-color':selectOrAdd === 'selectPayee' ? 'green' : 'red' }"
+
+angular/redux
+https://medium.com/codingthesmartway-com-blog/angular-and-redux-ecd22ea53492
+
+
+ngIf else   https://angular.io/api/common/NgIf
+<div *ngIf="show; else elseBlock">Text to show</div>
+    <ng-template #elseBlock>Alternate text while primary text is hidden</ng-template>
+
+Using non-inlined then template
+<div *ngIf="show; then thenBlock; else elseBlock">this is ignored</div>
+    <ng-template #primaryBlock>Primary text to show</ng-template>
+    <ng-template #secondaryBlock>Secondary text to show</ng-template>
+    <ng-template #elseBlock>Alternate text while primary text is hidden</ng-template>
+
+
+ <div *ngIf="userObservable | async as user; else loading">
+      Hello {{user.last}}, {{user.first}}!
+    </div>
+    <ng-template #loading let-user>Waiting... (user is {{user|json}})</ng-template>
+
+
+
+generate module
+ng generate module [name]
+alainlibrary
+https://ng.ant.design/docs/introduce/en
+
+
+vertical-align
+https://vanseodesign.com/css/vertical-centering/
+ adjust_textarea(h) {
+    console.log(h);
+    h.target.style.height = "20px";
+    h.target.style.height = (h.target.scrollHeight)+"px";
+  }
+
+
+credit card
+https://www.npmjs.com/package/ngx-card
+https://github.com/bendrucker/angular-credit-cards
+
+https://datatables.net/reference/button/ --datatable reference
+
+https://stackblitz.com/edit/how-to-create-drill-down-tables-using-this-library-1240 --datatable
+
+...
+server ...
+run below command....
+npm -g i ngrok
+ngrok http 3000  <<port onwhich app running...http://8470da57.ngrok.io  <<such kind of url generate other can access this 
+ng serve -env=development --host 0.0.0.0 --disable-host-check  <<running server
+
+[nzCancelText]=null for remvoving cancel button from modal
+
+email validation in form template
+<input type="email" nz-input formControlName="email" placeholder="Please enter your email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+localStorage and sessionStorage are both so-called WebStorages and features of HTML5.
+localStorage stores information as long as the user does not delete them.
+sessionStorage stores information as long as the session goes. Usually until the user closes the tab/browser.
+
+this.registerForm.controls.phone_number_prefix.setValue('+91');   //manualy setting value of form-control

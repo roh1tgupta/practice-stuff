@@ -1,0 +1,82 @@
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API  ..for client-side storage of significant amounts of structured data,
+
+
+https://addyosmani.com/resources/essentialjsdesignpatterns/book/
+http://jstherightway.org/#patterns
+https://loredanacirstea.github.io/es6-design-patterns/   es6
+
+https://medium.freecodecamp.org/here-are-examples-of-everything-new-in-ecmascript-2016-2017-and-2018-d52fa3b5a70e  ---for latest echmascript 2016,2017,2018
+
+https://frontendmasters.com/books/front-end-handbook/2019/
+
+
+
+search as filter
+swipe.on
+jquery  .on .closest .is  .find  .prev  .not  .addclass  .removeclass
+
+resolve in angular         ...import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
+export type InternalStateType = {
+  [key: string]: any
+};
+
+
+Return the first ancestor of <span>, that is an <ul> element:
+$(document).ready(function(){
+    $("span").closest("ul").css({"color": "red", "border": "2px solid red"});
+});
+
+The Object.is() method determines whether two values are the same value.
+Object.is('foo', 'foo');     // true
+Object.is(window, window);   // true
+Object.is('foo', 'bar');     // false
+Object.is([], []);           // false
+var test = { a: 1 };
+Object.is(test, test);       // true
+Object.is(null, null);       // true
+// Special Cases
+Object.is(0, -0);            // false
+Object.is(-0, -0);           // true
+Object.is(NaN, 0/0);         // true
+
+
+JavaScript Array find() Method
+Get the value of the first element in the array that has a value of 18 or more:
+var ages = [3, 10, 18, 20];
+function checkAdult(age) {
+    return age >= 18;
+}
+function myFunction() {
+    document.getElementById("demo").innerHTML = ages.find(checkAdult);
+}
+
+
+jQuery prev() Method
+Return the previous sibling element of each <li> element with class name "start":
+
+$(document).ready(function(){
+    $("li.start").prev().css({"color": "red", "border": "2px solid red"});
+});
+
+jQuery :not() Selector  ---is also a function..puspose is same
+Select all <p> elements except those with class="intro":
+$("p:not(.intro)")
+
+JavaScript String search() Method
+var str = "Visit W3Schools!";
+var n = str.search("W3Schools");
+
+console.log(Array.from('foo'));
+
+// expected output: Array ["f", "o", "o"]
+
+
+console.log(Array.from([1, 2, 3], x => x + x));
+
+// expected output: Array [2, 4, 6]
+
+console.log(Array.from({length: 26}, (_,i) => String.fromCharCode(65 + i)))
+
+// expected output: Array ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+

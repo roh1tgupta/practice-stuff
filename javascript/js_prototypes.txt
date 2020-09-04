@@ -1,0 +1,110 @@
+Run-to-completion scheduling or nonpreemptive scheduling is a scheduling model
+in which each task runs until it either finishes, or explicitly yields
+control back to the scheduler.
+
+Iterable : An object which has enumerable properties and can perform iteration operations.
+All iterables implement a method Symbol.iterator,a special symbol which performs the iteration.
+This concept allows us to make objects useable in a for...of loop which isn't normally possible.
+
+
+Iterator : An iterator traverses over the elements of an iterable, this
+iterator is returned by Symbol.iterator. The iterator returns a method next
+that returns an object with keys : value —? indicating the current item and
+done —? indicating true if the traversion is done or false if it isn't done.
+
+user-defined iterables
+let myIterable = {}
+myIterable[Symbol.iterator] = function* () {
+    yield 1 
+    yield 2 
+    yield 3 
+};
+[...myIterable]  // [1, 2, 3]
+
+
+// Satisfies both the Iterator Protocol and Iterable
+let myIterator = {
+    next: function() {
+        // ...
+    },
+    [Symbol.iterator]: function() { return this }
+}
+
+hasOwnProperty is the only thing in JavaScript which deals with properties and 
+does not traverse the prototype chain.
+
+ECMAScript 5 introduced a new method: Object.create().
+Calling this method creates a new object.
+The prototype of this object is the first argument of the function:
+var a = {a: 1}; 
+// a ---> Object.prototype ---> null
+
+var b = Object.create(a);
+// b ---> a ---> Object.prototype ---> null
+console.log(b.a); // 1 (inherited)
+
+Using Object.create of another object demonstrates prototypical inheritance with the delete operation:
+var a = {a: 1};
+var b = Object.create(a); 
+console.log(a.a); // print 1 
+console.log(b.a); // print 1
+b.a=5;
+console.log(a.a); // print 1
+console.log(b.a); // print 5
+delete b.a;
+console.log(a.a); // print 1
+console.log(b.a); // print 1(b.a value 5 is deleted but it showing value from its prototype chain)
+delete a.a;
+console.log(a.a); // print undefined
+console.log(b.a); // print undefined
+
+The new operator has a shorter chain in this example:
+function Graph() {
+  this.vertices = [4,4];
+}
+var g = new Graph();
+console.log(g.vertices); // print [4,4]
+g.vertices = 25;
+console.log(g.vertices); // print 25
+delete g.vertices;
+console.log(g.vertices); // print undefined
+
+
+function doSomething(){}
+doSomething.prototype.foo = "bar";
+var doSomeInstancing = new doSomething();
+doSomeInstancing.prop = "some value";
+console.log("doSomeInstancing.prop:      " + doSomeInstancing.prop);
+console.log("doSomeInstancing.foo:       " + doSomeInstancing.foo);
+console.log("doSomething.prop:           " + doSomething.prop);
+console.log("doSomething.foo:            " + doSomething.foo);
+console.log("doSomething.prototype.prop: " + doSomething.prototype.prop);
+console.log("doSomething.prototype.foo:  " + doSomething.prototype.foo);
+doSomeInstancing.prop:      some value
+doSomeInstancing.foo:       bar
+doSomething.prop:           undefined
+doSomething.foo:            undefined
+doSomething.prototype.prop: undefined
+doSomething.prototype.foo:  bar
+
+JavaScript objects are dynamic "bags" of properties (referred to as own properties).
+JavaScript objects have a link to a prototype object.
+When trying to access a property of an object, the property
+will not only be sought on the object but on the prototype of the object,
+the prototype of the prototype, and so on until either a property with a
+matching name is found or the end of the prototype chain is reached.
+
+Following the ECMAScript standard, the notation someObject.[[Prototype]] is used to
+designate the prototype of someObject. Since ECMAScript 2015, the [[Prototype]] is accessed
+using the accessors Object.getPrototypeOf() and Object.setPrototypeOf().
+This is equivalent to the JavaScript property __proto__ which is non-standard but
+de-facto implemented by many browsers.
+It should not be confused with the func.prototype property of functions,
+which instead specifies the [[Prototype]] to be assigned to all instances of
+objects created by the given function when used as a constructor.
+The Object.prototype property represents the Object prototype object.
+
+
+
+
+

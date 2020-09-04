@@ -1,0 +1,22 @@
+https://medium.com/digital-alchemy-holdings/learn-build-a-javascript-blockchain-part-1-ca61c285821e
+
+https://www.coursera.org/learn/ibm-blockchain-essentials-for-developers/home/welcome  .....ibm
+https://onlinecourses.nptel.ac.in/ .....online tutorial
+https://medium.com/coinmonks/free-resources-to-get-a-blockchain-job-in-6-months-or-less-for-non-coders-5ddee72fbc7b
+
+
+
+
+
+https://www.codementor.io/savjee/implementing-proof-of-work-blockchain-in-javascript-part-2-k9ozymkqw
+
+https://www.savjee.be/2018/02/Transactions-and-mining-rewards/
+
+
+https://blockgeeks.com/guides/code-a-bitcoin-blockchain-in-javascript/
+
+https://github.com/SavjeeTutorials/SavjeeCoin/blob/master/src/blockchain.js
+
+https://blockgeeks.com/guides/blockchain-glossary-from-a-z/
+
+https://blockgeeks.com/guides/what-is-cryptoeconomics/ nash equilibriuam

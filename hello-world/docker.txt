@@ -1,0 +1,61 @@
+make sure your system support virtualisationa and hyperv
+https://www.youtube.com/watch?v=wCTTHhehJbU
+http://docker-curriculum.com/    
+from powershell to check docker version
+docker -v
+
+docker run hello-world
+it will first search the image locally if not found then will download form docker hub
+
+docker pull busybox 
+fetches the busybox image from the docker registry
+
+docker run name_of_image
+to run 
+
+docker ps
+shows all the container currently running
+
+docker ps -1
+list of all container that we ran
+
+docker rm container_id
+cleaning up the container once done with that
+
+docker rm $(docker ps -a -q -f status=exited)
+cleaning up all the containter in one go
+This command deletes all containers that have a status of exited. In case you're wondering, the -q flag, only returns the numeric IDs and -f filters output based on conditions provided. One last thing that'll be useful is the --rm flag that can be passed to docker run which automatically deletes the container once it's exited from. For one off docker runs, --rm flag is very useful.
+
+terminology
+Images - The blueprints of our application which form the basis of containers. In the demo above, we used the docker pull command to download the busybox image.
+Containers - Created from Docker images and run the actual application. We create a container using docker run which we did using the busybox image that we downloaded. A list of running containers can be seen using the docker ps command.
+Docker Daemon - The background service running on the host that manages building, running and distributing Docker containers. The daemon is the process that runs in the operating system to which clients talk to.
+Docker Client - The command line tool that allows the user to interact with the daemon. More generally, there can be other forms of clients too - such as Kitematic which provide a GUI to the users.
+Docker Hub - A registry of Docker images. You can think of the registry as a directory of all available Docker images. If required, one can host their own Docker registries and can use them for pulling images.
+
+docker build -t prakhar1989/catnip .
+for buildding image
+
+docker run -d -P --name static-site prakhar1989/static-site
+for running in detached mode
+In the above command, -d will detach our terminal, -P will publish all exposed ports to random ports and finally --name corresponds to a name we want to give. Now we can see the ports by running the docker port [CONTAINER] command
+
+docker port static-site
+
+docker run -p 8888:80 prakhar1989/static-site
+You can also specify a custom port to which the client will forward connections to the container.
+
+
+# Delete every Docker containers
+# Must be run first because images are attached to containers
+docker rm -f $(docker ps -a -q)
+
+# Delete every Docker image
+docker rmi -f $(docker images -q)
+
+docker logs container_id
+
+--------------------------------------------------------------------------------------------------------------------------
+Running the run command with the -it flags attaches us to an interactive tty in the container. Now we can run as many commands in the container as we want. Take some time to run your favorite commands.
+
+Danger Zone: If you're feeling particularly adventurous you can try rm -rf bin in the container. Make sure you run this command in the container and not in your laptop/desktop. Doing this will not make any other commands like ls, echo work. Once everything stops working, you can exit the container (type exit and press Enter) and then start it up again with the docker run -it busybox sh command. Since Docker creates a new container every time, everything should start working again.

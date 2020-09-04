@@ -1,0 +1,147 @@
+https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html  --react blog
+https://www.taniarascia.com/getting-started-with-react/  ---react tutorial form blogger
+https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3 ---setting up minification
+http://babeljs.io/docs/en/babel-cli/  --bable documentation
+https://webpack.js.org/  --webpack documentation
+https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658  --creatibg reactapp functionality
+ 
+https://medium.freecodecamp.org/why-graphql-is-the-future-of-apis-6a900fb0bc81   graph-ql
+
+react-testing-library, jest-dom, enzyme for testing
+
+https://academind.com/learn/react/snippets/image-upload/ ..for blog
+
+for cross-origin issue...install below
+https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=es
+
+
+CORS : Cross-Origin Resource Sharing (CORS) is a mechanism that uses additional HTTP headers to tell a browser to let a web application running at one origin (domain) have permission to access selected resources from a server at a different origin. A web application makes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, and port) than its own origin.
+
+
+when in any file global variable is used directly, linter shows error, to remove this either use it as window.(name_of_variable) or define that on top of file as /* global name_of_variable */
+
+https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-reactjs --pagination
+
+npm install jquery --save   --for installing jquery in react and then import $ from 'jquery'
+
+React.js: Set innerHTML vs dangerouslySetInnerHTML
+var test = React.createClass({
+  render: function(){
+    return (
+      <div contentEditable='true' dangerouslySetInnerHTML={{ __html: "Hello" }}></div>
+    );
+  }
+});
+vs
+var test = React.createClass({
+  componentDidUpdate: function(prevProp, prevState){
+    this.refs.test.innerHTML = "Hello";
+  },
+  render: function(){
+    return (
+      <div contentEditable='true' ref='test'></div>
+    );
+  }
+});
+
+The immediate effect of using innerHTML versus dangerouslySetInnerHTML is identical -- the DOM node will update with the injected HTML.
+
+However, behind the scenes when you use dangerouslySetInnerHTML it lets React know that the HTML inside of that component is not something it cares about.
+
+Because React uses a virtual DOM, when it goes to compare the diff against the actual DOM, it can straight up bypass checking the children of that node because it knows the HTML is coming from another source. So there's performance gains.
+
+More importantly, if you simply use innerHTML, React has no way to know the DOM node has been modified. The next time the render function is called, React will overwrite the content that was manually injected with what it thinks the correct state of that DOM node should be.
+
+Your solution to use componentDidUpdate to always ensure the content is in sync I believe would work but there might be a flash during each render.
+
+Since innerHTML is a native method that binds the SVG code directly to the DOM without considering anything. On the other hand, dangerouslySetInnerHTML is the method come from React that the SVG code has to be parsed as React Component children in prior to put them to virtual DOM and then render to the DOM
+
+
+//implementing css
+ return (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        // If a wallpaperPath prop was passed, then this div's CSS background-image
+        // should be a url to that wallpaperPath. Otherwise, it should be an empty
+        // string (which means the style should not be set).
+        backgroundImage: wallpaperPath ? `url(${wallpaperPath})` : "",
+        backgroundColor: "black",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
+    </div>
+  );
+
+
+
+----------------------------------------------------
+
+this.props.children  --uses
+class Example extends React.Component {
+  render() {
+    return <div>
+      <div>Children ({this.props.children.length}):</div>
+      {this.props.children}
+    </div>;
+  }
+}
+
+class Widget extends React.Component {
+  render() {
+    return <div>
+      <div>First <code>Example</code>:</div>
+      <Example>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </Example>
+      <div>Second <code>Example</code> with different children:</div>
+      <Example>
+        <div>A</div>
+        <div>B</div>
+      </Example>
+    </div>;
+  }
+}
+
+ReactDOM.render(
+  <Widget/>,
+  document.getElementById("root")
+);
+
+-----------------------------------------------
+
+https://blog.burgettweb.net/2015/10/23/props-and-state-in-react-js/ -----simple learning
+https://reactjs.org/docs/context.html  -- react_context
+
+https://stackoverflow.com/questions/51248277/react-how-to-get-data-from-react-context
+
+A negative value (usually tabindex="-1") means that the element should be focusable, but should not be reachable via sequential keyboard navigation. It's mostly useful to create accessible widgets with JavaScript
+
+https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf  ...for react routing
+https://medium.com/@pshrmn/a-little-bit-of-history-f245306f48dd   ....for history
+
+https://reactpatterns.com/ .....for react patterns
+for render props .............https://medium.freecodecamp.org/how-to-develop-your-react-superpowers-with-the-render-props-pattern-b74e68c6d053
+https://blog.logrocket.com/rendering-large-lists-with-react-virtualized-82741907a6b3.......Rendering large lists with React Virtualized
+
+https://reacttraining.com/react-router/web/example/basic  ---react-routring
+https://hackernoon.com/how-to-build-a-react-project-from-scratch-using-webpack-4-and-babel-56d4a26afd32   ---react app without webpack and babel, have to install these
+https://blog.bitsrc.io/a-beginners-guide-to-closures-in-javascript-97d372284dda  ...closure
+https://medium.com/@sepineda/react-redux-interview-questions-b7f6611823f  
+https://medium.com/@Charles_Stover/replacing-redux-with-reactn-to-reduce-complexity-and-bundle-size-aa7009cd1209      -----alternative to redux..
+http://bradfrost.com/blog/post/atomic-web-design/    ..bradfrost's atomic desing principle
+
+https://medium.com/@gethylgeorge/understanding-how-redux-thunk-works-72de3bdebc50   --thunk
+
+
+react-transition-group  react library
+react-animate-on-change  react library
+
+
+https://www.websequencediagrams.com/    --for sequence diagram

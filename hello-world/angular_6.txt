@@ -1,0 +1,1163 @@
+main.ts file should be like below
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule }              from './app/app.module';
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .then(success => console.log(`Bootstrap success`))
+  .catch(err => console.error(err));
+
+installing angular cli globally :
+npm install -g @angular/cli
+x 
+
+
+for running angular app on other port
+1 >ng serve --port 4401    
+2 >specify ng serve --port 5000 in package.json like this:
+"scripts": {
+    "start": "ng serve --port 5000"
+}
+3 >ng set defaults.serve.port=4201
+4 >ng serve --host 0.0.0.0 --port 5000
+
+interpolation binding syntax
+{{title}} This interpolation binding presents the component's title property value inside the HTML header tag
+
+
+
+import { Component, OnInit } from '@angular/core';
+@Component({
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.css']
+})
+export class HeroesComponent implements OnInit {
+  constructor() { }
+  ngOnInit() {
+  }
+}
+You always import the Component symbol from the Angular core library and annotate the component class with @Component.
+@Component is a decorator function that specifies the Angular metadata for the component.
+The CLI generated three metadata properties:
+selector— the component's CSS element selector
+templateUrl— the location of the component's template file.
+styleUrls— the location of the component's private CSS styles.
+The CSS element selector, 'app-heroes', matches the name of the HTML element that identifies this component within a parent component's template.
+The ngOnInit is a lifecycle hook Angular calls ngOnInit shortly after creating a component. It's a good place to put initialization logic.
+
+
+
+
+creating class hero.ts
+export class Hero {
+  id: number;
+  name: string;
+}
+
+
+
+Format with the UppercasePipe
+<h2>{{hero.name | uppercase}} Details</h2>
+
+
+
+two-way binding
+<input [(ngModel)]="hero.name" placeholder="name">
+[(ngModel)] is Angular's two-way data binding syntax.
+Although ngModel is a valid Angular directive, it isn't available by default.
+It belongs to the optional FormsModule and you must opt-in to using it.
+
+
+
+
+Angular needs to know how the pieces of your application fit together and what other files and libraries the app requires. This information is called metadata
+Some of the metadata is in the @Component decorators that you added to your component classes. Other critical metadata is in @NgModule decorators.
+The most important @NgModule decorator annotates the top-level AppModule class.
+
+
+
+
+
+creating mocks...filename = mock-hero.ts
+import { Hero } from './hero';
+export const HEROES: Hero[] = [
+  { id: 11, name: 'Mr. Nice' },
+  { id: 12, name: 'Narco' },
+  { id: 13, name: 'Bombasto' },
+  { id: 14, name: 'Celeritas' },
+  { id: 15, name: 'Magneta' },
+  { id: 16, name: 'RubberMan' },
+  { id: 17, name: 'Dynama' },
+  { id: 18, name: 'Dr IQ' },
+  { id: 19, name: 'Magma' },
+  { id: 20, name: 'Tornado' }
+];
+
+
+
+
+The *ngFor is Angular's repeater directive. It repeats the host element for each element in a list.
+
+
+
+event binding
+<li *ngFor="let hero of heroes" (click)="onSelect(hero)">
+The parentheses around click tell Angular to listen for the <li> element's click event. When the user clicks in the <li>, Angular executes the onSelect(hero) expression.
+
+
+<div *ngIf="selectedHero">  --*ngIf syntax
+
+
+
+angular class-binding
+[class.some-css-class]="some-condition" 
+[class.selected]="hero === selectedHero"
+
+
+
+@Input() decorator..
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>....[hero]="selectedHero" is an Angular property binding.It's a one way data binding from the selectedHero property of the HeroesComponent to the hero property of the target element, which maps to the hero property of the HeroDetailComponent.
+in HeroDetailComponent
+import { Hero } from '../hero';
+@Input() hero: Hero;
+
+You used a property binding to give the parent HeroesComponent control over the child HeroDetailComponent.
+You used the @Input decorator to make the hero property available for binding by the external HeroesComponent.
+
+
+
+service
+import { Injectable } from '@angular/core';
+@Injectable({
+  providedIn: 'root',
+})
+export class HeroService {
+  constructor() { }
+}
+
+@Injectable() decorator. This marks the class as one that participates in the dependency injection system.
+You must make the HeroService available to the dependency injection system before Angular can inject it into the HeroesComponent, as you will do below. You do this by registering a provider. A provider is something that can create or deliver a service
+providedIn metadata value is 'root':
+@Injectable({
+  providedIn: 'root',
+})
+When you provide the service at the root level, Angular creates a single, shared instance of HeroService and injects into any class that asks for it. Registering the provider in the @Injectable metadata also allows Angular to optimize an app by removing the service if it turns out not to be used after all.
+
+Inject the HeroService
+constructor(private heroService: HeroService) { }
+The parameter simultaneously defines a private heroService property and identifies it as a HeroService injection site.
+When Angular creates a HeroesComponent, the Dependency Injection system sets the heroService parameter to the singleton instance of HeroServic
+
+Reserve the constructor for simple initialization such as wiring constructor parameters to properties. The constructor shouldn't do anything. It certainly shouldn't call a function that makes HTTP requests to a remote server as a real data service would.
+
+
+Observable is one of the key classes in the RxJS library. HttpClient.get() returns an Observable
+
+
+
+
+
+adding module
+ng generate module app-routing --flat --module=app
+--flat puts the file in src/app instead of its own folder.
+--module=app tells the CLI to register it in the imports array of the AppModule.
+
+
+import { NgModule }             from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HeroesComponent }      from './heroes/heroes.component';
+const routes: Routes = [
+  { path: 'heroes', component: HeroesComponent }
+];
+@NgModule({
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
+})
+export class AppRoutingModule {}
+
+The method is called forRoot() because you configure the router at the application's root level. The forRoot() method supplies the service providers and directives needed for routing, and performs the initial navigation based on the current browser URL.
+The <router-outlet> tells the router where to display routed views.
+The RouterOutlet is one of the router directives that became available to the AppComponent because AppModule imports AppRoutingModule which exported RouterModule.
+
+
+
+<nav>
+  <a routerLink="/heroes">Heroes</a>
+</nav>
+A routerLink attribute is set to "/heroes", the string that the router matches to the route to HeroesComponent. The routerLink is the selector for the RouterLink directive that turns user clicks into router navigations. It's another of the public directives in the RouterModule.
+
+
+
+{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+This route redirects a URL that fully matches the empty path to the route whose path is '/dashboard'.
+ parameterized route
+{ path: 'detail/:id', component: HeroDetailComponent }
+
+
+import { ActivatedRoute } from '@angular/router';
+The ActivatedRoute holds information about the route to this instance of the HeroDetailComponent. This component is interested in the route's bag of parameters extracted from the URL. The "id" parameter is the id of the hero to display.
+import { Location } from '@angular/common';
+The location is an Angular service for interacting with the browser
+
+constructor( private route: ActivatedRoute, private location: Location) {}
+const id = +this.route.snapshot.paramMap.get('id');
+The route.snapshot is a static image of the route information shortly after the component was created.
+The paramMap is a dictionary of route parameter values extracted from the URL. The "id" key returns the id of the hero to fetch.
+Route parameters are always strings. The JavaScript (+) operator converts the string to a number, which is what a hero id should be.
+
+
+
+`HeroService: fetched hero id=${id}` -- Note the backticks ( ` ) that define a JavaScript template literal for embedding the id.
+
+goBack(): void {
+  this.location.back();
+}  ....equivalent to browser's back button
+
+
+
+
+
+
+enable http services----
+HttpClient is Angular's mechanism for communicating with a remote server over HTTP.
+To make HttpClient available everywhere in the app,
+open the root AppModule,
+import the HttpClientModule symbol from @angular/common/http,
+add it to the @NgModule.imports array.
+
+
+
+In general, an observable can return multiple values over time. An observable from HttpClient always emits a single value and then completes, never to emit again.
+
+
+if (!term.trim()) {    ----for checking empyt value or containing only space
+    // if not search term, return empty hero array.
+    return of([]);
+  }
+
+
+
+
+AsyncPipe
+<li *ngFor="let hero of heroes$ | async" >
+in component
+heroes$: Observable<Hero[]>;
+The $ is a convention that indicates heroes$ is an Observable, not an array.
+The *ngFor can't do anything with an Observable. But there's also a pipe character (|) followed by async, which identifies Angular's AsyncPipe.
+The AsyncPipe subscribes to an Observable automatically so you won't have to do so in the component class.
+
+
+
+
+
+Decorators are functions that modify JavaScript classes. Angular defines a number of such decorators that attach specific kinds of metadata to classes, so that it knows what those classes mean and how they should work.
+
+
+
+NgModule metadata
+An NgModule is defined as a class decorated with @NgModule. The @NgModule decorator is a function that takes a single metadata object, whose properties describe the module. The most important properties are as follows.
+declarations—The components, directives, and pipes that belong to this NgModule.
+exports—The subset of declarations that should be visible and usable in the component templates of other NgModules.
+imports—Other modules whose exported classes are needed by component templates declared in this NgModule.
+providers—Creators of services that this NgModule contributes to the global collection of services; they become accessible in all parts of the app. (You can also specify providers at the component level, which is often preferred.)
+bootstrap—The main application view, called the root component, which hosts all other app views. Only the root NgModule should set this bootstrap property.
+
+
+
+
+The @Component decorator identifies the class immediately below it as a component class, and specifies its metadata. In the example code below, you can see that HeroListComponent is just a class, with no special Angular notation or syntax at all. It's not a component until you mark it as one with the @Component decorator.
+
+
+
+angular-template
+This template uses typical HTML elements like <h2> and <p>, and also includes Angular template-syntax elements, *ngFor, {{hero.name}}, (click), [hero], and <app-hero-detail>.
+
+
+
+
+Structural directives alter layout by adding, removing, and replacing elements in DOM
+<li *ngFor="let hero of heroes"></li>  --iterative
+<app-hero-detail *ngIf="selectedHero"></app-hero-detail>  --conditional
+
+Attribute directives alter the appearance or behavior of an existing element. In templates they look like regular HTML attributes, hence the name.<input [(ngModel)]="hero.name">
+Angular has more pre-defined directives that either alter the layout structure (for example, ngSwitch) or modify aspects of DOM elements and components (for example, ngStyle and ngClass).
+
+
+
+
+using ngswitch
+<container-element [ngSwitch]="switch_expression">
+  <some-element *ngSwitchCase="match_expression_1">...</some-element>
+  <some-element *ngSwitchCase="match_expression_2">...</some-element>
+  <some-other-element *ngSwitchCase="match_expression_3">...</some-other-element>
+  <ng-container *ngSwitchCase="match_expression_3">
+    <!-- use a ng-container to group multiple root nodes -->
+    <inner-element></inner-element>
+    <inner-other-element></inner-other-element>
+  </ng-container>
+  <some-element *ngSwitchDefault>...</some-element>
+</container-element>
+
+
+
+ngStyle
+<some-element [ngStyle]="{'font-style': styleExp}">...</some-element>
+<some-element [ngStyle]="{'max-width.px': widthExp}">...</some-element>
+<some-element [ngStyle]="objExp">...</some-element>
+
+
+Client-server interaction tools  --https://angular.io/guide/architecture-next-steps--link
+HTTP: Communicate with a server to get data, save data, and invoke server-side actions with an HTTP client.
+Server-side Rendering: Angular Universal generates static application pages on the server through server-side rendering (SSR). This allows you to run your Angular app on the server in order to improve performance and show the first page quickly on mobile and low-powered devices, and also facilitate web crawlers.
+Service Workers: A service worker is a script that runs in the web browser and manages caching for an application. Service workers function as a network proxy. They intercept outgoing HTTP requests and can, for example, deliver a cached response if one is available. You can significantly improve the user experience by using a service worker to reduce dependency on the network.
+
+
+
+generating component with inline templat ---to be checked
+ng generate component hero -it
+
+
+
+You may be familiar with the component/template duality from your experience with model-view-controller (MVC) or model-view-viewmodel (MVVM). In Angular, the component plays the part of the controller/viewmodel, and the template represents the view.
+
+
+
+
+Many JavaScript expressions are legal template expressions, but not all.
+JavaScript expressions that have or promote side effects are prohibited, including:
+assignments (=, +=, -=, ...)
+new
+chaining expressions with ; or ,
+increment and decrement operators (++ and --)
+Other notable differences from JavaScript syntax include:
+no support for the bitwise operators | and &
+new template expression operators, such as |, ?. and !.
+
+
+
+template input variable (let hero) or a template reference variable (#heroInput
+<div *ngFor="let hero of heroes">{{hero.name}}</div>
+<input #heroInput> {{heroInput.value}}
+
+
+
+If you reference a name that belongs to more than one of these namespaces, the template variable name takes precedence, followed by a name in the directive's context, and, lastly, the component's member names.
+
+
+
+
+Template expressions cannot refer to anything in the global namespace (except undefined). They can't refer to window or document. They can't call console.log or Math.max. They are restricted to referencing members of the expression context
+
+
+
+
+Expression guidelines
+Template expressions can make or break an application. Please follow these guidelines:
+No visible side effects
+Quick execution
+Simplicity
+Idempotence ; 
+In Angular terms, an idempotent expression always returns exactly the same thing until one of its dependent values changes.
+Dependent values should not change during a single turn of the event loop. If an idempotent expression returns a string or a number, it returns the same string or number when called twice in a row. If the expression returns an object (including an array), it returns the same object reference when called twice in a row.
+
+
+
+<button (click)="deleteHero()">Delete hero</button>
+The template statement parser differs from the template expression parser and specifically supports both basic assignment (=) and chaining expressions (with ; or ,).
+However, certain JavaScript syntax is not allowed:
+new
+increment and decrement operators, ++ and --
+operator assignment, such as += and -=
+the bitwise operators | and &
+the template expression operators
+
+
+<button disabled>Save</button>
+<!-- Bind button disabled state to `isUnchanged` property -->
+button [disabled]="isUnchanged">Save</button>
+
+
+
+In the world of Angular, the only role of attributes is to initialize element and directive state. When you write a data binding, you're dealing exclusively with properties and events of the target object. HTML attributes effectively disappear.
+
+
+
+Binding targets
+Type		Target			Examples
+Property	Element property
+		Component property
+		Directive property	
+				
+
+<img [src]="heroImageUrl">
+<app-hero-detail [hero]="currentHero"></app-hero-detail>
+<div [ngClass]="{'special': isSpecial}"></div>
+
+Event		Element event
+		Component event
+		Directive event	
+
+<button (click)="onSave()">Save</button>
+<app-hero-detail (deleteRequest)="deleteHero()"></app-hero-detail>
+<div (myClick)="clicked=$event" clickable>click me</div>
+
+
+Two-way		Event and property	
+
+<input [(ngModel)]="name">
+
+
+Attribute	Attribute (the exception)	
+
+<button [attr.aria-label]="help">help</button>
+
+
+Class		class property	
+
+<div [class.special]="isSpecial">Special</div>
+
+
+Style		style property	
+
+<button [style.color]="isSpecial ? 'red' : 'green'">
+
+
+
+
+
+
+you cannot use property binding to call a method on the target element.
+If the element raises events, you can listen to them with an event binding.
+
+
+
+
+
+<img [src]="heroImageUrl">
+Some people prefer the bind- prefix alternative, known as the canonical form:
+<img bind-src="heroImageUrl">
+The target name is always the name of a property, even when it appears to be the name of something else. You see src and may think it's the name of an attribute. No. It's the name of an image element property.
+
+
+
+The brackets tell Angular to evaluate the template expression. If you omit the brackets, Angular treats the string as a constant and initializes the target property with that string. It does not evaluate the string!
+<!-- ERROR: HeroDetailComponent.hero expects a
+     Hero object, not the string "currentHero" -->
+  <app-hero-detail hero="currentHero"></app-hero-detail>
+
+
+
+
+attribute binding
+<!--  expression calculates colspan=2 -->
+  <tr><td [attr.colspan]="1 + 1">One-Two</td></tr>
+
+  <!-- ERROR: There is no `colspan` property to set!
+    <tr><td colspan="{{1 + 1}}">Three-Four</td></tr>
+  -->
+
+
+
+Some style binding styles have a unit extension. The following example conditionally sets the font size in “em” and “%” units .
+<button [style.font-size.em]="isSpecial ? 3 : 1" >Big</button>
+<button [style.font-size.%]="!isSpecial ? 150 : 50" >Small</button>
+While this is a fine way to set a single style, the NgStyle directive is generally preferred when setting several inline styles at the same time.
+Note that a style property name can be written in either dash-case, as shown above, or camelCase, such as fontSize.
+
+
+
+<button (click)="onSave()">Save</button>
+Some people prefer the on- prefix alternative, known as the canonical form:
+<button on-click="onSave()">On Save</button>
+
+
+
+<input [value]="currentHero.name"
+       (input)="currentHero.name=$event.target.value" >
+ This code sets the input box value property by binding to the name property. To listen for changes to the value, the code binds to the input box's input event. When the user makes changes, the input event is raised, and the binding executes the statement within a context that includes the DOM event object, $event.
+
+
+
+
+two-way binding [( )] = BANANA IN A BOX
+
+ngStyle directive
+currentStyles: {};
+setCurrentStyles() {
+  // CSS styles: set per current state of component properties
+  this.currentStyles = {
+    'font-style':  this.canSave      ? 'italic' : 'normal',
+    'font-weight': !this.isUnchanged ? 'bold'   : 'normal',
+    'font-size':   this.isSpecial    ? '24px'   : '12px'
+  };
+}
+
+<div [ngStyle]="currentStyles">
+  This div is initially italic, normal weight, and extra large (24px).
+</div>
+
+
+
+ngForOf
+*ngFor with index
+<div *ngFor="let hero of heroes; let i=index">{{i + 1}} - {{hero.name}}</div>
+
+
+
+*ngFor with trackBy ---https://angular.io/guide/template-syntax#ngforof---for reference
+The NgForOf directive may perform poorly, especially with large lists. A small change to one item, an item removed, or an item added can trigger a cascade of DOM manipulations.
+For example, re-querying the server could reset the list with all new hero objects.
+Most, if not all, are previously displayed heroes. You know this because the id of each hero hasn't changed. But Angular sees only a fresh list of new object references. It has no choice but to tear down the old DOM elements and insert all new DOM elements.
+Angular can avoid this churn with trackBy. Add a method to the component that returns the value NgForOf should track. In this case, that value is the hero's id.
+
+trackByHeroes(index: number, hero: Hero): number { return hero.id; }
+<div *ngFor="let hero of heroes; trackBy: trackByHeroes">
+  ({{hero.id}}) {{hero.name}}
+</div>
+
+
+
+
+Aliasing input/output properties
+<div (myClick)="clickMessage=$event" clickable>click with myClick</div>
+@Output('myClick') clicks = new EventEmitter<string>(); //  @Output(alias) propertyName = ...
+You can also alias property names in the inputs and outputs arrays. You write a colon-delimited (:) string with the directive property name on the left and the public alias on the right:
+@Directive({
+  outputs: ['clicks:myClick']  // propertyName:alias
+})
+
+
+
+The safe navigation operator ( ?. ) and null property paths
+The Angular safe navigation operator (?.) is a fluent and convenient way to guard against null and undefined values in property paths. Here it is, protecting against a view render failure if the currentHero is null.
+The current hero's name is {{currentHero?.name}}
+
+
+
+The $any type cast function ($any( <expression> ))
+Sometimes a binding expression will be reported as a type error and it is not possible or difficult to fully specify the type. To silence the error, you can use the $any cast function to cast the expression to the any type.
+<!-- Accessing an undeclared member -->
+<div>
+  The hero's marker is {{$any(hero).marker}}
+</div>
+In this example, when the Angular compiler turns your template into TypeScript code, it prevents TypeScript from reporting that marker is not a member of the Hero interface.
+The $any cast function can be used in conjunction with this to allow access to undeclared members of the component.
+
+<!-- Accessing an undeclared member -->
+<div>
+  Undeclared members is {{$any(this).member}}
+</div>
+
+
+
+The non-null assertion operator ( ! )
+As of Typescript 2.0, you can enforce strict null checking with the --strictNullChecks flag. TypeScript then ensures that no variable is unintentionally null or undefined.
+In this mode, typed variables disallow null and undefined by default. The type checker throws an error if you leave a variable unassigned or try to assign null or undefined to a variable whose type disallows null and undefined.
+The type checker also throws an error if it can't determine whether a variable will be null or undefined at runtime. You may know that can't happen but the type checker doesn't know. You tell the type checker that it can't happen by applying the post-fix non-null assertion operator (!).
+The Angular non-null assertion operator (!) serves the same purpose in an Angular template.
+For example, after you use *ngIf to check that hero is defined, you can assert that hero properties are also defined.
+<!--No hero, no text -->
+<div *ngIf="hero">
+  The hero's name is {{hero!.name}}
+</div>
+
+When the Angular compiler turns your template into TypeScript code, it prevents TypeScript from reporting that hero.name might be null or undefined.
+Unlike the safe navigation operator, the non-null assertion operator does not guard against null or undefined. Rather it tells the TypeScript type checker to suspend strict null checks for a specific property expression.\
+You'll need this template operator when you turn on strict null checks. It's optional otherwise.
+
+
+ng new customer-app --routing
+This creates an app called customer-app and the --routing flag generates a file called app-routing.module.ts, which is one of the files you need for setting up lazy loading for your feature module. Navigate into the project by issuing the command cd customer-app.
+
+ng generate module customers --routing
+This creates a customers folder with two files inside; CustomersModule and CustomersRoutingModule. CustomersModule will act as the gatekeeper for anything that concerns customers. CustomersRoutingModule will handle any customer-related routing. 
+
+ng generate component customers/customer-list
+This creates a folder inside of customers called customer-list with the four files that make up the component.
+
+
+
+Content projection is a way to import HTML content from outside the component and insert that content into the component's template in a designated spot.
+AngularJS developers know this technique as transclusion.
+
+
+private _name = '';
+@Input()
+  set name(name: string) {
+    this._name = (name && name.trim()) || '<no name set>';
+  }
+ 
+<app-name-child *ngFor="let name of names" [name]="name"></app-name-child>
+
+
+
+
+You may prefer this approach to the property setter when watching multiple, interacting input properties.
+Learn about ngOnChanges() in the LifeCycle Hooks chapter.
+
+import { Component, Input, OnChanges, SimpleChange } from '@angular/core'; 
+@Component({
+  selector: 'app-version-child',
+  template: `
+    <h3>Version {{major}}.{{minor}}</h3>
+    <h4>Change log:</h4>
+    <ul>
+      <li *ngFor="let change of changeLog">{{change}}</li>
+    </ul>
+  `
+})
+export class VersionChildComponent implements OnChanges {
+  @Input() major: number;
+  @Input() minor: number;
+  changeLog: string[] = [];
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    let log: string[] = [];
+    for (let propName in changes) {
+      let changedProp = changes[propName];
+      let to = JSON.stringify(changedProp.currentValue);
+      if (changedProp.isFirstChange()) {
+        log.push(`Initial value of ${propName} set to ${to}`);
+      } else {
+        let from = JSON.stringify(changedProp.previousValue);
+        log.push(`${propName} changed from ${from} to ${to}`);
+      }
+    }
+    this.changeLog.push(log.join(', '));
+  }
+}
+
+
+
+Parent interacts with child via local variable
+A parent component cannot use data binding to read child properties or invoke child methods. You can do both by creating a template reference variable for the child element and then reference that variable within the parent template as seen in the following example.
+
+import { Component }                from '@angular/core';
+import { CountdownTimerComponent }  from './countdown-timer.component';
+ 
+@Component({
+  selector: 'app-countdown-parent-lv',
+  template: `
+  <h3>Countdown to Liftoff (via local variable)</h3>
+  <button (click)="timer.start()">Start</button>
+  <button (click)="timer.stop()">Stop</button>
+  <div class="seconds">{{timer.seconds}}</div>
+  <app-countdown-timer #timer></app-countdown-timer>
+  `,
+  styleUrls: ['../assets/demo.css']
+})
+export class CountdownLocalVarParentComponent { }
+
+The parent component cannot data bind to the child's start and stop methods nor to its seconds property.
+You can place a local variable, #timer, on the tag <countdown-timer> representing the child component. That gives you a reference to the child component and the ability to access any of its properties or methods from within the parent template.
+This example wires parent buttons to the child's start and stop and uses interpolation to display the child's seconds property.
+
+
+
+
+Parent calls an @ViewChild()
+The local variable approach is simple and easy. But it is limited because the parent-child wiring must be done entirely within the parent template. The parent component itself has no access to the child.
+You can't use the local variable technique if an instance of the parent component class must read or write child component values or must call child component methods.
+When the parent component class requires that kind of access, inject the child component into the parent as a ViewChild.
+
+
+
+import { AfterViewInit, ViewChild } from '@angular/core';
+import { Component }                from '@angular/core';
+import { CountdownTimerComponent }  from './countdown-timer.component';
+ 
+@Component({
+  selector: 'app-countdown-parent-vc',
+  template: `
+  <h3>Countdown to Liftoff (via ViewChild)</h3>
+  <button (click)="start()">Start</button>
+  <button (click)="stop()">Stop</button>
+  <div class="seconds">{{ seconds() }}</div>
+  <app-countdown-timer></app-countdown-timer>
+  `,
+  styleUrls: ['../assets/demo.css']
+})
+export class CountdownViewChildParentComponent implements AfterViewInit {
+  @ViewChild(CountdownTimerComponent)
+  private timerComponent: CountdownTimerComponent;
+  seconds() { return 0; }
+  ngAfterViewInit() {
+    // Redefine `seconds()` to get from the `CountdownTimerComponent.seconds` ...
+    // but wait a tick first to avoid one-time devMode
+    // unidirectional-data-flow-violation error
+    setTimeout(() => this.seconds = () => this.timerComponent.seconds, 0);
+  }
+  start() { this.timerComponent.start(); }
+  stop() { this.timerComponent.stop(); }
+}
+
+It takes a bit more work to get the child view into the parent component class.
+First, you have to import references to the ViewChild decorator and the AfterViewInit lifecycle hook.
+Next, inject the child CountdownTimerComponent into the private timerComponent property via the @ViewChild property decoration.
+The #timer local variable is gone from the component metadata. Instead, bind the buttons to the parent component's own start and stop methods and present the ticking seconds in an interpolation around the parent component's seconds method.
+These methods access the injected timer component directly.
+The ngAfterViewInit() lifecycle hook is an important wrinkle. The timer component isn't available until after Angular displays the parent view. So it displays 0 seconds initially.
+Then Angular calls the ngAfterViewInit lifecycle hook at which time it is too late to update the parent view's display of the countdown seconds. Angular's unidirectional data flow rule prevents updating the parent view's in the same cycle. The app has to wait one turn before it can display the seconds.
+Use setTimeout() to wait one tick and then revise the seconds() method so that it takes future values from the timer component.
+
+
+:host
+Use the :host pseudo-class selector to target styles in the element that hosts the component (as opposed to targeting elements inside the component's template).
+:host {
+  display: block;
+  border: 1px solid black;
+}
+The :host selector is the only way to target the host element. You can't reach the host element from inside the component with other selectors because it's not part of the component's own template. The host element is in a parent component's template.
+The next example targets the host element again, but only when it also has the active CSS class
+:host(.active) {
+  border-width: 3px;
+}
+:host-context()
+Use the :host-context() pseudo-class selector, which works just like the function form of :host(). The :host-context() selector looks for a CSS class in any ancestor of the component host element, up to the document root. The :host-context() selector is useful when combined with another selector.
+The following example applies a background-color style to all <h2> elements inside the component, only if some ancestor element has the CSS class theme-light.
+:host-context(.theme-light) h2 {
+  background-color: #eef;
+}
+
+
+
+
+Attribute directives—change the appearance or behavior of an element, component, or another directive.
+Attribute directives are used as attributes of elements.
+Build a simple attribute directive ..building a simple appHighlight attribute directive to set an element's background color 
+
+ng generate directive highlight (customdirective)
+import { Directive, ElementRef } from '@angular/core';    //ElementRef is added
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+    constructor(el: ElementRef) {                     // constructor was blank, whatever in this is added 
+       el.nativeElement.style.backgroundColor = 'yellow';
+    }
+}
+
+
+The import statement specifies an additional ElementRef symbol from the Angular core library:
+You use the ElementRef in the directive's constructor to inject a reference to the host DOM element, the element to which you applied appHighlight.
+ElementRef grants direct access to the host DOM element through its nativeElement property.
+This first implementation sets the background color of the host element to yellow.
+
+applying attribute directive
+<p appHighlight>Highlight me!</p>
+
+a bit dynamic directive
+
+import { Directive, ElementRef, HostListener } from '@angular/core';
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+  constructor(private el: ElementRef) { }
+  @HostListener('mouseenter') onMouseEnter() {
+    this.highlight('yellow');
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.highlight(null);
+  }
+  private highlight(color: string) {
+    this.el.nativeElement.style.backgroundColor = color;
+  }
+}
+
+The @HostListener decorator lets you subscribe to events of the DOM element that hosts an attribute directive, the <p> in this case.
+
+
+binding input property...
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+  constructor(private el: ElementRef) { }
+  @Input('appHighlight') highlightColor: string;
+  @HostListener('mouseenter') onMouseEnter() {
+    this.highlight(this.highlightColor || 'red');
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.highlight(null);
+  }
+  private highlight(color: string) {
+    this.el.nativeElement.style.backgroundColor = color;
+  }
+}
+
+<p [appHighlight]="color">Highlight me!</p>   //here [appHighlight] acting for both input and directive
+
+
+
+A directive class is spelled in UpperCamelCase (NgIf). A directive's attribute name is spelled in lowerCamelCase (ngIf). The guide refers to the directive class when talking about its properties and what the directive does. The guide refers to the attribute name when describing how you apply the directive to an element in the HTML template.
+
+
+
+You can apply many attribute directives to one host element. You can only apply one structural directive to a host element.Prohibiting multiple structural directives makes them moot. There's an easy solution for this use case:
+put the *ngIf on a container element that wraps the *ngFor element. One or both elements can be an ng-container so you don't have to introduce extra levels of HTML
+
+
+
+<select [(ngModel)]="hero">
+  <span *ngFor="let h of heroes">
+    <span *ngIf="showSad || h.emotion !== 'sad'">
+      <option [ngValue]="h">{{h.name}} ({{h.emotion}})</option>
+    </span>
+  </span>
+</select>
+the drop down would be empty.
+The browser won't display an <option> within a <span>.
+<ng-container> to the rescue
+The Angular <ng-container> is a grouping element that doesn't interfere with styles or layout because Angular doesn't put it in the DOM.
+Here's the conditional paragraph again, this time using <ng-container>.
+
+<p>
+  I turned the corner
+  <ng-container *ngIf="hero">
+    and saw {{hero.name}}. I waved
+  </ng-container>
+  and continued on my way.
+</p>
+It renders properly.
+The <ng-container> is a syntax element recognized by the Angular parser. It's not a directive, component, class, or interface. It's more like the curly braces in a JavaScript if-block.Without those braces, JavaScript would only execute the first statement when you intend to conditionally execute all of them as a single block. The <ng-container> satisfies a similar need in Angular templates.
+
+
+
+writing a structural directive
+TemplateRef and ViewContainerRef
+A simple structural directive like this one creates an embedded view from the Angular-generated <ng-template> and inserts that view in a view container adjacent to the directive's original <p> host element.
+You'll acquire the <ng-template> contents with a TemplateRef and access the view container through a ViewContainerRef.
+You inject both in the directive constructor as private variables of the class.
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+/**
+ * Add the template content to the DOM unless the condition is true.
+ */
+@Directive({ selector: '[appUnless]'})
+export class UnlessDirective {
+  private hasView = false;
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private viewContainer: ViewContainerRef) { }
+  @Input() set appUnless(condition: boolean) {
+    if (!condition && !this.hasView) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+      this.hasView = true;
+    } else if (condition && this.hasView) {
+      this.viewContainer.clear();
+      this.hasView = false;
+    }
+  }
+}
+
+<p *appUnless="condition" class="unless a">
+  (A) This paragraph is displayed because the condition is false.
+</p>
+<p *appUnless="!condition" class="unless b">
+  (B) Although the condition is true,
+  this paragraph is displayed because appUnless is set to false.
+</p>
+
+
+
+Using pipes
+A pipe takes in data as input and transforms it to a desired output
+Parameterizing a pipe
+A pipe can accept any number of optional parameters to fine-tune its output. To add parameters to a pipe, follow the pipe name with a colon ( : ) and then the parameter value (such as currency:'EUR'). If the pipe accepts multiple parameters, separate the values with colons (such as slice:1:5)
+<p>The hero's birthday is {{ birthday | date:"MM/dd/yy" }} </p>
+The parameter value can be any valid template expression,
+
+Chaining pipes
+The chained hero's birthday is {{ birthday | date | uppercase}}
+The chained hero's birthday is {{  birthday | date:'fullDate' | uppercase}}
+
+custompipes :
+import { Pipe, PipeTransform } from '@angular/core';
+/*
+ * Raise the value exponentially
+ * Takes an exponent argument that defaults to 1.
+ * Usage:
+ *   value | exponentialStrength:exponent
+ * Example:
+ *   {{ 2 | exponentialStrength:10 }}
+ *   formats to: 1024
+*/
+@Pipe({name: 'exponentialStrength'})
+export class ExponentialStrengthPipe implements PipeTransform {
+  transform(value: number, exponent: string): number {
+    let exp = parseFloat(exponent);
+    return Math.pow(value, isNaN(exp) ? 1 : exp);
+  }
+}
+
+This pipe definition reveals the following key points:
+A pipe is a class decorated with pipe metadata.
+The pipe class implements the PipeTransform interface's transform method that accepts an input value followed by optional parameters and returns the transformed value.
+There will be one additional argument to the transform method for each parameter passed to the pipe. Your pipe has one such parameter: the exponent.
+To tell Angular that this is a pipe, you apply the @Pipe decorator, which you import from the core Angular library.
+The @Pipe decorator allows you to define the pipe name that you'll use within template expressions. It must be a valid JavaScript identifier. Your pipe's name is exponentialStrength.
+
+<p>Super power boost: {{2 | exponentialStrength: 10}}</p>
+
+
+Note the following:
+You use your custom pipe the same way you use built-in pipes.
+You must include your pipe in the declarations array of the AppModule.
+You must register custom pipes. If you don't, Angular reports an error. Angular CLI's generator registers the pipe automatically.
+
+
+Pure and impure pipes
+There are two categories of pipes: pure and impure. Pipes are pure by default.You make a pipe impure by setting its pure flag to false. You could make the FlyingHeroesPipe impure like this:
+@Pipe({
+  name: 'flyingHeroesImpure',
+  pure: false
+})
+
+
+Angular executes a pure pipe only when it detects a pure change to the input value. A pure change is either a change to a primitive input value (String, Number, Boolean, Symbol) or a changed object reference (Date, Array, Function, Object).
+Angular ignores changes within (composite) objects. It won't call a pure pipe if you change an input month, add to an input array, or update an input object property.
+
+for reference go to https://angular.io/guide/pipes
+also for impure async pipe and impure caching pipe  (must go through)
+
+
+
+
+$event
+<input (keyup)="onKey($event)">
+onKey(event: any) { // without type info
+    this.values += event.target.value + ' | ';
+  }
+The properties of an $event object vary depending on the type of DOM event. For example, a mouse event includes different information than an input box editing event.
+All standard DOM event objects have a target property, a reference to the element that raised the event. In this case, target refers to the <input> element and event.target.value returns the current contents of that element.
+Alternatively, you could accumulate the individual keys themselves by substituting event.key for event.target.value
+
+ onKey(event: KeyboardEvent) { // with type info
+    this.values += (<HTMLInputElement>event.target).value + ' | ';
+  }
+
+The $event is now a specific KeyboardEvent. Not all elements have a value property so it casts target to an input element. The OnKey method more clearly expresses what it expects from the template and how it interprets the event.
+
+<input #box (keyup)="0">
+    <p>{{box.value}}</p>
+This won't work at all unless you bind to an event.
+Angular updates the bindings (and therefore the screen) only if the app does something in response to asynchronous events, such as keystrokes. This example code binds the keyup event to the number 0, the shortest template statement possible. While the statement does nothing useful, it satisfies Angular's requirement so that Angular will update the screen.
+
+
+
+Key event filtering (with key.enter)
+<input #box (keyup.enter)="onEnter(box.value)">
+    <p>{{value}}</p>
+On blur
+In the previous example, the current state of the input box is lost if the user mouses away and clicks elsewhere on the page without first pressing Enter. To fix this issue, listen to both the Enter key and the blur event 
+<input #box
+      (keyup.enter)="update(box.value)"
+      (blur)="update(box.value)">
+
+
+
+<select class="form-control" id="power" required>
+    <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+  </select>  //pay attention to how value is set..[value]
+
+
+
+<form #heroForm="ngForm">
+The variable heroForm is now a reference to the NgForm directive that governs the form as a whole.
+The NgForm directive supplements the form element with additional features. It holds the controls you created for the elements with an ngModel directive and name attribute, and monitors their properties, including their validity. It also has its own valid property which is true only if every contained control is valid.
+
+Internally, Angular creates FormControl instances and registers them with an NgForm directive that Angular attached to the <form> tag. Each FormControl is registered under the name you assigned to the name attribute. 
+
+
+Track control state and validity with ngModel
+Using ngModel in a form gives you more than just two-way data binding. It also tells you if the user touched the control, if the value changed, or if the value became invalid.
+The NgModel directive doesn't just track state; it updates the control with special Angular CSS classes that reflect the state. You can leverage those class names to change the appearance of the control.
+
+State					Class if true			Class if false
+The control has been visited.		ng-touched			ng-untouched
+The control's value has changed.	ng-dirty			ng-pristine
+The control's value is valid.		ng-valid			ng-invalid
+
+
+
+<input type="text" class="form-control" id="name"
+       required
+       [(ngModel)]="model.name" name="name"
+       #name="ngModel">
+<div [hidden]="name.valid || name.pristine"
+     class="alert alert-danger">
+  Name is required
+</div>
+
+Here you created a variable called name and gave it the value "ngModel".
+Why "ngModel"? A directive's exportAs property tells Angular how to link the reference variable to the directive. You set name to ngModel because the ngModel directive's exportAs property happens to be "ngModel".
+
+
+
+custom validators ---https://angular.io/guide/form-validation
+cross field validation
+
+Reactive forms are synchronous, and template-driven forms are asynchronous.
+
+
+
+Obeservable...
+// Create simple observable that emits three values
+const myObservable = Observable.of(1, 2, 3);
+ 
+// Create observer object
+const myObserver = {
+  next: x => console.log('Observer got a next value: ' + x),
+  error: err => console.error('Observer got an error: ' + err),
+  complete: () => console.log('Observer got a complete notification'),
+};
+ 
+// Execute with the observer object
+myObservable.subscribe(myObserver);
+// Logs:
+// Observer got a next value: 1
+// Observer got a next value: 2
+// Observer got a next value: 3
+// Observer got a complete notification
+Alternatively, the subscribe() method can accept callback function definitions in line, for next, error, and complete handlers
+myObservable.subscribe(
+  x => console.log('Observer got a next value: ' + x),
+  err => console.error('Observer got an error: ' + err),
+  () => console.log('Observer got a complete notification')
+);
+
+Creating observables
+Use the Observable constructor to create an observable stream of any type. The constructor takes as its argument the subscriber function to run when the observable’s subscribe() method executes. A subscriber function receives an Observer object, and can publish values to the observer's next() method.
+
+For example, to create an observable equivalent to the Observable.of(1, 2, 3) above, you could do something like this:
+// This function runs when subscribe() is called
+function sequenceSubscriber(observer) {
+  // synchronously deliver 1, 2, and 3, then complete
+  observer.next(1);
+  observer.next(2);
+  observer.next(3);
+  observer.complete();
+ 
+  // unsubscribe function doesn't need to do anything in this
+  // because values are delivered synchronously
+  return {unsubscribe() {}};
+}
+ 
+// Create a new Observable that will deliver the above sequence
+const sequence = new Observable(sequenceSubscriber);
+ 
+// execute the Observable and print the result of each notification
+sequence.subscribe({
+  next(num) { console.log(num); },
+  complete() { console.log('Finished sequence'); }
+});
+ 
+// Logs:
+// 1
+// 2
+// 3
+// Finished sequence
+
+
+HTTP
+Angular’s HttpClient returns observables from HTTP method calls. For instance, http.get(‘/api’) returns an observable. This provides several advantages over promise-based HTTP APIs:
+Observables do not mutate the server response (as can occur through chained .then() calls on promises). Instead, you can use a series of operators to transform values as needed.
+HTTP requests are cancellable through the unsubscribe() method.
+Requests can be configured to get progress event updates.
+Failed requests can be retried easily.
+
+
+
+Exponential backoff
+Exponential backoff is a technique in which you retry an API after failure, making the time in between retries longer after each consecutive failure, with a maximum number of retries after which the request is considered to have failed. This can be quite complex to implement with promises and other methods of tracking AJAX calls. With observables, it is very easy:
+import { pipe, range, timer, zip } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { retryWhen, map, mergeMap } from 'rxjs/operators';
+ 
+function backoff(maxTries, ms) {
+ return pipe(
+   retryWhen(attempts => range(1, maxTries)
+     .pipe(
+       zip(attempts, (i) => i),
+       map(i => i * i),
+       mergeMap(i =>  timer(i * ms))
+     )
+   )
+ );
+}
+ 
+ajax('/api/endpoint')
+  .pipe(backoff(3, 250))
+  .subscribe(data => handleData(data));
+ 
+function handleData(data) {
+  // ...
+}
+
+
+
+NgModule		Import it from			Why you use it
+BrowserModule		@angular/platform-browser	When you want to run your app in a browser
+CommonModule		@angular/common			When you want to use NgIf, NgFor
+FormsModule		@angular/forms			When you want to build template driven forms (includes NgModel)
+ReactiveFormsModule	@angular/forms			When you want to build reactive forms
+RouterModule		@angular/router			When you want to use RouterLink, .forRoot(), and .forChild()
+HttpClientModule	@angular/common/http		When you want to talk to a server
+
+
+
+using component from other module ..
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+// import the feature module here so you can add it to the imports array below
+import { CustomerDashboardModule } from './customer-dashboard/customer-dashboard.module';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    CustomerDashboardModule // add the feature module here
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+you first have to export the CustomerDashboardComponent in the CustomerDashboardModule. In customer-dashboard.module.ts, just beneath the declarations array, add an exports array containing CustomerDashboardModule:
+exports: [
+  CustomerDashboardComponent
+]
+now in app.component.html
+<h1>
+  {{title}}
+</h1>
+<!-- add the selector from the CustomerDashboardComponent -->
+<app-customer-dashboard></app-customer-dashboard>
+
+
+
+It's also possible to specify that a service should be provided in a particular @NgModule. For example, if you don't want UserService to be available to applications unless they import a UserModule you've created, you can specify that the service should be provided in the module:
+
+import { Injectable } from '@angular/core';
+import { UserModule } from './user.module';
+@Injectable({
+  providedIn: UserModule,
+})
+export class UserService {
+}
+
+
+
+Providing a singleton service
+
+
+
+https://stackblitz.com/edit/angular-ncyrjg    ...julian calender

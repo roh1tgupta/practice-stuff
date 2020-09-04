@@ -1,0 +1,3 @@
+https://www.codementor.io/blog/5-essential-reactjs-interview-questions-du1084ym1
+https://www.freecodecamp.org/news/introduction-to-npm-scripts-1dbb2ae01633/
+https://css-tricks.com/why-npm-scripts/

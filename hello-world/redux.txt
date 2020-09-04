@@ -1,0 +1,21 @@
+Redux is available as a package on NPM for use with a module bundler or in a Node application:
+npm install --save redux
+
+The whole state of your app is stored in an object tree inside a single store.
+The only way to change the state tree is to emit an action, an object describing what happened.
+To specify how the actions transform the state tree, you write pure reducers.
+That's it!
+----------------------------------------------------------------------------------------------------------
+Here are some suggestions on when it makes sense to use Redux:
+You have reasonable amounts of data changing over time
+You need a single source of truth for your state
+You find that keeping all your state in a top-level component is no longer sufficient
+
+
+
+for the need the React bindings:
+npm install react-redux
+
+
+https://www.educba.com/redux-interview-questions/--------react questions...
+

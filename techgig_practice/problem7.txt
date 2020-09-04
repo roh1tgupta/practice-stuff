@@ -1,0 +1,19 @@
+// scored 0 on techgig that showing test cases to be failed
+Unity In Zeros (100 Marks)
+Given an unsorted integer array, place all zeros to the end of the array without changing the sequence of non-zero. 
+
+Input Format
+You will be given a function will will take integer array as argument. 
+
+Constraints
+1 <= Ai <= 1000
+
+Output Format
+Return the array element after performing task from the function. 
+
+Sample TestCase 1
+Input
+9
+1 3 0 8 12 0 4 0 7
+Output
+1 3 8 12 4 7 0 0 0

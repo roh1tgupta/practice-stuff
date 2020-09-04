@@ -1,0 +1,2 @@
+https://rocket.chat/ for chatting
+or aws iot
