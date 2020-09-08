@@ -116,23 +116,3 @@ themselves are "truthy"
 
 
 Note: An array with at least one "empty slot" in it is often called a "sparse array."
-
-
-shift and unshift in js
-let abc = [3,5,6,7];
-abc.shift(); //ouput  = 3
-now abc is [5,6,7]
-abc.unshift(10);
-now abc id [10,5,6,7]
-
-
-
-https://blog.bitsrc.io/understanding-the-for-of-loop-in-javascript-8aded97d7ef8  . ..for--of
-https://blog.bitsrc.io/6-javascript-user-authentication-libraries-for-2019-6c7c45fbe458 ...libs for authentication
-https://blog.bitsrc.io/a-beginners-guide-to-regular-expressions-regex-in-javascript-9c58feb27eb4   ---for regexp
-https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a  ----
-https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0   
-
-https://www.wix.com/website-template/view/html/1805?siteId=733ce9cc-b0e8-4784-82be-3d8baf44addf&metaSiteId=8d7b455a-a520-428b-9cad-e896cc99abad&originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Frestaurants-food%2Frestaurant ..............food website template
-
-https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460  --webpack

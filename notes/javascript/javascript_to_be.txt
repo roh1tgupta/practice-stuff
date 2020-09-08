@@ -1,13 +1,5 @@
-https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API  ..for client-side storage of significant amounts of structured data,
 
 
-https://addyosmani.com/resources/essentialjsdesignpatterns/book/
-http://jstherightway.org/#patterns
-https://loredanacirstea.github.io/es6-design-patterns/   es6
-
-https://medium.freecodecamp.org/here-are-examples-of-everything-new-in-ecmascript-2016-2017-and-2018-d52fa3b5a70e  ---for latest echmascript 2016,2017,2018
-
-https://frontendmasters.com/books/front-end-handbook/2019/
 
 
 

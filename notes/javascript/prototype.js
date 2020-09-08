@@ -1,4 +1,4 @@
-// ref: https://javascript.info/function-prototype
+﻿// ref: https://javascript.info/function-prototype
 
 //Please note that F.prototype here means a regular property named "prototype" on F.
 //It sounds something similar to the term “prototype”, but here we really mean a regular property with this name.
@@ -11,6 +11,7 @@ function Rabbit(name) {
 Rabbit.prototype = animal;
 let rabbit = new Rabbit("White Rabbit"); //  rabbit.__proto__ == animal
 console.log( rabbit.eats ); // true
+console.log( rabbit.name ); // White Rabbit
 console.log(rabbit.__proto__ === animal);
 
 
@@ -57,6 +58,7 @@ console.log(rabbit.__proto__ === animal);
 //   jumps: true
 // };
 // let rabbit = new Rabbit();
+// console.log(rabiit.jumps); // true
 // console.log(rabbit.constructor === Rabbit); // false
 
 
@@ -104,6 +106,8 @@ console.log(rabbit.__proto__ === animal);
 // let rabbit = new Rabbit();
 // Rabbit.prototype.eats = false;
 // console.log( rabbit.eats ); // ? false
+// Rabbit.prototype.jumps = true;
+// console.log(rabbit.jumps); // ? true
 
 
 

@@ -12,4 +12,3 @@ instead of sending updates for every single change in state.
 The repainting of the UI is the most expensive part, and React efficiently ensures that the real 
 DOM receives only batched updates to repaint the UI.
 
-// https://www.npmjs.com/package/@allpro/react-router-pause

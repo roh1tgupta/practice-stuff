@@ -1,0 +1,65 @@
+// https://www.npmjs.com/package/@allpro/react-router-pause
+https://www.codementor.io/blog/5-essential-reactjs-interview-questions-du1084ym1
+https://www.freecodecamp.org/news/introduction-to-npm-scripts-1dbb2ae01633/
+https://css-tricks.com/why-npm-scripts/
+https://lihautan.com/creating-custom-javascript-syntax-with-babel/
+https://www.educba.com/redux-interview-questions/--------react questions...
+https://addyosmani.com/resources/essentialjsdesignpatterns/book/
+http://jstherightway.org/#patterns
+https://loredanacirstea.github.io/es6-design-patterns/   es6
+
+https://medium.freecodecamp.org/here-are-examples-of-everything-new-in-ecmascript-2016-2017-and-2018-d52fa3b5a70e  ---for latest echmascript 2016,2017,2018
+
+https://frontendmasters.com/books/front-end-handbook/2019/
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+https://blog.bitsrc.io/understanding-the-for-of-loop-in-javascript-8aded97d7ef8  . ..for--of
+https://blog.bitsrc.io/6-javascript-user-authentication-libraries-for-2019-6c7c45fbe458 ...libs for authentication
+https://blog.bitsrc.io/a-beginners-guide-to-regular-expressions-regex-in-javascript-9c58feb27eb4   ---for regexp
+https://itnext.io/heres-why-mapping-a-constructed-array-doesn-t-work-in-javascript-f1195138615a  ----
+https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0   
+
+https://www.wix.com/website-template/view/html/1805?siteId=733ce9cc-b0e8-4784-82be-3d8baf44addf&metaSiteId=8d7b455a-a520-428b-9cad-e896cc99abad&originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Frestaurants-food%2Frestaurant ..............food website template
+
+https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460  --webpack
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API  ..for client-side storage of significant amounts of structured data,
+https://rocket.chat/ for chatting
+
+https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html  --react blog
+https://www.taniarascia.com/getting-started-with-react/  ---react tutorial form blogger
+https://gist.github.com/gaearon/42a2ffa41b8319948f9be4076286e1f3 ---setting up minification
+http://babeljs.io/docs/en/babel-cli/  --bable documentation
+https://webpack.js.org/  --webpack documentation
+https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658  --creatibg reactapp functionality
+ 
+https://medium.freecodecamp.org/why-graphql-is-the-future-of-apis-6a900fb0bc81   graph-ql
+
+
+https://academind.com/learn/react/snippets/image-upload/ ..for blog
+
+for cross-origin issue...install below
+https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=es
+
+
+https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-reactjs --pagination
+https://blog.burgettweb.net/2015/10/23/props-and-state-in-react-js/ -----simple learning
+https://reactjs.org/docs/context.html  -- react_context
+
+https://stackoverflow.com/questions/51248277/react-how-to-get-data-from-react-context
+https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf  ...for react routing
+https://medium.com/@pshrmn/a-little-bit-of-history-f245306f48dd   ....for history
+
+https://reactpatterns.com/ .....for react patterns
+
+for render props .............https://medium.freecodecamp.org/how-to-develop-your-react-superpowers-with-the-render-props-pattern-b74e68c6d053
+https://blog.logrocket.com/rendering-large-lists-with-react-virtualized-82741907a6b3.......Rendering large lists with React Virtualized
+
+https://reacttraining.com/react-router/web/example/basic  ---react-routring
+https://hackernoon.com/how-to-build-a-react-project-from-scratch-using-webpack-4-and-babel-56d4a26afd32   ---react app without webpack and babel, have to install these
+https://blog.bitsrc.io/a-beginners-guide-to-closures-in-javascript-97d372284dda  ...closure
+https://medium.com/@sepineda/react-redux-interview-questions-b7f6611823f  
+https://medium.com/@Charles_Stover/replacing-redux-with-reactn-to-reduce-complexity-and-bundle-size-aa7009cd1209      -----alternative to redux..
+http://bradfrost.com/blog/post/atomic-web-design/    ..bradfrost's atomic desing principle
+
+https://medium.com/@gethylgeorge/understanding-how-redux-thunk-works-72de3bdebc50   --thunk
+
+https://www.websequencediagrams.com/    --for sequence diagram
