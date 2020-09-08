@@ -1,0 +1,37 @@
+.template {
+  .templateMainBody {
+    display: flex;
+    width: 100%;
+    .templateSidebar {
+      display: block;
+      flex: 1;
+      background-color: #f7f7f7;
+      .sidebar {
+        padding-top: 75px;
+        padding-bottom: 75px;
+        padding-left: 30%;
+      
+        li {
+          height: 25px;
+        }
+
+        
+      }
+    }
+    .templateContent {
+      display: block;
+      flex: 2;
+      color: white;
+      // background-image: url("D:/react/helpyourself/src/images/pic_2.jpg");
+      background-color: black;
+      .content{
+        padding: 75px 10%;
+      
+      }
+    }
+  }
+  .templateFooter {
+    text-align: center;
+    margin-top: 5px;
+  }
+}

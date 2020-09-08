@@ -1,0 +1,40 @@
+.header {
+//  position: fixed;
+  margin-top: 0;
+//  background-color: grey;
+  width: 100%;
+  .heading {
+    margin: 0 5%;
+    height: 80px;
+    position: relative;
+    display: flex;
+    .leftSide {
+      flex: 1;
+      margin-top: 33px;
+      padding-left: 15%;
+      font-weight: 900;
+      font-size: 200%;
+    }
+    .rightSide {
+      flex: 1;
+      text-align: right;
+      margin-top: 33px;
+      padding-right: 15%;
+      font-weight: 900;
+      font-size: 200%;
+    }
+  }
+  .navLinks {
+   // color: red;
+    margin: 0 5%;
+    bottom: 0px;
+    text-align: center;
+   // position: relative;
+   // bottom: -50px;
+   // float: right;
+     li {
+       display: inline;
+       padding: 0 5px;
+     }
+   }
+}

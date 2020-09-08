@@ -1,0 +1,71 @@
+@import 'header/header.scss';
+@import 'template/template.scss';
+@import 'mainbody/mainbody.scss';
+@import 'miscellaneous/es6.scss';
+
+.code {
+  color: white;
+  background: rgb(40, 44, 52);
+  padding: 2% 5%;
+ // border: 25px solid white;
+  box-shadow: 10px 10px grey;
+  border-radius: 25px;
+  margin-top: 2%;
+  margin-bottom: 3%;
+
+}
+
+.link {
+  color: rgb(235, 189, 189);
+}
+
+.navbar {
+  display: flex;
+  .routerLink {
+    flex: 1;
+      list-style-type: none;
+      text-align: center;
+      font-weight: bold;
+      background-color: rgb(224, 217, 217);
+      padding-top: 1%;
+      padding-bottom: 1%;
+  }
+  .activeLink {
+    background-color: rgb(155, 152, 152);
+  }
+  margin-bottom: 0%;
+}
+
+.routerLink {
+  text-decoration: none;
+  color: black;// rgb(40, 44, 52)
+  
+}
+.copyRight {
+  text-align: center;
+  margin-top: 20px;
+}
+
+a {
+  color:red;
+}
+
+mark {
+   background:none;
+   color: rgb(160, 108, 108);
+}
+
+.aside{
+  position: absolute;
+  width: 15%;
+  right: 2%;
+  background: transparent;
+  color: rgb(235, 189, 189);
+  text-align: center;
+}
+
+.code_snippetpic{
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
