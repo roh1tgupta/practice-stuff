@@ -1,3 +1,8 @@
+https://medium.com/@juliuskoronci/react-interview-questions-13f8839f2711
+https://blog.usejournal.com/how-to-apply-solid-principles-in-react-applications-6c964091a982
+
+
+https://blog.cloudboost.io/event-driven-programming-with-nodejs-net-and-events-9e4e14f561f3  for socket
 // https://www.npmjs.com/package/@allpro/react-router-pause
 https://www.codementor.io/blog/5-essential-reactjs-interview-questions-du1084ym1
 https://www.freecodecamp.org/news/introduction-to-npm-scripts-1dbb2ae01633/

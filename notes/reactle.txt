@@ -12,3 +12,116 @@ instead of sending updates for every single change in state.
 The repainting of the UI is the most expensive part, and React efficiently ensures that the real 
 DOM receives only batched updates to repaint the UI.
 
+
+
+
+
+
+CORS : Cross-Origin Resource Sharing (CORS) is a mechanism that uses additional HTTP headers to tell a browser to let a web application running at one origin (domain) have permission to access selected resources from a server at a different origin. A web application makes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, and port) than its own origin.
+
+
+when in any file global variable is used directly, linter shows error, to remove this either use it as window.(name_of_variable) or define that on top of file as /* global name_of_variable */
+
+
+npm install jquery --save   --for installing jquery in react and then import $ from 'jquery'
+
+React.js: Set innerHTML vs dangerouslySetInnerHTML
+var test = React.createClass({
+  render: function(){
+    return (
+      <div contentEditable='true' dangerouslySetInnerHTML={{ __html: "Hello" }}></div>
+    );
+  }
+});
+vs
+var test = React.createClass({
+  componentDidUpdate: function(prevProp, prevState){
+    this.refs.test.innerHTML = "Hello";
+  },
+  render: function(){
+    return (
+      <div contentEditable='true' ref='test'></div>
+    );
+  }
+});
+
+The immediate effect of using innerHTML versus dangerouslySetInnerHTML is identical -- the DOM node will update with the injected HTML.
+
+However, behind the scenes when you use dangerouslySetInnerHTML it lets React know that the HTML inside of that component is not something it cares about.
+
+Because React uses a virtual DOM, when it goes to compare the diff against the actual DOM, it can straight up bypass checking the children of that node because it knows the HTML is coming from another source. So there's performance gains.
+
+More importantly, if you simply use innerHTML, React has no way to know the DOM node has been modified. The next time the render function is called, React will overwrite the content that was manually injected with what it thinks the correct state of that DOM node should be.
+
+Your solution to use componentDidUpdate to always ensure the content is in sync I believe would work but there might be a flash during each render.
+
+Since innerHTML is a native method that binds the SVG code directly to the DOM without considering anything. On the other hand, dangerouslySetInnerHTML is the method come from React that the SVG code has to be parsed as React Component children in prior to put them to virtual DOM and then render to the DOM
+
+
+//implementing css
+ return (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        // If a wallpaperPath prop was passed, then this div's CSS background-image
+        // should be a url to that wallpaperPath. Otherwise, it should be an empty
+        // string (which means the style should not be set).
+        backgroundImage: wallpaperPath ? `url(${wallpaperPath})` : "",
+        backgroundColor: "black",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
+    </div>
+  );
+
+
+
+----------------------------------------------------
+
+this.props.children  --uses
+class Example extends React.Component {
+  render() {
+    return <div>
+      <div>Children ({this.props.children.length}):</div>
+      {this.props.children}
+    </div>;
+  }
+}
+
+class Widget extends React.Component {
+  render() {
+    return <div>
+      <div>First <code>Example</code>:</div>
+      <Example>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </Example>
+      <div>Second <code>Example</code> with different children:</div>
+      <Example>
+        <div>A</div>
+        <div>B</div>
+      </Example>
+    </div>;
+  }
+}
+
+ReactDOM.render(
+  <Widget/>,
+  document.getElementById("root")
+);
+
+-----------------------------------------------
+
+
+A negative value (usually tabindex="-1") means that the element should be focusable, but should not be reachable via sequential keyboard navigation. It's mostly useful to create accessible widgets with JavaScript
+
+react-transition-group  react library
+react-animate-on-change  react library
+
+
+

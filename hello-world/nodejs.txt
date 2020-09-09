@@ -61,7 +61,3 @@ The Node.js applications generally face four types of errors:
 >Assertion errors
 
 
-
-
-
-https://blog.cloudboost.io/event-driven-programming-with-nodejs-net-and-events-9e4e14f561f3  for socket
