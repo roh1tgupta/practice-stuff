@@ -1,0 +1,91 @@
+.chat-window {
+  position: fixed;
+  right: 260px;
+  width: 250px;
+  /* height: 350px; */
+  bottom: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.title-section {
+  display: flex;
+  padding: 10px 5px;
+  border-bottom: 1px solid grey;
+}
+
+.chatee-img, .chatee-online {
+  flex: 1;
+}
+
+.chatee-online {
+  padding-right: 5px;
+}
+
+.chatee-name {
+  flex: 8;
+  overflow: hidden;
+}
+
+.chat-window img {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.body-section {
+  margin: 5px;
+  height: 300px;
+}
+
+.css-y1c0xs::-webkit-scrollbar {
+  display: none;
+}
+
+.css-y1c0xs::-moz-scrollbar {
+  display: none;
+}
+
+.chatee-user {
+  display: flex;
+  margin: 10px 0;
+}
+
+.chatee-user-img {
+  flex: 1.1;
+}
+
+.chatee-user-message {
+  flex: 8.9;
+  word-wrap: break-word;
+  color: green;
+  position: relative;
+}
+
+.sender-name {
+  position: absolute;
+  font-size: 8px;
+  top:-5px;
+  color: grey;
+}
+
+.user-himself-message{
+  word-wrap: break-word;
+  text-align: right;
+  margin: 10px 0;
+  margin-left: 25px;
+  color: darkblue;
+  margin-right: 5px;
+}
+
+.text-input textarea {
+  outline:none;
+  border: none;
+  border-top: 1px solid grey;
+  resize: none;
+  padding: 10px 5px;
+}
+
+.time-in-hr-min {
+  font-size: 8px;
+}

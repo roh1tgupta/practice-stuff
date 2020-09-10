@@ -1,0 +1,38 @@
+.selectedUsers {
+  border-bottom:1px solid grey;
+  height: 150px;
+  overflow: auto;
+}
+
+.collection {
+  margin: 0;
+  background-color: white;
+}
+
+.collection-item {
+  display: flex;
+  padding: 5px 0 !important;
+
+  /* padding-left: 0 !important;
+  padding-right: 0 !important; */
+}
+
+.user-list-img {
+  flex: 1;
+  padding: 0 5px;
+}
+
+.user-list-img img {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.user-list-name {
+  flex: 8;
+}
+
+.availableUsers {
+  height: 250px;
+  overflow: auto;
+}
