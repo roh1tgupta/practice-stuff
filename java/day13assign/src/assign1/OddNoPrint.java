@@ -1,0 +1,28 @@
+package assign1;
+
+public class OddNoPrint extends Thread {
+	int start;
+	int end;
+	public OddNoPrint (String name, int start, int end) {
+		super(name);
+		this.start = start;
+		this.end = end;
+		start();
+	}
+	
+	@Override
+	public void run() {
+		System.out.println(Thread.currentThread().getName()+" starts executing.");
+		int startpoint = this.start;
+		try {
+			while(startpoint < this.end) {
+				System.out.println(startpoint);
+				startpoint += 2;
+				Thread.sleep(300);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(Thread.currentThread().getName()+" ends.");
+	}
+}

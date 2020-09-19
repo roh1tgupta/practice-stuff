@@ -1,0 +1,18 @@
+package utils;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import com.app.Book;
+
+public class Utils {
+
+	public static ArrayList<Book> populateBooks() throws Exception {
+		ArrayList<Book> al = new ArrayList<Book>();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
+		al.add(new Book("java2", "abcd", 76.89, sdf.parse("5-8-2020"), "IT"));
+		al.add(new Book("act1999", "bcd", 176.89, sdf.parse("5-8-2018"), "law"));
+		al.add(new Book("ca1997", "bcded", 1766.89, sdf.parse("6-2-2013"), "ca"));
+		al.add(new Book("act1999", "bcd", 176.89, sdf.parse("10-10-2019"), "bio"));
+		
+		return al;
+	}
+}

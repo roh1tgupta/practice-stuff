@@ -1,0 +1,26 @@
+import java.util.HashMap;
+import java.util.TreeMap;
+
+import com.app.assign.Customer;
+import com.cust_except.CustomerException;
+import com.cust_except.UtilValidation;
+
+public class TesterWithHM {
+
+	public static void main(String[] args) {
+		HashMap<String, Customer> hm = new HashMap<String, Customer>();
+		try {
+			hm.put(UtilValidation.validateEmail("abcd@gmail.com"), new Customer(UtilValidation.validateEmail("abcd@gmail.com"), "rohit", 654, UtilValidation.validateDate("2-3-2019")));
+			hm.put("abcde@gmail.com", new Customer(UtilValidation.validateEmail("abcde@gmail.com"), "rohitash", 653, UtilValidation.validateDate("2-5-2019")));
+			hm.put("abcdr@gmail.com", new Customer(UtilValidation.validateEmail("abcdr@gmail.com"), "rohitg", 6546, UtilValidation.validateDate("2-2-2019")));
+			System.out.println(hm);
+			TreeMap<String, Customer> tm = new TreeMap<>(hm);
+			System.out.println(tm);
+		
+		} catch (CustomerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+}

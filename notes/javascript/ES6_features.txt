@@ -195,4 +195,68 @@ ES6 features
 8> classes in es6
 
 9> modules in es6
-	
+
+/////////////////////////////////////////////////////////////////////////////
+http://es6-features.org/#Constants
+
+features added in es6
+Constants
+Scoping
+	Block-Scoped Variables
+	Block-Scoped Functions
+
+Arrow Functions
+	Expression Bodies
+	Statement Bodies
+	Lexical this
+
+Extended Parameter Handling
+	Default Parameter Values
+	Rest Parameter
+	Spread Operator
+
+Template Literals
+	String Interpolation
+
+Extended Literals
+	Binary and Octal Literals
+	Unicode String & RegExp Literal
+
+Enhanced Object Properties
+	Property Shorthand
+	Computed Property Names
+	Method Properties
+
+Destructuring Assignment
+	Array Matching
+	Parameter Context Matching
+
+Modules
+	Value Export/Import
+	Default & Wildcard
+
+Classes
+Symbol Type
+	Global Symbols
+Iterators
+	Iterator & For-Of Operator
+Generator Function
+
+Map/Set & WeakMap/WeakSet
+	Set Data-Structure
+	Map Data-Structure
+	Weak-Link Data-Structures
+Typed Arrays
+New Built-In Methods
+Object Property Assignment
+Array Element Finding
+String Repeating
+
+Promises
+Proxying
+Reflection
+Internationalization & Localization
+	Collation
+	Number Formatting
+	Currency Formatting
+	Date/Time Formatting

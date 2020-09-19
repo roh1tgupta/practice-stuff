@@ -1,0 +1,11 @@
+package assign1;
+
+public class Tester {
+
+	public static void main(String[] args) {
+		EvenNoPrint t1 = new EvenNoPrint("evennothread", 100, 200);
+		OddNoPrint t2 = new OddNoPrint("oddnothread", 51, 200);
+		
+		System.out.println("Main ends");
+	}
+}

@@ -1,0 +1,27 @@
+package pck;
+import java.io.*;
+import java.util.Scanner;
+public class ReaderWriter {
+	public static void main (String[] args) {
+		Scanner sc =  new Scanner(System.in);
+		try {
+			
+			FileReader input = new FileReader(sc.next());
+			FileWriter output = new FileWriter(sc.next());
+			char[] buffer = new char [2];
+			int charsRead;
+			charsRead = input.read(buffer);		//Read first buffer
+			while (charsRead != -1) {
+			output.write(buffer, 0, charsRead);   //Write buffer to output file
+			System.out.println(buffer[0]+"............"+charsRead);
+			charsRead = input.read(buffer);		//Read the next buffer
+			}
+			input.close ();
+			output.close ();
+		}catch (IOException ioe) {
+			ioe.printStackTrace ();  
+		}finally {
+			sc.close();
+		}
+	}
+}

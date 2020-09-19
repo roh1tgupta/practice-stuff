@@ -1,0 +1,31 @@
+package pck;
+import java.util.Scanner;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+public class BufferedReaderWriter {
+
+	public static void main(String[] args) {
+		try {
+			Scanner sc = new Scanner(System.in);
+			FileReader fr = new FileReader(sc.next());
+			BufferedReader br = new BufferedReader(fr);
+			
+			FileWriter fw = new FileWriter(sc.next());
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			String str;
+			str =  br.readLine();
+			while(str != null) {
+				System.out.println(str);
+				bw.write(str);
+				str =  br.readLine();
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

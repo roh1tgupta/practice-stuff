@@ -1,0 +1,16 @@
+import static utils.Utils.*;
+import java.util.ArrayList;
+import com.app.Book;
+
+public class Tester {
+	public static void main(String [] args) {
+		try {
+			ArrayList<Book> al = new ArrayList<Book>(populateBooks());
+			for(Book b: al) {
+				System.out.println(b.getTitle());
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

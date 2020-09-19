@@ -1,0 +1,19 @@
+package clnts;
+
+import java.net.Socket;
+import java.util.Scanner;
+
+public class SimpleClient {
+
+	public static void main(String[] args) {
+		System.out.println("Enter server ip n server port"); // enter 127.0.0.1 and 5000
+		try (Scanner sc = new Scanner(System.in); Socket s1 = new Socket(sc.next(), sc.nextInt())) {
+			System.out.println("connected to Server IP " + s1.getInetAddress().getHostName() + " server port  "
+					+ s1.getPort() + " local port " + s1.getLocalPort());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}

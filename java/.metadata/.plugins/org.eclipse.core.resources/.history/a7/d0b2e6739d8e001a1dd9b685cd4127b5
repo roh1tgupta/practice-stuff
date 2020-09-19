@@ -1,0 +1,16 @@
+package cust_comp;
+
+import java.util.Comparator;
+
+import com.app.bank.Account;
+
+public class AccountDescIdComp implements Comparator<Account> {
+
+	@Override
+	public int compare(Account o1, Account o2) {
+//		System.out.println("in compare "+o1+" "+o2);
+		return o2.getLinkingDate().compareTo(o1.getLinkingDate());
+//		return o2.compareTo(o1);
+	}
+
+}

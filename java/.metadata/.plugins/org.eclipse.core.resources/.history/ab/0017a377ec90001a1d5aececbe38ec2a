@@ -1,0 +1,20 @@
+package com.app;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
+
+public class Book {
+	String title;
+	String author;
+	double price;
+	Date publishDate;
+	String category;
+	
+	public Book(String title, String author, double price, Date publishDate, String category) {
+		this.title = title;
+		this.author =  author;
+		this.price = price;
+		this.publishDate = publishDate;
+		this.category = category;
+	}
+}
