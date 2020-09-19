@@ -1,0 +1,5 @@
+for countries flag
+https://github.com/hjnilsson/country-flags
+
+for simple nodejs react npm app on jenkins
+https://github.com/jenkins-docs/simple-node-js-react-npm-app
