@@ -26,9 +26,11 @@ const bikeJson = {name: 'bike', tyres: '2', price: '80k'};
 
 export default function HOC(Component, type) {
     return class extends React.Component {
-        constructor(props) {
-            super(props);
-        }
+      // If you don’t initialize state and you don’t bind methods, you don’t need to implement
+      // a constructor for your React component.
+        // constructor(props) {
+        //     super(props);
+        // }
 
         render() {
           console.log('..........', type);

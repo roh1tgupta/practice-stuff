@@ -86,7 +86,13 @@ ES6 features
 		coords: {x: 18, y: 30},
 		radius: 30
 	});
-	In the function signature for drawES2015Chart above, the destructured left-hand side is assigned to an empty object literal on the right-hand side: {size = 'big', coords = {x: 0, y: 0}, radius = 25} = {}. You could have also written the function without the right-hand side assignment. However, if you leave out the right-hand side assignment, the function will look for at least one argument to be supplied when invoked, whereas in its current form, you can simply call drawES2015Chart() without supplying any parameters. The current design is useful if you want to be able to call the function without supplying any parameters, the other can be useful when you want to ensure an object is passed to the function.
+	In the function signature for drawES2015Chart above, the destructured left-hand side is assigned 
+	to an empty object literal on the right-hand side: {size = 'big', coords = {x: 0, y: 0}, radius = 25} = {}. 
+	You could have also written the function without the right-hand side assignment. However, if you leave out 
+	the right-hand side assignment, the function will look for at least one argument to be supplied when invoked, 
+	whereas in its current form, you can simply call drawES2015Chart() without supplying any parameters. 
+	The current design is useful if you want to be able to call the function without supplying any parameters,
+	 the other can be useful when you want to ensure an object is passed to the function.
 	
 	
 	Computed object property names and destructuring
@@ -187,7 +193,27 @@ ES6 features
 		Promise.reject()
 		Promise.resolve()
 		
+		The Promise.all() method takes an iterable of promises as an input, and returns a single Promise 
+		that resolves to an array of the results of the input promises. This returned promise will resolve when 
+		all of the input's promises have resolved, or if the input iterable contains no promises.
+		It rejects immediately upon any of the input promises rejecting or non-promises throwing an error,
+		and will reject with this first rejection message / error.
+
+		const promise1 = Promise.resolve(3);
+		const promise2 = 42;
+		const promise3 = new Promise((resolve, reject) => {
+  		setTimeout(resolve, 100, 'foo');
+		});
+
+		Promise.all([promise1, promise2, promise3]).then((values) => {
+  		console.log(values);
+		});
+		// expected output: Array [3, 42, "foo"]
 		
+
+		In comparison, the promise returned by Promise.allSettled() will wait for all input promises to complete,
+		regardless of whether or not one rejects. Consequently, it will always return the final result of every
+		promise and function from the input iterable.
 		
 		
 7> Block scoped constructs let and const

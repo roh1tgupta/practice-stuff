@@ -53,6 +53,15 @@ arr.unshift('d'); o/p: 4 // now arr is [d,a,b,c]
 arr.shift(); o/p: d // now arr is [a,b,c];
 arr.unshift('e'); o/p: 4 // now arr is ['e','a','b','c']
 
+
+By default, the sort() function sorts values as strings.
+arr = [1,4,39,21,100000];
+arr.sort(); // [1, 100000, 21, 39, 4]
+.
+for sorting number we can provide a compare function like:
+arr.sort((a,b) => a-b) // [1, 4, 21, 39, 100000]
+
+
 console.log(1 - - true) // 2
 let a = true + false; // a = 1
 let b = 1 + true; // b = 2
