@@ -15,6 +15,26 @@ D(Dependency Inversion principle): Entities must depend on abstractions not on c
   the high level module must not depend on the low level module, but they should depend on abstractions.
 
 
+Mutable is a type of variable that can be changed. In JavaScript, only objects and arrays are mutable, not primitive values.
+(You can make a variable name point to a new value, but the previous value is still held in memory.
+Hence the need for garbage collection.)
+A mutable object is an object whose state can be modified after it is created.
+Immutables are the objects whose state cannot be changed once the object is created.
+Strings and Numbers are Immutable. Lets understand this with an example:
+
+var immutableString = "Hello";
+// In the above code, a new object with string value is created.
+immutableString = immutableString + "World";
+// We are now appending "World" to the existing value.
+
+On appending the "immutableString" with a string value, following events occur:
+  >Existing value of "immutableString" is retrieved
+  >"World" is appended to the existing value of "immutableString"
+  >The resultant value is then allocated to a new block of memory
+  >"immutableString" object now points to the newly created memory space
+  >Previously created memory space is now available for garbage collection.
+
+
 console.log("javascript everywhere" instanceof String);
 // false ...string literal is not an object
 
@@ -62,6 +82,7 @@ for sorting number we can provide a compare function like:
 arr.sort((a,b) => a-b) // [1, 4, 21, 39, 100000]
 
 
+console.log(+true / -true); // 1 / -1
 console.log(1 - - true) // 2
 let a = true + false; // a = 1
 let b = 1 + true; // b = 2
@@ -94,7 +115,7 @@ let a = 1, b = a = typeof b;console.log(a); // referrenceError: b is not defined
 typeof undefined // "undefined"
 typeof null // "object"
 typeof Object // "function"
-typeof object // "undefined"
+typeof object // "undefined"  ....(hint: small o)
 
 function abs () {};
 typeof abs // "function"
@@ -176,7 +197,7 @@ map.has(key) – returns true if the key exists, false otherwise.
 map.delete(key) – removes the value by the key.
 map.clear() – removes everything from the map.
 map.size – returns the current element count.
-map.keys() returns an iterable, but not an array. Toc convert that into iterable.... Array.from(map.keys())
+map.keys() returns an iterable, but not an array. To convert that into iterable.... Array.from(map.keys())
 
 map[key] isn’t the right way to use a Map
 Although map[key] also works, e.g. we can set map[key] = 2,
