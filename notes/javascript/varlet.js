@@ -12,4 +12,4 @@ function abc() {
 }
 
 abc();
-// console.log(a, '.......', b);
+// console.log(a, '.......', b); // try with removing comments here

@@ -2,6 +2,9 @@ javascript libraries
 socket.io,chart.js,D3.js,pdf.js,Foundation js framework,react bootstrap, echart.js,
 Moment.js,Nuxt.js(vue.js metaframework),video.js,
 
+js cheatsheet  https://www.w3schools.com/jsref/
+
+
 SOLID PRINCIPLE:
 S(Single-responsibility Principle): A class should have one and only one reason to change, meaning
   that a class should have only one job.
@@ -59,6 +62,10 @@ console.log(1 + + + +  1); // 2
 console.log(1 + + + +  '1');//2
 console.log(1 + +'1');//2
 console.log('1' ++ '1'); // syntax error
+
+String.fromCharCode(65);// A
+var str = "Hello world!";
+str.repeat(2);// Hello world!Hello world!
 
 var arry = [10,20,20]; arry[5]=78; 
 arry; // [10, 20, 20, empty � 2, 78]
@@ -153,6 +160,20 @@ console.log(1 == '1'); // true
 console.log(10 == 5+5); // ture
 console.log(10 == '5+5');// false
 
+function* abc() {
+  return 5;
+}
+let ab = abc();
+ab.next(); // {value: 5, done: true}
+ab.next(); // {value: undefined, done: true}
+
+function* abc() {
+  yield 5;
+}
+let ab = abc();
+ab.next(); // {value: 5, done: false}
+ab.next(); // {value: undefined, done: true}
+// before done: true, generatorState is suspended, after done:true generatorState is closed
 
 Math.pow(2,3); // 8
 in short 2**3 // 8
@@ -160,6 +181,17 @@ in short 2**3 // 8
 var val = "123" or "134.788"
 console.log(Math.floor(val)) // 123 or 134
 in short ~~val // 123 or 134
+
+let arr = [1,2,3];
+delete arr; // no effect, this will return false
+conosle.log(arr); // [1, 2, 3]
+delete arr[1]; // this will return true;
+console.log(arr); // [1, empty, 3]
+
+let ab = 'rohit';
+delete ab;// no effect, this will return false
+console.log(ab); // rohit
+
 
 filter() returns an array of matched objects while find() will return the first matched object
 

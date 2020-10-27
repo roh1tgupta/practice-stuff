@@ -35,6 +35,7 @@
 //     console.log('.....', a4);
 // }
 // hoisting4();
+// console.log('....', a4);
 
 // function hoisting41() {
 //     "use strict"
@@ -64,3 +65,13 @@
 // }
 // setPageName();
 // console.log(this.page);
+
+
+
+var a = 20;
+function abc() {
+  // var a ;
+  return a;
+}
+
+console.log(abc());

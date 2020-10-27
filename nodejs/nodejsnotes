@@ -1,0 +1,13 @@
+REST or RESTful stands for REpresentational State Transfer. It is an architectural style as well as an approach for communications purposes that is often used in various web services development. In simpler terms, it is an application program interface (API) that makes use of the HTTP requests to GET, PUT, POST and DELETE the data over WWW
+Below are the six guiding principles of REST:
+stateless
+client-server
+uniform interface
+cacheable
+layered system
+code on demand
+
+
+npm install <package_name> --save
+--save flag: It will ensure that your requested module has been added your package.json file. 
+
