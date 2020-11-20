@@ -50,6 +50,7 @@ console.log(new Array(4).toString()); // ",,,"
 console.log([1] + [] + "javascript".split('')); // 1j,a,v,a,s,c,r,i,p,t
 console.log([1] + [] + [5]); // 15
 console.log([1, 1] + [] + [5, 'rohit']); // 1,15,rohit
+output of above three are in string literal format
 
 console.log('1' - - '1'); // 2
 console.log('1' + '1'); // 11
@@ -131,6 +132,7 @@ typeof a // "object"
 a instanceof Object // true
 a instanceof Function // false
 abs instanceof Object // true
+abs instanceof Function // true
 
 
 let a=2, b=7;

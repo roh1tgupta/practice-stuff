@@ -24,6 +24,7 @@ Object.is('foo', 'foo');     // true
 Object.is(window, window);   // true
 Object.is('foo', 'bar');     // false
 Object.is([], []);           // false
+Object.is({}, {});           // false
 var test = { a: 1 };
 Object.is(test, test);       // true
 Object.is(null, null);       // true
@@ -31,6 +32,7 @@ Object.is(null, null);       // true
 Object.is(0, -0);            // false
 Object.is(-0, -0);           // true
 Object.is(NaN, 0/0);         // true
+Object.is(); // true
 
 
 JavaScript Array find() Method
@@ -57,7 +59,7 @@ $("p:not(.intro)")
 
 JavaScript String search() Method
 var str = "Visit W3Schools!";
-var n = str.search("W3Schools");
+var n = str.search("W3Schools"); // n is 6
 
 console.log(Array.from('foo'));
 
@@ -68,6 +70,7 @@ console.log(Array.from([1, 2, 3], x => x + x));
 
 // expected output: Array [2, 4, 6]
 
+Array.from({length: 2}); // [undefined, undefined];
 console.log(Array.from({length: 26}, (_,i) => String.fromCharCode(65 + i)))
 
 // expected output: Array ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]

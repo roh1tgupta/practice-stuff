@@ -82,7 +82,7 @@
 // console.log(admin.fullName); // John Smith (*)
 // // setter triggers!
 // admin.fullName = "Alice Cooper"; // (**)
-// console.log(admin.fullName);
+// console.log(admin.fullName); // Alice Cooper
 
 //No matter where the method is found: in an object or its prototype. In a method call, this is always the object before the dot.
 // let animal = {

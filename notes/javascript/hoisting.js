@@ -3,6 +3,12 @@
 // means that no matter where functions and variables are declared, they are moved to the top of their
 // scope regardless of whether their scope is global or local
 
+// Conceptually, for example, a strict definition of hoisting suggests that variable and function
+//  declarations are physically moved to the top of your code, but this is not in fact what happens. 
+//  Instead, the variable and function declarations are put into memory during the compile phase, 
+//  but stay exactly where you typed them in your code.
+
+
 // function hoisting1() {
 //     console.log('.....', a1);  // throws error a1 not defined
 //     let a1;
@@ -31,6 +37,7 @@
 // console.log('.....', a3);
 
 // function hoisting4() {
+//     console.log('.....', a4); // check after removing this line too
 //     a4 = 10;
 //     console.log('.....', a4);
 // }
@@ -59,7 +66,7 @@
 // "use strict"    // checkbelow with or without use strict
 // console.log(this);
 // function setPageName() {
-//     // console.log(this);
+//     console.log(this);
 //     this.page = 'JSSnippet';
 //     console.log(this.page);
 // }
@@ -68,10 +75,10 @@
 
 
 
-var a = 20;
-function abc() {
-  // var a ;
-  return a;
-}
+// var a = 20;
+// function abc() {
+//   // var a ;
+//   return a;
+// }
 
-console.log(abc());
+// console.log(abc());
