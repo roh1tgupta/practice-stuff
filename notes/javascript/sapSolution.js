@@ -14,4 +14,4 @@ function solution(A) {
     return smallesInt;
 }
 
-solution([1, 2, 3]);
+console.log(solution([1, 2, 3]));

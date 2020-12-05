@@ -54,11 +54,14 @@ console.log(rabbit.__proto__ === animal);
 // In particular, if we replace the default prototype as a whole, then there will be no "constructor" in it.
 // for instance
 // function Rabbit() {}
+// let ab = new Rabbit();
+// console.log(ab.constructor === Rabbit); // true
 // Rabbit.prototype = {
 //   jumps: true
 // };
 // let rabbit = new Rabbit();
 // console.log(rabiit.jumps); // true
+// console.log(ab.constructor === Rabbit); // true
 // console.log(rabbit.constructor === Rabbit); // false
 
 

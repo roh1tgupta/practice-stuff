@@ -40,9 +40,9 @@ export class HeroesComponent implements OnInit {
 You always import the Component symbol from the Angular core library and annotate the component class with @Component.
 @Component is a decorator function that specifies the Angular metadata for the component.
 The CLI generated three metadata properties:
-selector— the component's CSS element selector
-templateUrl— the location of the component's template file.
-styleUrls— the location of the component's private CSS styles.
+selectorï¿½ the component's CSS element selector
+templateUrlï¿½ the location of the component's template file.
+styleUrlsï¿½ the location of the component's private CSS styles.
 The CSS element selector, 'app-heroes', matches the name of the HTML element that identifies this component within a parent component's template.
 The ngOnInit is a lifecycle hook Angular calls ngOnInit shortly after creating a component. It's a good place to put initialization logic.
 
@@ -257,11 +257,11 @@ Decorators are functions that modify JavaScript classes. Angular defines a numbe
 
 NgModule metadata
 An NgModule is defined as a class decorated with @NgModule. The @NgModule decorator is a function that takes a single metadata object, whose properties describe the module. The most important properties are as follows.
-declarations—The components, directives, and pipes that belong to this NgModule.
-exports—The subset of declarations that should be visible and usable in the component templates of other NgModules.
-imports—Other modules whose exported classes are needed by component templates declared in this NgModule.
-providers—Creators of services that this NgModule contributes to the global collection of services; they become accessible in all parts of the app. (You can also specify providers at the component level, which is often preferred.)
-bootstrap—The main application view, called the root component, which hosts all other app views. Only the root NgModule should set this bootstrap property.
+declarationsï¿½The components, directives, and pipes that belong to this NgModule.
+exportsï¿½The subset of declarations that should be visible and usable in the component templates of other NgModules.
+importsï¿½Other modules whose exported classes are needed by component templates declared in this NgModule.
+providersï¿½Creators of services that this NgModule contributes to the global collection of services; they become accessible in all parts of the app. (You can also specify providers at the component level, which is often preferred.)
+bootstrapï¿½The main application view, called the root component, which hosts all other app views. Only the root NgModule should set this bootstrap property.
 
 
 
@@ -319,7 +319,8 @@ ng generate component hero -it
 
 
 
-You may be familiar with the component/template duality from your experience with model-view-controller (MVC) or model-view-viewmodel (MVVM). In Angular, the component plays the part of the controller/viewmodel, and the template represents the view.
+You may be familiar with the component/template duality from your experience with model-view-controller (MVC) or model-view-viewmodel (MVVM). 
+In Angular, the component plays the part of the controller/viewmodel, and the template represents the view.
 
 
 
@@ -359,7 +360,8 @@ Quick execution
 Simplicity
 Idempotence ; 
 In Angular terms, an idempotent expression always returns exactly the same thing until one of its dependent values changes.
-Dependent values should not change during a single turn of the event loop. If an idempotent expression returns a string or a number, it returns the same string or number when called twice in a row. If the expression returns an object (including an array), it returns the same object reference when called twice in a row.
+Dependent values should not change during a single turn of the event loop. If an idempotent expression returns a string or a number, it returns the same string or number when called twice in a row. 
+If the expression returns an object (including an array), it returns the same object reference when called twice in a row.
 
 
 
@@ -379,7 +381,8 @@ button [disabled]="isUnchanged">Save</button>
 
 
 
-In the world of Angular, the only role of attributes is to initialize element and directive state. When you write a data binding, you're dealing exclusively with properties and events of the target object. HTML attributes effectively disappear.
+In the world of Angular, the only role of attributes is to initialize element and directive state. When you write a data binding, 
+you're dealing exclusively with properties and events of the target object. HTML attributes effectively disappear.
 
 
 
@@ -437,11 +440,13 @@ If the element raises events, you can listen to them with an event binding.
 <img [src]="heroImageUrl">
 Some people prefer the bind- prefix alternative, known as the canonical form:
 <img bind-src="heroImageUrl">
-The target name is always the name of a property, even when it appears to be the name of something else. You see src and may think it's the name of an attribute. No. It's the name of an image element property.
+The target name is always the name of a property, even when it appears to be the name of something else. 
+You see src and may think it's the name of an attribute. No. It's the name of an image element property.
 
 
 
-The brackets tell Angular to evaluate the template expression. If you omit the brackets, Angular treats the string as a constant and initializes the target property with that string. It does not evaluate the string!
+The brackets tell Angular to evaluate the template expression. If you omit the brackets, Angular treats the string as a 
+constant and initializes the target property with that string. It does not evaluate the string!
 <!-- ERROR: HeroDetailComponent.hero expects a
      Hero object, not the string "currentHero" -->
   <app-hero-detail hero="currentHero"></app-hero-detail>
@@ -459,7 +464,7 @@ attribute binding
 
 
 
-Some style binding styles have a unit extension. The following example conditionally sets the font size in “em” and “%” units .
+Some style binding styles have a unit extension. The following example conditionally sets the font size in ï¿½emï¿½ and ï¿½%ï¿½ units .
 <button [style.font-size.em]="isSpecial ? 3 : 1" >Big</button>
 <button [style.font-size.%]="!isSpecial ? 150 : 50" >Small</button>
 While this is a fine way to set a single style, the NgStyle directive is generally preferred when setting several inline styles at the same time.
@@ -722,7 +727,7 @@ The following example applies a background-color style to all <h2> elements insi
 
 
 
-Attribute directives—change the appearance or behavior of an element, component, or another directive.
+Attribute directivesï¿½change the appearance or behavior of an element, component, or another directive.
 Attribute directives are used as attributes of elements.
 Build a simple attribute directive ..building a simple appHighlight attribute directive to set an element's background color 
 
@@ -1029,7 +1034,7 @@ myObservable.subscribe(
 );
 
 Creating observables
-Use the Observable constructor to create an observable stream of any type. The constructor takes as its argument the subscriber function to run when the observable’s subscribe() method executes. A subscriber function receives an Observer object, and can publish values to the observer's next() method.
+Use the Observable constructor to create an observable stream of any type. The constructor takes as its argument the subscriber function to run when the observableï¿½s subscribe() method executes. A subscriber function receives an Observer object, and can publish values to the observer's next() method.
 
 For example, to create an observable equivalent to the Observable.of(1, 2, 3) above, you could do something like this:
 // This function runs when subscribe() is called
@@ -1062,7 +1067,7 @@ sequence.subscribe({
 
 
 HTTP
-Angular’s HttpClient returns observables from HTTP method calls. For instance, http.get(‘/api’) returns an observable. This provides several advantages over promise-based HTTP APIs:
+Angularï¿½s HttpClient returns observables from HTTP method calls. For instance, http.get(ï¿½/apiï¿½) returns an observable. This provides several advantages over promise-based HTTP APIs:
 Observables do not mutate the server response (as can occur through chained .then() calls on promises). Instead, you can use a series of operators to transform values as needed.
 HTTP requests are cancellable through the unsubscribe() method.
 Requests can be configured to get progress event updates.
