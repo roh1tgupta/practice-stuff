@@ -26,7 +26,7 @@ import ThrottleDebounce from './routes/ThrottleDebounceComponent';
 
 class Main extends React.Component {
   render() {
-	const Loading = () => <div>Loading...</div>;
+  const Loading = () => <div>Loading...</div>;
 	const Home = Loadable({
 		loader: () => import('./routes/Home'),
 		loading: Loading,
@@ -79,7 +79,7 @@ class Main extends React.Component {
 
           </Switch>
         </div>
-       </Router>        
+       </Router>   
       </div>
     )}
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios';
 
 class App extends Component {
 
@@ -11,6 +12,18 @@ class App extends Component {
       avtarURL: './images/images1.png'
     }
 
+    const clickHandler = () => {
+      axios.get('http://localhost:7999/search?productName=iphone12pro',{
+        headers: {
+          "Accept": "application/json",
+          "Accept-Language": "en-US"
+        }
+      }).then(resp => {
+        console.log(resp);
+      }).catch(err => {
+        console.log(err);
+      });
+    };
     function ListItem(props) {
       return <li>{props.value}</li>;
     }
@@ -36,7 +49,7 @@ class App extends Component {
       <p className="App-intro">
         hello {formatName()} <code>happy coding</code> {userName.avtarURL}.
       </p>
-      
+      <button onClick={() => clickHandler()}>click me</button>
 
       <div>
         {numbers}
