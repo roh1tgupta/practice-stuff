@@ -63,15 +63,15 @@
 // }
 // hoisting6();
 
-// "use strict"    // checkbelow with or without use strict
-// console.log(this);
-// function setPageName() {
-//     console.log(this);
-//     this.page = 'JSSnippet';
-//     console.log(this.page);
-// }
-// setPageName();
-// console.log(this.page);
+"use strict"    // checkbelow with or without use strict
+console.log(this);
+function setPageName() {
+    console.log(this);
+    this.page = 'JSSnippet';
+    console.log(this.page);
+}
+setPageName();
+console.log(this.page);
 
 
 
