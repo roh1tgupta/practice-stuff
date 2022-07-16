@@ -63,7 +63,7 @@ class Main extends React.Component {
             <Route exact path='/app' component={App} />
             <Route exact path='/refs' component={RefEx} />
             <Route exact path='/forms' component={Forms} />
-            <Route exact path='/clock' component={Clock} />
+            <Route exact path='/clock' component={() => <Clock arr={[1,2,3,4,5]}/>} />
             <Route exact path='/toggle' component={Toggle} />
             <Route exact path='/reduxEx' component={ReduxEx} />
             <Route exact path='/reduxLogin' component={ReduxLoginState} />

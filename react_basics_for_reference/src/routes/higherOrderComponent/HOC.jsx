@@ -33,7 +33,7 @@ export default function HOC(Component, type) {
         // }
 
         render() {
-          console.log('..........', type);
+          console.log('..........', type, "this.props", this.props);
           let props = null;
           if (type === 'car') {
             props = carJson;

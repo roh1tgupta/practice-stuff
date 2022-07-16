@@ -57,13 +57,14 @@
 //         console.log(' from inside', a6)
 //     }
 // 	abc();
-//     var a6 = 10
+//     // let a6 = 10; // ReferenceError: Cannot access 'a6' before initialization
+//     var a6 = 10;
 //     console.log('.....', a6);
 //     abc();
 // }
 // hoisting6();
 
-"use strict"    // checkbelow with or without use strict
+// "use strict"    // checkbelow with or without use strict
 console.log(this);
 function setPageName() {
     console.log(this);

@@ -1,0 +1,35 @@
+Do you know that when you deploy your React application
+
+which is created using 𝗰𝗿𝗲𝗮𝘁𝗲-𝗿𝗲𝗮𝗰𝘁-𝗮𝗽𝗽 or your own webpack configuration to a live website like Netlify, Vercel, Heroku etc,
+
+your entire source code is visible to everyone from the sources tab of the developer toolbar as shown in the screenshot of this post.
+
+This is not an issue with the 𝗰𝗿𝗲𝗮𝘁𝗲-𝗿𝗲𝗮𝗰𝘁-𝗮𝗽𝗽 but All of the source code is added because of the source map
+
+which helps to easily identify the source of the bug that will occur on the live site in the future.
+
+This is fine If the website source code is publicly available on GitHub.
+
+But you definitely don't want everyone to see your entire source code If it's a private repository or you're working on a client project.
+
+There is an easy way to fix it.
+
+Create a file with the name .env in your project folder with the below code inside it
+
+GENERATE_SOURCEMAP=false
+
+so when you run 𝗻𝗽𝗺 𝗿𝘂𝗻 𝗯𝘂𝗶𝗹𝗱 or 𝘆𝗮𝗿𝗻 𝗿𝘂𝗻 𝗯𝘂𝗶𝗹𝗱 command from the terminal.
+
+It will generate a 𝗯𝘂𝗶𝗹𝗱 folder with minified files without a source map that you can deploy to the production.
+
+
+
+.....................................................................................................................................................................................
+
+when histting pdf url from iframe, getting contect security issue.
+solution, add content-security header from BE response with value of host of that iframe like below:
+res.setHeader("X-Content-Security-Policy", "https://marketplace.carrefouruae.com");
+    res.setHeader("Content-Security-Policy", "https://marketplace.carrefouruae.com/seller");
+
+
+
