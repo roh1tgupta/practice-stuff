@@ -4,7 +4,7 @@ var promise1 = (timeInMilisec) => {
     if (timeInMilisec%2000 === 0) {
       setTimeout(function() {
         // logging the passed argument
-        console.log(`inside setTimeout method-- ${timeInMilisec}`);
+        // console.log(`inside setTimeout method-- ${timeInMilisec}`);
         resolve(`resolving after ${timeInMilisec/1000} seconds`);
       }, timeInMilisec);
     } else {
@@ -13,10 +13,11 @@ var promise1 = (timeInMilisec) => {
   });
 }
 
-Promise.all([
-  promise1(6000),promise1(1000),promise1(4000)]).then(val => {
-  console.log(`fulfilled--  ${val}`);
-}).catch(err => console.log(`rejected--  ${err}`));
+// Promise.all([
+//   promise1(2000),promise1(1000),promise1(2000)]).then(val => {
+//   console.log(`fulfilled--  ${val}`);
+//   console.log(val, Array.isArray(val))
+// }).catch(err => console.log(`rejected--  ${err}`));
 
 
 // Promise.all([promise1(10000),promise1(2000),promise1(1000)]).then(val => {
@@ -42,3 +43,25 @@ Promise.all([
 //console.log('hello world!');
 
 
+// Promise.allSettled([
+//   promise1(2000),promise1(1000),promise1(2000)]).then(val => {
+//   console.log(`fulfilled--  ${val}`);
+//   console.log(val, Array.isArray(val))
+// }).catch(err => console.log(`rejected--  ${err}`));
+
+// Promise.any([
+//   promise1(2000),promise1(1000),promise1(10000)]).then(val => {
+//   console.log(`fulfilled--  ${val}`);
+//   console.log(val, Array.isArray(val), typeof(val))
+// }).catch(err => console.log(`rejected--  ${err}`)).finally((val) => {
+//   console.log("finally block", val)
+// });
+
+
+Promise.race([
+  promise1(2000),promise1(1000),promise1(10000)]).then(val => {
+  console.log(`fulfilled--  ${val}`);
+  console.log(val, Array.isArray(val), typeof(val))
+}).catch(err => console.log(`rejected--  ${err}`)).finally((val) => {
+  console.log("finally block", val)
+});
