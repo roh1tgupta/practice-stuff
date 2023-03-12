@@ -1,0 +1,168 @@
+// inspired from https://medium.com/@jaryd_34198/seamless-api-requests-with-react-hooks-part-2-3ab42ba6ad5c
+import { useState, useEffect, useContext } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
+import axios from "axios";
+import { APIS_ENDPOINT } from "constants/apiUrls";
+import Tracker from "utils/Tracker";
+import notify from "components/Notification/Notification.service";
+import { useHistory } from "react-router-dom";
+import { DataContext, IDataState } from "routes/context";
+import { getCookie } from "utils/cookie.helper";
+
+interface IUseFetchState {
+  data: any;
+  cancelToken?: any;
+  pending: boolean;
+  success: boolean;
+  error: any;
+  complete: boolean;
+  errorCode?: string;
+  msg?:string;
+  status?: number | any;
+  headers?: any
+}
+
+const INITIAL_STATE: IUseFetchState = {
+  data: null,
+  complete: false,
+  pending: false,
+  error: false,
+  success: false,
+  status: null
+};
+
+interface IUseFetch {
+  state: IUseFetchState;
+  hit: (args: any) => void;
+  facets?:any;
+  pageData?:any;
+  data?:any
+}
+
+function useFetch(fn: (params: any) => void): IUseFetch {
+  const { getAccessTokenSilently } = useAuth0();
+  const { dispatch } = useContext(DataContext) as IDataState;
+  const [state, setState] = useState<IUseFetchState>({
+    ...INITIAL_STATE,
+  });
+  const [req, setReq] = useState<any>();
+  const history = useHistory();
+  const source = axios.CancelToken.source();
+  const cancelToken = source.token;
+
+  useEffect(() => {});
+
+  useEffect(() => {
+    const getToken = async (getToken?: any) => {
+      let token = "";
+      if (getToken) {
+        token = await getAccessTokenSilently();
+      }
+
+      return token;
+    };
+
+    const call = async () => {
+      try {
+        const token = await getToken(req?.auth0);
+        if (!req) return;
+        setState({
+            ...INITIAL_STATE,
+            cancelToken: (req.cancelFlag ? source : null),
+            pending: true,
+          });
+        const url = req?.baseUrl || `${getCookie && getCookie("apiemail") === "123@abcd" && getCookie("be-api") ? getCookie("be-api") : APIS_ENDPOINT}${req.url}`;
+        axios({
+          ...req,
+          url: url,
+          cancelToken: ( req.cancelFlag ? cancelToken: null) ,
+          withCredentials: true,
+          headers: {
+            ...req?.headers,
+            ...{
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        })
+          .then((res) =>{
+              setState({
+                data: res.data,
+                headers: res.headers,
+                cancelToken: source,
+                pending: false,
+                error: false,
+                complete: true,
+                success: true,
+              })
+            }
+          )
+          .catch((error) => {
+            let msg=error?.response?.data?.message || error?.response?.statusText
+            let status;
+            Tracker.gtmVirtualPage(
+              error?.response?.status,
+              `/error/server_side/${error?.response?.status}`,
+              error
+            );
+            if (error?.response?.status === 401) {
+              localStorage.removeItem("user");
+              dispatch({ email: "" });
+              history.push("/");
+            } else {
+              status=error.response?.status || null
+              req.showNotify !== false &&
+                notify.show(error?.response?.data?.message || error?.message || error);
+            }
+
+            const err = error.response ? error.response.data : error;
+            let errorCode = "";
+            try {
+              errorCode = (err?.message && JSON.parse(err.message)?.errorCode) || (err?.data && JSON.parse(err.data)?.errorCode) || "";
+            } catch (e) {
+              console.log(e);
+            }
+            setState({
+              data: null,
+              cancelToken: null,
+              pending: false,
+              error: err,
+              complete: true,
+              success: false,
+              errorCode: errorCode,
+              msg:msg,
+              status: status
+            });
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    call();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [req]);
+
+  return { state, hit: (args?: any) => setReq(fn(args)) };
+}
+
+export default useFetch;
+
+
+------------------------------------------using use feth--------------------
+import useFetch from "./useFetch";
+
+export const useOrdersApis = () => {
+  const getOrderList = useFetch((data: any) => ({
+    url: `/orders/list/${data.shopId}?${data.query}`,
+    method: "GET",
+    auth0: true,
+  }));
+  return {
+    getOrderList,
+    
+  };
+};
+
+export default useOrdersApis;

@@ -20,6 +20,7 @@ import MouseTracker from './routes/renderProps/MouseTracker';
 import { Parent } from './routes/portal/Portal';
 import HigherOrderComponent from './routes/higherOrderComponent/HigherOrderComponent';
 import ThrottleDebounce from './routes/ThrottleDebounceComponent';
+import GraphqlComp from "./routes/GraphqlComp";
 
 
 // ./routes/higherOrderComponent/HigherOrderComponent';
@@ -55,6 +56,8 @@ class Main extends React.Component {
             <li><Link to={'./portal'}>Portal</Link></li>
             <li><Link to={'./hoc'}>Higher Order Component</Link></li>
             <li><Link to={'./throttle-debounce'}>Throttleing and Debouncing</Link></li>
+            <li><Link to={'./graphqleg'}>Graphql(check console)</Link></li>
+
             <hr/>
           </ul>
           <Switch>
@@ -76,6 +79,8 @@ class Main extends React.Component {
             <Route exact path='/portal' component={Parent}></Route>
             <Route exact path='/hoc' component={HigherOrderComponent}></Route>
             <Route exact path='/throttle-debounce' component={ThrottleDebounce}></Route>
+            <Route exact path='/graphqleg' component={GraphqlComp}></Route>
+
 
           </Switch>
         </div>
