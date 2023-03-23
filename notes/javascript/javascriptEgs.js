@@ -1,19 +1,19 @@
 //example#1......................................
-// var pokemon = {
-//     firstName: 'Pika',
-//     lastName: 'chu',
-//     getPokemonName: function() {
-//         const fullName = this.firstName + ' ' + this.lastName;
-//         return fullName;
-//     }
-// }
+var pokemon = {
+    firstName: 'Pika',
+    lastName: 'chu',
+    getPokemonName: function() {
+        const fullName = this.firstName + ' ' + this.lastName;
+        return fullName;
+    }
+}
 
-// function getPokemonName () {return "hello"};
-// var pokemonInfo = function (snacks, hobby) {
-//     console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' ' + hobby);
-// }
+function getPokemonName () {return "hello"};
+var pokemonInfo = function (snacks, hobby) {
+    console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' ' + hobby);
+}
 // console.log(getPokemonName()) // hello
-// // pokemonInfo('milkButter', 'algorithm'); // this.getPokemon is not a function
+// pokemonInfo('milkButter', 'algorithm'); // this.getPokemonName is not a function
 // pokemonInfo.call(pokemon, 'milkButter', 'algorithm'); // Pika chu love milkButter algorithm
 // pokemonInfo.call(pokemon, ['milkButter', 'algorithm']); // Pika chu love milkButter,algorithm undefined
 // pokemonInfo.apply(pokemon, ['milkButter', 'algorithm']); // Pika chu love milkButter algorithm
@@ -21,7 +21,7 @@
 // // console.log(this.pokemon.getPokemonName());  // can't read property of undefined
 // console.log(pokemon.getPokemonName());
 // var pk = { firstName: 'rohit', lastName: 'gupta' };
-// // console.log(this.pokemon.getPokemonName.call(pk));
+// console.log(this.pokemon.getPokemonName.call(pk));
 // console.log(pokemon.getPokemonName.call(pk));
  
 

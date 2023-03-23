@@ -24,6 +24,7 @@ print(z)
 
 def myfunc():
   global x
+  # x="hello"
   print('inside function', x)
   x='helllll'
   print('x from instide', x)
