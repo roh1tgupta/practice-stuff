@@ -1,0 +1,48 @@
+# mutation{
+#   addUser(name:"roht122", email:"rohit@dfg.vom"){
+#     name
+#   }
+# }
+
+# mutation{
+#   addSpace(input:{name:"roht122", rent:54.988, status: not_available}){
+#     name
+#     status
+#   }
+# }
+
+
+# query {
+#   space{
+#     name
+#     status
+#   }
+# }
+
+# query {
+#   getSpace(id:1){
+#     name
+#     status
+#   }
+# }
+
+# query getUser($id: Int, $id2: Int = 1, $includeEmail: Boolean = true){
+#   User1: user(id:$id){
+#    ...userFields
+#   }
+  
+#   User2: user(id:$id2){
+#     name
+#     email @skip(if: $includeEmail)
+#     ...userFields
+    
+#   }
+# }
+
+# fragment userFields on Person{
+#   name,
+#   email @include(if: $includeEmail)
+# }
+
+
+# @include and @skip are called directives
