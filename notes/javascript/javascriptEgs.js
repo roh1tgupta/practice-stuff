@@ -1,8 +1,18 @@
+// Arrow Functions: Some people think of arrow funcQons as just being syntacQc sugar for a regular funcQon, but arrow funcQons work a bit differently than a regular funcQon. They are a compact alternaQve to a regular funcQon, but also without its own bindings to this, arguments, super,
+// or new.target keywords. Arrow funcQons cannot be used as constructors and are not the best opQon for methods.
+
+
 //example#1......................................
 var pokemon = {
     firstName: 'Pika',
     lastName: 'chu',
     getPokemonName: function() {
+        console.log(this)
+        const fullName = this.firstName + ' ' + this.lastName;
+        return fullName;
+    },
+    getPokemonNameWithAF: () => {  // Arrow Functions Eg
+        console.log(this)
         const fullName = this.firstName + ' ' + this.lastName;
         return fullName;
     }
@@ -50,3 +60,15 @@ var pokemonInfo = function (snacks, hobby) {
 // console.log(obj.maker, "           ", obj.name);
 
 
+// console.log(pokemon.getPokemonName())
+// console.log(pokemon.getPokemonNameWithAF())
+
+// Currying With Bind
+// Currying is breaking down a function with multiple arguments into one or more functions that each accept a single argument.
+function multiply(a, b) {
+    return a * b;
+}
+let multiplyByTwo = multiply.bind(this, 2);
+console.log(multiplyByTwo(4)); // 8
+let multiplyByTen = multiply.bind(this, 10);
+console.log(multiplyByTen(6)); // 60
