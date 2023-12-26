@@ -4,6 +4,9 @@ Moment.js,Nuxt.js(vue.js metaframework),video.js,
 
 js cheatsheet  https://www.w3schools.com/jsref/
 
+In JavaScript, when you perform an arithmetic operation involving a string and a number,
+the JavaScript engine attempts to convert the string to a number. This process is known as type coercion.
+
 
 SOLID PRINCIPLE:
 S(Single-responsibility Principle): A class should have one and only one reason to change, meaning

@@ -1,12 +1,16 @@
+why hosting happens in js language
+https://sidhujaspreet963.medium.com/advance-javascript-why-hoisting-3db74309e674
+
 JavaScript defines seven built-in types:
 null
 undefined
 boolean
 number
+bigint(new in ECMAScript 2020)
 string
 object
 symbol -- added in ES6!
-Note: All of these types except object are called "primitives".
+Note: All of these types except object are called "primitives".(currenlty there are 7 primitive data types in js)
 typeof undefined === "undefined"; // true
 typeof true === "boolean"; // true
 typeof 42 === "number"; // true
@@ -14,6 +18,58 @@ typeof "42" === "string"; // true
 typeof { life: 42 } === "object"; // true
 // added in ES6!
 typeof Symbol() === "symbol"; // true
+
+// Numbers
+typeof 37 === "number";
+typeof 3.14 === "number";
+typeof 42 === "number";
+typeof Math.LN2 === "number";
+typeof Infinity === "number";
+typeof NaN === "number"; // Despite being "Not-A-Number"
+typeof Number("1") === "number"; // Number tries to parse things into numbers
+typeof Number("shoe") === "number"; // including values that cannot be type coerced to a number
+typeof 42n === "bigint";
+typeof typeof BigInt(42) === "bigint";
+
+// Strings
+typeof "" === "string";
+typeof "bla" === "string";
+typeof `template literal` === "string";
+typeof "1" === "string"; // note that a number within a string is still typeof string
+typeof typeof 1 === "string"; // typeof always returns a string
+typeof String(1) === "string"; // String converts anything into a string, safer than toString
+
+// Booleans
+typeof true === "boolean";
+typeof false === "boolean";
+typeof Boolean(1) === "boolean"; // Boolean() will convert values based on if they're truthy or
+falsy
+typeof !!1 === "boolean"; // two calls of the ! (logical NOT) operator are equivalent to Boolean()
+// Symbols
+typeof Symbol() === "symbol";
+typeof Symbol("foo") === "symbol";
+typeof Symbol.iterator === "symbol";
+// Undefined
+typeof undefined === "undefined";
+typeof declaredButUndefinedVariable === "undefined";
+typeof undeclaredVariable === "undefined";
+// Objects
+typeof { a: 1 } === "object";
+// use Array.isArray or Object.prototype.toString.call
+// to differentiate regular objects from arrays
+typeof [1, 2, 4] === "object";
+typeof new Date() === "object";
+typeof /regex/ === "object"; // See Regular expressions section for historical results
+// The following are confusing, dangerous, and wasteful. Avoid them.
+typeof new Boolean(true) === "object";
+typeof new Number(1) === "object";
+typeof new String("abc") === "object";
+// Functions
+typeof function() {} === "function";
+typeof class C {} === "function";
+typeof Math.sin === "function";
+
+Undefined vs Null: Undefined is the absence of definiQon, it has yet to be defined, and null is the absence of value, there is no value there.
 
 typeof null === "object"; // true
 It would have been nice (and correct!) if it returned "null" , but this original bug in JS has
@@ -87,6 +143,8 @@ polyfills is needed for prees-6 environment
 Object.is(..) probably shouldn't be used in cases where == or === are known to be
 safe
 
+Object.is() is also not equivalent to the === operator. The only difference between 
+Object.is() and === is in their treatment of signed zeros and NaN values
 
 
 there are no Null() or Undefined() native constructors, but nevertheless
@@ -116,3 +174,26 @@ themselves are "truthy"
 
 
 Note: An array with at least one "empty slot" in it is often called a "sparse array."
+
+
+const shallowObj = { ...originalObj };  // shallow copy
+// shallowObj points to a new location 2, but references location 1 for the nested
+object
+const deepObj = JSON.parse(JSON.stringify(originalObj));   // deepcopy
+// deepObj clones all parts of the object to a new memory address
+
+(function() {}.contructor === Function);
+// true
+// function constructor
+new Function("optionalArguments", "functionBody");
+const four = new Function("return 4"); // 4
+const sum = new Function("x", "y", "return x + y");
+console.log(sum(2, 3)); // 5
+
+Callable Object:
+Because funcBons are objects in JavaScript, this also gives them the ability to have properties added to them. This creates a callable object, a special object that creates properties not available on normal objects. 
+
+
+In programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities.
+Functions are first-class citizens in JavaScript All this means is that functions can be passed around as if they were a JavaScript type. Anything that can be done with other 7n hhb , can also be done with functions.
+
