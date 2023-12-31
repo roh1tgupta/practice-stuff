@@ -21,6 +21,9 @@ import { Parent } from './routes/portal/Portal';
 import HigherOrderComponent from './routes/higherOrderComponent/HigherOrderComponent';
 import ThrottleDebounce from './routes/ThrottleDebounceComponent';
 import GraphqlComp from "./routes/GraphqlComp";
+import Geolocation from './routes/GeoLocation';
+import DragAndDrop from './routes/DragAndDrop';
+import WebWorker from './routes/WebWorker';
 
 
 // ./routes/higherOrderComponent/HigherOrderComponent';
@@ -57,6 +60,9 @@ class Main extends React.Component {
             <li><Link to={'./hoc'}>Higher Order Component</Link></li>
             <li><Link to={'./throttle-debounce'}>Throttleing and Debouncing</Link></li>
             <li><Link to={'./graphqleg'}>Graphql(check console)</Link></li>
+            <li><Link to={'./geolocationapi'}>Geolocation api(html5)</Link></li>
+            <li><Link to={'./draganddrop'}>Drag and Drop(html5)</Link></li>
+            <li><Link to={'./webworker'}>Web worker simple example(html5)</Link></li>
 
             <hr/>
           </ul>
@@ -80,6 +86,9 @@ class Main extends React.Component {
             <Route exact path='/hoc' component={HigherOrderComponent}></Route>
             <Route exact path='/throttle-debounce' component={ThrottleDebounce}></Route>
             <Route exact path='/graphqleg' component={GraphqlComp}></Route>
+            <Route exact path='/geolocationapi' component={Geolocation}></Route>
+            <Route exact path='/draganddrop' component={DragAndDrop}></Route>
+            <Route exact path='/webworker' component={WebWorker}></Route>
 
 
           </Switch>

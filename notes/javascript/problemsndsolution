@@ -32,4 +32,6 @@ res.setHeader("X-Content-Security-Policy", "https://marketplace.carrefouruae.com
     res.setHeader("Content-Security-Policy", "https://marketplace.carrefouruae.com/seller");
 
 
+explicitly setting cookiew value with httpOnly false, here if httpOnly is set to true then this can't be read from code on client side, this si used to pass only in api calls
+COOKIES.set('page_type', pageName, { path: '/', httpOnly: false });
 

@@ -27,14 +27,16 @@
 // }
 // hoisting2();
 
-// "use strict"
+// // "use strict"
 // function hoisting3() {
 //     // console.log('.....', a3); // throws error a3 not defined
 //     a3 = 10;
+//     rohit = 5;
 //     console.log('.....', a3);
 // }
 // hoisting3();
 // console.log('.....', a3);
+// console.log(rohit)
 
 // function hoisting4() {
 //     console.log('.....', a4); // check after removing this line too
@@ -64,7 +66,7 @@
 // }
 // hoisting6();
 
-// // "use strict"    // checkbelow with or without use strict
+// "use strict"    // checkbelow with or without use strict
 // console.log(this);
 // function setPageName() {
 //     console.log(this);

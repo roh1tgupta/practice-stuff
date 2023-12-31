@@ -3,25 +3,25 @@
 
 
 //example#1......................................
-var pokemon = {
-    firstName: 'Pika',
-    lastName: 'chu',
-    getPokemonName: function() {
-        console.log(this)
-        const fullName = this.firstName + ' ' + this.lastName;
-        return fullName;
-    },
-    getPokemonNameWithAF: () => {  // Arrow Functions Eg
-        console.log(this)
-        const fullName = this.firstName + ' ' + this.lastName;
-        return fullName;
-    }
-}
+// var pokemon = {
+//     firstName: 'Pika',
+//     lastName: 'chu',
+//     getPokemonName: function() {
+//         console.log(this)
+//         const fullName = this.firstName + ' ' + this.lastName;
+//         return fullName;
+//     },
+//     getPokemonNameWithAF: () => {  // Arrow Functions Eg
+//         console.log(this)
+//         const fullName = this.firstName + ' ' + this.lastName;
+//         return fullName;
+//     }
+// }
 
-function getPokemonName () {return "hello"};
-var pokemonInfo = function (snacks, hobby) {
-    console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' ' + hobby);
-}
+// function getPokemonName () {return "hello"};
+// var pokemonInfo = function (snacks, hobby) {
+//     console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' ' + hobby);
+// }
 // console.log(getPokemonName()) // hello
 // pokemonInfo('milkButter', 'algorithm'); // this.getPokemonName is not a function
 // pokemonInfo.call(pokemon, 'milkButter', 'algorithm'); // Pika chu love milkButter algorithm
@@ -35,7 +35,7 @@ var pokemonInfo = function (snacks, hobby) {
 // console.log(pokemon.getPokemonName.call(pk));
  
 
-// example#2...........................................
+// // example#2...........................................
 // function greeter(name, age) {
 //     var message = 'we welcomes '+name + ' ---- ' + age + '--';
 //     return function greet() {
@@ -65,10 +65,38 @@ var pokemonInfo = function (snacks, hobby) {
 
 // Currying With Bind
 // Currying is breaking down a function with multiple arguments into one or more functions that each accept a single argument.
-function multiply(a, b) {
-    return a * b;
+// function multiply(a, b) {
+//     return a * b;
+// }
+// let multiplyByTwo = multiply.bind(this, 2);
+// console.log(multiplyByTwo(4)); // 8
+// let multiplyByTen = multiply.bind(this, 10);
+// console.log(multiplyByTen(6)); // 60
+
+
+function pokemon () {
+    this.firstName = 'Pika';
+    this.lastName = 'chu';
+    this.getPokemonName = function () {
+        // console.log(this)
+        const fullName = this.firstName + ' ' + this.lastName;
+        return fullName;
+    };
+    
+    this.getPokemonNameWithAF = () => {  // Arrow Functions Eg
+        // console.log(this)
+        const fullName = this.firstName + ' ' + this.lastName;
+        return fullName;
+    }
+
+    console.log(getPokemonNameWithAF())
+    console.log(this.getPokemonName(), this.firstName, firstName);
 }
-let multiplyByTwo = multiply.bind(this, 2);
-console.log(multiplyByTwo(4)); // 8
-let multiplyByTen = multiply.bind(this, 10);
-console.log(multiplyByTen(6)); // 60
+pokemon();
+// let ab = new pokemon();
+// console.log(ab.getPokemonNameWithAF())
+// console.log(ab.getPokemonName())
+
+// let abcd = { firstName: "rohit", lastName: "rahul"}
+// console.log(ab.getPokemonNameWithAF.call(abcd))
+// console.log(ab.getPokemonName.call(abcd))
