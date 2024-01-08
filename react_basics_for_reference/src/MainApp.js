@@ -24,6 +24,8 @@ import GraphqlComp from "./routes/GraphqlComp";
 import Geolocation from './routes/GeoLocation';
 import DragAndDrop from './routes/DragAndDrop';
 import WebWorker from './routes/WebWorker';
+import SharedWebWorker from './routes/SharedWebWorker';
+import SharedWebWorker1 from './routes/SharedWebWorker1';
 
 
 // ./routes/higherOrderComponent/HigherOrderComponent';
@@ -62,7 +64,9 @@ class Main extends React.Component {
             <li><Link to={'./graphqleg'}>Graphql(check console)</Link></li>
             <li><Link to={'./geolocationapi'}>Geolocation api(html5)</Link></li>
             <li><Link to={'./draganddrop'}>Drag and Drop(html5)</Link></li>
-            <li><Link to={'./webworker'}>Web worker simple example(html5)</Link></li>
+            <li><Link to={'./webworker-dedicated'}>Dedicated Web worker simple example(html5)</Link></li>
+            <li><Link to={'./webworker-shared'}>Shared Web worker first comp </Link></li>
+            <li><Link to={'./webworker-shared1'}>Shared Web worker 2nd comp</Link></li>
 
             <hr/>
           </ul>
@@ -88,8 +92,9 @@ class Main extends React.Component {
             <Route exact path='/graphqleg' component={GraphqlComp}></Route>
             <Route exact path='/geolocationapi' component={Geolocation}></Route>
             <Route exact path='/draganddrop' component={DragAndDrop}></Route>
-            <Route exact path='/webworker' component={WebWorker}></Route>
-
+            <Route exact path='/webworker-dedicated' component={WebWorker}></Route>
+            <Route exact path='/webworker-shared' component={SharedWebWorker}></Route>
+            <Route exact path='/webworker-shared1' component={SharedWebWorker1}></Route>
 
           </Switch>
         </div>

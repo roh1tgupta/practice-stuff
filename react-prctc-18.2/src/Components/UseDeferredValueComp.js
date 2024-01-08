@@ -43,7 +43,7 @@ const SlowList = memo(function SlowList({ text }) {
         while(k++ < 100000000);
         items.push(<SlowItem key={i} text={text} />);
     }
-    return (
+    return ( 
       <ul className="items">
         {items}
       </ul>
