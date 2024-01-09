@@ -26,6 +26,7 @@ import DragAndDrop from './routes/DragAndDrop';
 import WebWorker from './routes/WebWorker';
 import SharedWebWorker from './routes/SharedWebWorker';
 import SharedWebWorker1 from './routes/SharedWebWorker1';
+import UseReducerHook from './routes/UseReducerHook';
 
 
 // ./routes/higherOrderComponent/HigherOrderComponent';
@@ -67,6 +68,7 @@ class Main extends React.Component {
             <li><Link to={'./webworker-dedicated'}>Dedicated Web worker simple example(html5)</Link></li>
             <li><Link to={'./webworker-shared'}>Shared Web worker first comp </Link></li>
             <li><Link to={'./webworker-shared1'}>Shared Web worker 2nd comp</Link></li>
+            <li><Link to={'./usereducer'}>useReducer hook</Link></li>
 
             <hr/>
           </ul>
@@ -95,6 +97,7 @@ class Main extends React.Component {
             <Route exact path='/webworker-dedicated' component={WebWorker}></Route>
             <Route exact path='/webworker-shared' component={SharedWebWorker}></Route>
             <Route exact path='/webworker-shared1' component={SharedWebWorker1}></Route>
+            <Route exact path='/usereducer' component={UseReducerHook}></Route>
 
           </Switch>
         </div>
