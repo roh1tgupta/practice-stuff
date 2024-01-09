@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import ReduxApp from './ReduxApp';
 import Root, { loader as rootLoader, action as rootAction } from "./routes/root";
 import Contact, { loader as contactLoader } from './routes/Contact';
 import ErrorPage from './error-page';
@@ -95,7 +96,9 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    {/* <RouterProvider router={router}/> */}
+    {/* <App/> */}
+    <ReduxApp />
   </React.StrictMode>
 );
 
