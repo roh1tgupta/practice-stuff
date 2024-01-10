@@ -380,3 +380,7 @@ i {
   justify-content: center;
   width: 100%;
 }
+
+.newNotification {
+  background-color: #a4a4a4;
+}

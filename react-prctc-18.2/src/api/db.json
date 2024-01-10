@@ -1,0 +1,567 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "firstName": "John",
+      "lastName": "Doe",
+      "name": "John Doe",
+      "username": "john_doe",
+      "posts": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "id": "2",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "name": "Jane Smith",
+      "username": "jane_smith",
+      "posts": [
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "id": "3",
+      "firstName": "Bob",
+      "lastName": "Johnson",
+      "name": "Bob Johnson",
+      "username": "bob_johnson",
+      "posts": [
+        "7",
+        "8",
+        "9"
+      ]
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "title": "Mock Post 1",
+      "date": "2023-01-10T12:30:00Z",
+      "content": "This is the content of Mock Post 1",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "1",
+        "2"
+      ],
+      "user": "1"
+    },
+    {
+      "id": "2",
+      "title": "Mock Post 2",
+      "date": "2023-01-11T14:45:00Z",
+      "content": "This is the content of Mock Post 2",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "3",
+        "4"
+      ],
+      "user": "1"
+    },
+    {
+      "id": "3",
+      "title": "Mock Post 3",
+      "date": "2023-01-12T10:15:00Z",
+      "content": "This is the content of Mock Post 3",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "5",
+        "6"
+      ],
+      "user": "1"
+    },
+    {
+      "id": "4",
+      "title": "Mock Post 4",
+      "date": "2023-01-13T08:30:00Z",
+      "content": "This is the content of Mock Post 4",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "7",
+        "8"
+      ],
+      "user": "2"
+    },
+    {
+      "id": "5",
+      "title": "Mock Post 5",
+      "date": "2023-01-14T17:20:00Z",
+      "content": "This is the content of Mock Post 5",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "9",
+        "10"
+      ],
+      "user": "2"
+    },
+    {
+      "id": "6",
+      "title": "Mock Post 6",
+      "date": "2023-01-15T19:00:00Z",
+      "content": "This is the content of Mock Post 6",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "11",
+        "12"
+      ],
+      "user": "2"
+    },
+    {
+      "id": "8",
+      "title": "Mock Post 8",
+      "date": "2023-01-17T15:10:00Z",
+      "content": "This is the content of Mock Post 8",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "15",
+        "16"
+      ],
+      "user": "3"
+    },
+    {
+      "id": "9",
+      "title": "Mock Post 9",
+      "date": "2023-01-18T11:55:00Z",
+      "content": "This is the content of Mock Post 9",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "comments": [
+        "17",
+        "18"
+      ],
+      "user": "3"
+    },
+    {
+      "id": "af37",
+      "title": "helloooo",
+      "content": "hhhhhhh",
+      "userId": "1",
+      "date": "2024-01-10T12:16:32.313Z",
+      "user": "1",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "0e84",
+      "title": "sdf",
+      "content": "df",
+      "user": "3",
+      "date": "2024-01-10T12:45:22.165Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "hooray": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "date": "2023-01-10T13:00:00Z",
+      "text": "Comment 1 for Mock Post 1",
+      "post": "1"
+    },
+    {
+      "id": "2",
+      "date": "2023-01-11T15:00:00Z",
+      "text": "Comment 2 for Mock Post 1",
+      "post": "1"
+    },
+    {
+      "id": "3",
+      "date": "2023-01-11T16:30:00Z",
+      "text": "Comment 1 for Mock Post 2",
+      "post": "2"
+    },
+    {
+      "id": "4",
+      "date": "2023-01-12T11:45:00Z",
+      "text": "Comment 2 for Mock Post 2",
+      "post": "2"
+    },
+    {
+      "id": "5",
+      "date": "2023-01-12T12:15:00Z",
+      "text": "Comment 1 for Mock Post 3",
+      "post": "3"
+    },
+    {
+      "id": "6",
+      "date": "2023-01-12T13:45:00Z",
+      "text": "Comment 2 for Mock Post 3",
+      "post": "3"
+    },
+    {
+      "id": "7",
+      "date": "2023-01-13T09:30:00Z",
+      "text": "Comment 1 for Mock Post 4",
+      "post": "4"
+    },
+    {
+      "id": "8",
+      "date": "2023-01-13T10:15:00Z",
+      "text": "Comment 2 for Mock Post 4",
+      "post": "4"
+    },
+    {
+      "id": "9",
+      "date": "2023-01-14T18:30:00Z",
+      "text": "Comment 1 for Mock Post 5",
+      "post": "5"
+    },
+    {
+      "id": "10",
+      "date": "2023-01-14T19:45:00Z",
+      "text": "Comment 2 for Mock Post 5",
+      "post": "5"
+    },
+    {
+      "id": "11",
+      "date": "2023-01-15T20:30:00Z",
+      "text": "Comment 1 for Mock Post 6",
+      "post": "6"
+    },
+    {
+      "id": "12",
+      "date": "2023-01-15T21:15:00Z",
+      "text": "Comment 2 for Mock Post 6",
+      "post": "6"
+    },
+    {
+      "id": "13",
+      "date": "2023-01-16T23:00:00Z",
+      "text": "Comment 1 for Mock Post 7",
+      "post": "7"
+    },
+    {
+      "id": "14",
+      "date": "2023-01-17T15:45:00Z",
+      "text": "Comment 2 for Mock Post 7",
+      "post": "7"
+    },
+    {
+      "id": "15",
+      "date": "2023-01-17T16:30:00Z",
+      "text": "Comment 1 for Mock Post 8",
+      "post": "8"
+    },
+    {
+      "id": "16",
+      "date": "2023-01-18T12:15:00Z",
+      "text": "Comment 2 for Mock Post 8",
+      "post": "8"
+    },
+    {
+      "id": "17",
+      "date": "2023-01-18T13:00:00Z",
+      "text": "Comment 1 for Mock Post 9",
+      "post": "9"
+    },
+    {
+      "id": "18",
+      "date": "2023-01-18T14:30:00Z",
+      "text": "Comment 2 for Mock Post 9",
+      "post": "9"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "Ao3HQQfGBGRrVT5W6Xw8x",
+      "user": 3,
+      "message": "hello tehre",
+      "date": "2024-01-10T14:24:00.230Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "D72BHnpRCgt9TRFde8pK3",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:05:36 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:25:36.075Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "53SsJF5EKLN2_wVGG-_PW",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:05:40 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:25:40.434Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "dz6Vngs59tLJLYKyKNmTs",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:05:58 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:25:58.242Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "0AA0EyfALTRIWrYHQwfYE",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:06:48 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:26:48.116Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "FjY6s1L8S5NrH7WxyoyaU",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:08:07 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:28:07.323Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "OID-dsaehIWlLVs0SVKXE",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:08:14 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:28:14.213Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "T6NcBx8mm16bakVp4a9Qm",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:08:22 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:28:22.087Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "cUFnS3dNi2guBsBCwgSC0",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:08:23 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:28:23.105Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "WDaJcJJ-cfg4EbyeIaYb7",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:08:25 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:28:25.954Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "LO6F19TGrK643zTUcK_WX",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:08:35 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:28:35.548Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "JHve8THick3DQ2Nazc0N4",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:13:01 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:33:01.850Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "fAL0t2-oAGqPydGTyK0ej",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:13:03 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:33:03.316Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "BoOM6H6GkFzsJKwyCbENB",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:13:04 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:33:04.632Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "kab0k20IV0vI2htHq_oJv",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:13:05 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:33:05.833Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "9x4gXLJlcvOscQhLcDSQ9",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:13:08 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:33:08.583Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "oyWnpCj9nd1zNIt0BBfmv",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:15:23 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:35:23.097Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "TDhCS2hevYx-l1IFA25ei",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:15:33 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:35:33.073Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "UoJ1-kamvDMvMJ78FfbZO",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:15:35 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:35:35.529Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "d4XkEJw2In7soUOC4xQfj",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:16:52 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:36:52.645Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "Fv0d57wF6NiDqz5Wy2Luw",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:16:53 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:36:53.445Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "6F6hx4zzl_Tl0ofV1Z0yd",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:16:54 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:36:54.179Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "ChHm9rAZKGUhH-ia3tSof",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:16:57 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:36:57.345Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "KudBrdoRAw4cxJfBu607Y",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:19:25 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:39:25.220Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "L2wHcQ5xXFJdiyCoF6Zuk",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:19:26 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:39:26.276Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "FTNk90gheitkh14NQtIYg",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:20:56 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:40:56.868Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "TbAHSu2PV8qL99aLhdL6O",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:20:57 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:40:57.440Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "6hNGYhvbmgcAtwuTrP2lc",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:26:26 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:46:26.711Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "LvR3JpwF_7y9JTdxQKsH3",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:26:27 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:46:27.303Z",
+      "isNew": true,
+      "read": false
+    },
+    {
+      "id": "KoYyeXjRsl3Csql51V6dw",
+      "user": 3,
+      "message": "created at Wed Jan 10 2024 20:26:27 GMT+0530 (India Standard Time)",
+      "date": "2024-01-10T14:46:27.903Z",
+      "isNew": true,
+      "read": false
+    }
+  ]
+}

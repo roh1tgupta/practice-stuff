@@ -31,7 +31,6 @@ export default function Root() {
         );
 
 
-        console.log(searching, "...serching")
     return (
       <>
         <div id="sidebar">

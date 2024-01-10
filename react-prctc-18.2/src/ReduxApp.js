@@ -6,10 +6,9 @@ import { AddPostForm } from './features/posts/AddPostForm'
 
 
 export default function ReduxApp () {
-    console.log(store, store.getState())
-    return <Provider store={store}>
+    return <>
         <Counter />
         <PostsList />
         <AddPostForm />
-    </Provider>
+    </>
 }

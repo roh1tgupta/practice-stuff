@@ -3,25 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mswjs/data": "^0.16.1",
     "@reduxjs/toolkit": "^2.0.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "classnames": "^2.5.1",
+    "date-fns": "^3.2.0",
+    "faker": "^6.6.6",
+    "json-server": "^1.0.0-alpha.16",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "mock-socket": "^9.3.1",
+    "msw": "^2.0.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.1",
     "react-scripts": "5.0.1",
+    "seedrandom": "^3.0.5",
     "sort-by": "^1.2.0",
+    "txtgen": "^3.0.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "mock-server": "json-server --watch src/api/db.json --port 3001"
   },
   "eslintConfig": {
     "extends": [
@@ -40,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.3.1"
   }
 }
