@@ -106,7 +106,7 @@
 
 
 
-// The for..in loop iterates over inherited properties too.
+// // The for..in loop iterates over inherited properties too.
 // let animal = {
 //   eats: true,
 //   walk() {
@@ -149,7 +149,7 @@
 //it has 'enumerable:false' flag
 
 
-//question
+// //question
 // let hamster = {
 //   stomach: [],
 //   eat(food) {

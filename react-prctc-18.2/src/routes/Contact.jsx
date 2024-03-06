@@ -1,4 +1,4 @@
-import { Form, useLoaderData, useFetcher } from "react-router-dom";
+import { Form, useLoaderData, useFetcher, Route, Routes, Link, NavLink, Outlet } from "react-router-dom";
 import { getContact, updateContact } from "../contacts";
 
 export async function loader({ params }) {
@@ -63,6 +63,7 @@ export default function Contact() {
           </p>
         )}
 
+<Link to="abcd/ad"> ling to abcdef</Link>
         {contact.notes && <p>{contact.notes}</p>}
 
         <div>
@@ -84,6 +85,10 @@ export default function Contact() {
           >
             <button type="submit">Delete</button>
           </Form>
+          {/* <Outlet /> */}
+          <Routes>
+            <Route path="abcd/ad" element={<div>hello workd from contatct</div>} />
+          </Routes>
         </div>
       </div>
     </div>

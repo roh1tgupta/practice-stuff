@@ -18,9 +18,9 @@ function App() {
       <Suspense fallback={<div>loading..</div>} > 
       {/* <UseContextComp /> */}
 
-      <UseDeferredValueComp />
+      {/* <UseDeferredValueComp /> */}
       {/* <UseImperativeHandleComp /> */}
-      {/* <UseTransitionComp /> */}
+      <UseTransitionComp />
       </Suspense>
     </div>
   );

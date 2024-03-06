@@ -27,6 +27,7 @@ import WebWorker from './routes/WebWorker';
 import SharedWebWorker from './routes/SharedWebWorker';
 import SharedWebWorker1 from './routes/SharedWebWorker1';
 import UseReducerHook from './routes/UseReducerHook';
+import EventPropagations from './routes/EventPropagations';
 
 
 // ./routes/higherOrderComponent/HigherOrderComponent';
@@ -69,6 +70,7 @@ class Main extends React.Component {
             <li><Link to={'./webworker-shared'}>Shared Web worker first comp </Link></li>
             <li><Link to={'./webworker-shared1'}>Shared Web worker 2nd comp</Link></li>
             <li><Link to={'./usereducer'}>useReducer hook</Link></li>
+            <li><Link to={'./eventPropagations'} > Event Propagations </Link></li>
 
             <hr/>
           </ul>
@@ -98,6 +100,7 @@ class Main extends React.Component {
             <Route exact path='/webworker-shared' component={SharedWebWorker}></Route>
             <Route exact path='/webworker-shared1' component={SharedWebWorker1}></Route>
             <Route exact path='/usereducer' component={UseReducerHook}></Route>
+            <Route exact path='/eventPropagations' component={EventPropagations}></Route>
 
           </Switch>
         </div>

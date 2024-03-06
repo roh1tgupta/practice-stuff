@@ -86,7 +86,14 @@ const router = createBrowserRouter(
           element={<Contact />}
           loader={contactLoader}
           action={contactAction}
-        />
+        >
+          <Route
+            path="abcd/ad"
+            element={<div>hello world</div>}
+            // loader={contactLoader}
+            // action={contactAction}
+         />
+        </Route>
         <Route
           path="contacts/:contactId/edit"
           element={<EditContact />}
@@ -153,8 +160,8 @@ async function start() {
   root.render(
     <React.StrictMode>
       <Provider store={store} >
-      <RouterProvider router={router1}/>
-      {/* <App/> */}
+      {/* <RouterProvider router={router1}/> */}
+      <App/>
       {/* <ReduxApp /> */}
       </Provider>
     </React.StrictMode>

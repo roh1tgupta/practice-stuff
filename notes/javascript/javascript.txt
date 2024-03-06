@@ -29,7 +29,8 @@ typeof NaN === "number"; // Despite being "Not-A-Number"
 typeof Number("1") === "number"; // Number tries to parse things into numbers
 typeof Number("shoe") === "number"; // including values that cannot be type coerced to a number
 typeof 42n === "bigint";
-typeof typeof BigInt(42) === "bigint";
+typeof typeof BigInt(42) === "bigint"; // false
+typeof typeof BigInt(42) === "string"; // true
 
 // Strings
 typeof "" === "string";
@@ -191,7 +192,7 @@ const sum = new Function("x", "y", "return x + y");
 console.log(sum(2, 3)); // 5
 
 Callable Object:
-Because funcBons are objects in JavaScript, this also gives them the ability to have properties added to them. This creates a callable object, a special object that creates properties not available on normal objects. 
+Because functions are objects in JavaScript, this also gives them the ability to have properties added to them. This creates a callable object, a special object that creates properties not available on normal objects. 
 
 
 In programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities.

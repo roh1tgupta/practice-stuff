@@ -102,6 +102,7 @@ export default function Root() {
                     )}{" "}
                     {contact.favorite && <span>★</span>}
                   </NavLink>
+                  <Link to="/contacts/abcd/ad"> ling to abcd</Link>
                 </li>
               ))}
             </ul>

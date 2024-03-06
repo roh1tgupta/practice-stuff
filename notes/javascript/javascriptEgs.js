@@ -1,13 +1,15 @@
-// Arrow Functions: Some people think of arrow funcQons as just being syntacQc sugar for a regular funcQon, but arrow funcQons work a bit differently than a regular funcQon. They are a compact alternaQve to a regular funcQon, but also without its own bindings to this, arguments, super,
+// Arrow Functions: Some people think of arrow funcQons as just being syntacQc sugar for a regular funcQon, 
+// but arrow funcQons work a bit differently than a regular funcQon. They are a compact alternaQve to a regular
+//  funcQon, but also without its own bindings to this, arguments, super,
 // or new.target keywords. Arrow funcQons cannot be used as constructors and are not the best opQon for methods.
 
 
-//example#1......................................
+// //example#1......................................
 // var pokemon = {
 //     firstName: 'Pika',
 //     lastName: 'chu',
 //     getPokemonName: function() {
-//         console.log(this)
+//         // console.log(this)
 //         const fullName = this.firstName + ' ' + this.lastName;
 //         return fullName;
 //     },
@@ -23,16 +25,16 @@
 //     console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' ' + hobby);
 // }
 // console.log(getPokemonName()) // hello
-// pokemonInfo('milkButter', 'algorithm'); // this.getPokemonName is not a function
-// pokemonInfo.call(pokemon, 'milkButter', 'algorithm'); // Pika chu love milkButter algorithm
-// pokemonInfo.call(pokemon, ['milkButter', 'algorithm']); // Pika chu love milkButter,algorithm undefined
-// pokemonInfo.apply(pokemon, ['milkButter', 'algorithm']); // Pika chu love milkButter algorithm
-// console.log(this.pokemon);
+// // pokemonInfo('milkButter', 'algorithm'); // this.getPokemonName is not a function
+// // pokemonInfo.call(pokemon, 'milkButter', 'algorithm'); // Pika chu love milkButter algorithm
+// // pokemonInfo.call(pokemon, ['milkButter', 'algorithm']); // Pika chu love milkButter,algorithm undefined
+// // pokemonInfo.apply(pokemon, ['milkButter', 'algorithm']); // Pika chu love milkButter algorithm
+// // console.log(this.pokemon);
 // // console.log(this.pokemon.getPokemonName());  // can't read property of undefined
-// console.log(pokemon.getPokemonName());
-// var pk = { firstName: 'rohit', lastName: 'gupta' };
-// console.log(this.pokemon.getPokemonName.call(pk));
-// console.log(pokemon.getPokemonName.call(pk));
+// // console.log(pokemon.getPokemonName());
+// // var pk = { firstName: 'rohit', lastName: 'gupta' };
+// // console.log(this.pokemon.getPokemonName.call(pk));
+// // console.log(pokemon.getPokemonName.call(pk));
  
 
 // // example#2...........................................
@@ -46,7 +48,7 @@
 // greetAkhil();
 
 
-// example#3...........................................
+// // example#3...........................................
 // function bike() {
 //     var name = 'ninja';
 //     this.maker = 'kawasaki';
@@ -64,7 +66,8 @@
 // console.log(pokemon.getPokemonNameWithAF())
 
 // Currying With Bind
-// Currying is breaking down a function with multiple arguments into one or more functions that each accept a single argument.
+// Currying is breaking down a function with multiple arguments into one or more functions that each accept
+//  a single argument.
 // function multiply(a, b) {
 //     return a * b;
 // }
@@ -74,25 +77,25 @@
 // console.log(multiplyByTen(6)); // 60
 
 
-function pokemon () {
-    this.firstName = 'Pika';
-    this.lastName = 'chu';
-    this.getPokemonName = function () {
-        // console.log(this)
-        const fullName = this.firstName + ' ' + this.lastName;
-        return fullName;
-    };
+// function pokemon () {
+//     this.firstName = 'Pika';
+//     this.lastName = 'chu';
+//     this.getPokemonName = function () {
+//         console.log(this)
+//         const fullName = this.firstName + ' ' + this.lastName;
+//         return fullName;
+//     };
     
-    this.getPokemonNameWithAF = () => {  // Arrow Functions Eg
-        // console.log(this)
-        const fullName = this.firstName + ' ' + this.lastName;
-        return fullName;
-    }
+//     this.getPokemonNameWithAF = () => {  // Arrow Functions Eg
+//         // console.log(this)
+//         const fullName = this.firstName + ' ' + this.lastName;
+//         return fullName;
+//     }
 
-    console.log(getPokemonNameWithAF())
-    console.log(this.getPokemonName(), this.firstName, firstName);
-}
-pokemon();
+//     console.log(this.getPokemonNameWithAF())
+//     console.log(this.getPokemonName(), this.firstName);
+// }
+// // pokemon();
 // let ab = new pokemon();
 // console.log(ab.getPokemonNameWithAF())
 // console.log(ab.getPokemonName())
