@@ -27,12 +27,13 @@
 // }
 // hoisting2();
 
-// // "use strict"
+// "use strict"
 // function hoisting3() {
 //     console.log('.....', a3); // throws error a3 not defined
-//     a3 = 10;
+//     var a3 = 10;
 //     rohit = 5;
 //     console.log('.....', a3);
+//     console.log(rohit)
 // }
 // hoisting3();
 // console.log('.....', a3);
@@ -66,7 +67,8 @@
 // }
 // hoisting6();
 
-// // "use strict"    // checkbelow with or without use strict
+
+// "use strict"    // checkbelow with or without use strict
 // console.log(this);
 // function setPageName() {
 //     console.log(this);
@@ -78,10 +80,10 @@
 
 
 
-// var a = 20;
-// function abc() {
-// //   var a ;
-//   return a;
-// }
+var a = 20;
+function abc() {
+//   var a ;
+  return a;
+}
 
-// console.log(abc());
+console.log(abc());

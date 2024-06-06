@@ -65,24 +65,25 @@
 //Accessor properties are an exception, as assignment is handled by a setter function.
 //So writing to such a property is actually the same as calling a function.
 
-// let user = {
-//   name: "John",
-//   surname: "Smith",
-//   set fullName(value) {
-//     [this.name, this.surname] = value.split(" ");
-//   },
-//   get fullName() {
-//     return `${this.name} ${this.surname}`;
-//   }
-// };
-// let admin = {
-//   __proto__: user,
-//   isAdmin: true
-// };
-// console.log(admin.fullName); // John Smith (*)
-// // setter triggers!
-// admin.fullName = "Alice Cooper"; // (**)
-// console.log(admin.fullName); // Alice Cooper
+let user = {
+  name: "John",
+  surname: "Smith",
+  set fullName(value) {
+    [this.name, this.surname] = value.split(" ");
+  },
+  get fullName() {
+    return `${this.name} ${this.surname}`;
+  }
+};
+let admin = {
+  __proto__: user,
+  isAdmin: true,
+};
+
+console.log(admin.fullName); // John Smith (*)
+// setter triggers!
+admin.fullName = "Alice Cooper"; // (**)
+console.log(admin.fullName); // Alice Cooper
 
 //No matter where the method is found: in an object or its prototype. In a method call, this is always the object before the dot.
 // let animal = {

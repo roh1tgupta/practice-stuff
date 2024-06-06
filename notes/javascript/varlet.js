@@ -13,3 +13,15 @@ function abc() {
 
 abc();
 // console.log(a, '.......', b); // try with removing comments here
+
+
+
+// let avc = 1;
+// bcf();
+// function bcf() {
+//     avc = 10;
+//     return;
+//     function avc() {}
+// }
+ 
+// console.log(avc);

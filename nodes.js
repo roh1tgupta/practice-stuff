@@ -7,8 +7,7 @@ function abc(n, str) {
       // console.log('str[i]: ', str[i], ' .....i: ', i);
       if (tracker === n) {
         tracker = 1;
-        output = `${output}
-${str[i]}`;
+        output = `${output}\n${str[i]}`;
       } else {
         tracker += 1;
         output = `${output}${str[i]}`

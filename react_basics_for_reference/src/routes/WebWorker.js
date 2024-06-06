@@ -9,7 +9,12 @@ function WebWorker() {
             worker  = new Worker("./demo_worker.js");
             console.log(worker)
             worker.onmessage = (event) => {
-                console.log(event, '....eve,t,,,,')
+                console.log(
+                    // event,
+                    '....eve,t,,,,',
+                    event.data.messageFromMainThread,
+                    event.data.i
+                    )
                 setTimeCount(event.data.i)
             }
             worker.onerror = function(event) {

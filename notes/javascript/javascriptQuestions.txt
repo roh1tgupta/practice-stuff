@@ -57,6 +57,20 @@ console.log([1,1] + [1,3] + [5,2]); //1,11,35,2
 console.log([1, 1] + [] + [5, 'rohit']); // 1,15,rohit
 output of above five are in string literal format
 
+
+1 + '1': Here, 1 is a number, and '1' is a string. Since one operand is a string,
+JavaScript coerces the number 1 into a string and performs string concatenation, resulting in '11'.
+1 + + '1': This expression is a bit tricky due to the presence of two + operators. 
+The second + is unary and is used for converting its operand to a number.
+So, the expression can be read as 1 + (+'1'). The unary + operator converts the string '1' to a number,
+resulting in 1 + 1, which equals 2.
+
+unary operator to convert its operand to a number if it's not already a number. 
++null is 0
+-null is 0
+-true is -1
+
+
 console.log('1' - - '1'); // 2
 console.log('1' + '1'); // 11
 console.log('1' + 1); // 11
@@ -110,6 +124,13 @@ return a;
 }
 console.log(testscope()); // referenceError: a is not defined
 
+>Both null and undefined represent the absence of a meaningful value, but they are distinct in their use cases.
+>When using the loose equality operator ==, JavaScript does not perform type coercion between null and undefined.
+Instead, it directly considers them equal.
+>This behavior is specified in the ECMAScript specification to simplify certain comparisons and align
+with common use cases where null and undefined are often treated interchangeably in many programming scenarios.
+
+
 console.log(null == undefined) // true
 console.log(null == '') // false
 console.log(null == 0) // false
@@ -124,6 +145,8 @@ console.log([10,20,30,20,50][4]) // 50
 
 var a = 1, b = a = typeof b;console.log(a); // undefined
 let a = 1, b = a = typeof b;console.log(a); // referrenceError: b is not defined
+// above will be like let a = 1; let b = a = typeof(b), so here trying to read b before its declarations/defination
+
 
 typeof undefined // "undefined"
 typeof null // "object"

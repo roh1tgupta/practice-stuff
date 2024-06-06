@@ -192,9 +192,15 @@ const sum = new Function("x", "y", "return x + y");
 console.log(sum(2, 3)); // 5
 
 Callable Object:
-Because functions are objects in JavaScript, this also gives them the ability to have properties added to them. This creates a callable object, a special object that creates properties not available on normal objects. 
+Because functions are objects in JavaScript, this also gives them the ability
+to have properties added to them. This creates a callable object, 
+a special object that creates properties not available on normal objects. 
 
 
-In programming language design, a first-class citizen (also type, object, entity, or value) in a given programming language is an entity which supports all the operations generally available to other entities.
-Functions are first-class citizens in JavaScript All this means is that functions can be passed around as if they were a JavaScript type. Anything that can be done with other 7n hhb , can also be done with functions.
+In programming language design, a first-class citizen (also type, object, entity, or value)
+ in a given programming language is an entity which supports all the operations generally available to 
+ other entities.
+Functions are first-class citizens in JavaScript All this means is that functions can be
+passed around as if they were a JavaScript type. Anything that can be done with other 7n hhb ,
+can also be done with functions.
 

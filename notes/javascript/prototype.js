@@ -2,28 +2,31 @@
 
 //Please note that F.prototype here means a regular property named "prototype" on F.
 //It sounds something similar to the term “prototype”, but here we really mean a regular property with this name.
-let animal = {
-  eats: true
-};
-function Rabbit(name) {
-  this.name = name;
-}
-Rabbit.prototype = animal;
-let rabbit = new Rabbit("White Rabbit"); //  rabbit.__proto__ == animal
-console.log( rabbit.eats ); // true
-console.log( rabbit.name ); // White Rabbit
-console.log(rabbit.__proto__ === animal);
+// let animal = {
+//   eats: true
+// };
+// function Rabbit(name) {
+//   this.name = name;
+// }
+// Rabbit.prototype = animal;
+// let rabbit = new Rabbit("White Rabbit"); //  rabbit.__proto__ == animal
+// console.log( rabbit.eats ); // true
+// console.log( rabbit.name ); // White Rabbit
+// console.log(rabbit.__proto__ === animal);
 
 
 //Setting Rabbit.prototype = animal literally states the following: "When a new Rabbit is created, assign its [[Prototype]] to animal".
 //F.prototype property is only used when new F is called, it assigns [[Prototype]] of the new object.
 // If, after the creation, F.prototype property changes (F.prototype = <another object>),
 // then new objects created by new F will have another object as [[Prototype]], but already existing objects keep the old one.
-//The default "prototype" is an object with the only property constructor that points back to the function itself.
+
+////////////The default "prototype" is an object with the only property constructor that points back to the function itself.
+
+
 // function Rabbit() {}
 // // by default:
 // // Rabbit.prototype = { constructor: Rabbit }
-console.log( Rabbit.prototype.constructor === Rabbit); // true
+// console.log( Rabbit.prototype.constructor === Rabbit); // true
 
 
 
@@ -60,9 +63,13 @@ console.log( Rabbit.prototype.constructor === Rabbit); // true
 //   jumps: true
 // };
 // let rabbit = new Rabbit();
-// console.log(rabiit.jumps); // true
+// console.log(rabbit.jumps); // true
 // console.log(ab.constructor === Rabbit); // true
 // console.log(rabbit.constructor === Rabbit); // false
+
+// let bbb = new ab.constructor();
+// console.log(bbb.constructor, ab.constructor, rabbit.constructor);
+// console.log(bbb.constructor === rabbit.constructor) // true
 
 
 
@@ -119,13 +126,16 @@ console.log( Rabbit.prototype.constructor === Rabbit); // true
 // console.log(new Rabbit().eats);
 
 
-// function Rabbit() {}
+// function Rabbit(naem) {this.naem = naem}
 // Rabbit.prototype = {
 //   eats: true
 // };
-// let rabbit = new Rabbit();
+// let rabbit = new Rabbit('rohit');
 // delete rabbit.eats;
 // console.log( rabbit.eats ); // ? true
+// console.log(rabbit.naem)
+// delete rabbit.naem
+// console.log(rabbit.naem) // ? undefined
 
 
 

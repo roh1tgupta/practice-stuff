@@ -9,8 +9,8 @@ This concept allows us to make objects useable in a for...of loop which isn't no
 
 Iterator : An iterator traverses over the elements of an iterable, this
 iterator is returned by Symbol.iterator. The iterator returns a method next
-that returns an object with keys : value —? indicating the current item and
-done —? indicating true if the traversion is done or false if it isn't done.
+that returns an object with keys : value ï¿½? indicating the current item and
+done ï¿½? indicating true if the traversion is done or false if it isn't done.
 
 user-defined iterables
 let myIterable = {}
@@ -32,6 +32,13 @@ let myIterator = {
 
 hasOwnProperty is the only thing in JavaScript which deals with properties and 
 does not traverse the prototype chain.
+
+
+let a = {a: 1}
+let b1 = { ...a}
+let b = Object.create(a)
+b1 is a new object with a copy of a's properties, while b is a new object that inherits properties from a.
+Any changes to a will affect b when using Object.create(a), but not when using the spread syntax.
 
 ECMAScript 5 introduced a new method: Object.create().
 Calling this method creates a new object.

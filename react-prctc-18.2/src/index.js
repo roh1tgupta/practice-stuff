@@ -12,7 +12,8 @@ import {
   RouterProvider,
   createRoutesFromElements,
   Route,
-  Outlet
+  Outlet,
+  BrowserRouter
 } from "react-router-dom";
 import EditContact, { action as EditAction } from "./routes/edit";
 import { action as destroyAction } from "./routes/destroy";
@@ -134,6 +135,7 @@ const router1 = createBrowserRouter(
           path="users"
           element={<UsersList />}
         />
+        
         <Route
           path="notifications"
           element={<NotificationsList />}
@@ -160,8 +162,8 @@ async function start() {
   root.render(
     <React.StrictMode>
       <Provider store={store} >
-      {/* <RouterProvider router={router1}/> */}
-      <App/>
+      <RouterProvider router={router1}/>
+      {/* <App/> */}
       {/* <ReduxApp /> */}
       </Provider>
     </React.StrictMode>

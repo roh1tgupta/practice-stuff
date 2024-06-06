@@ -3,6 +3,7 @@ import React, { useState, useMemo, useDeferredValue, memo } from 'react';
 export default function Ab() {
     const [value, setValue] = useState();
     const val = useDeferredValue(value)
+    // const val = value
 
     const [text, setText] = useState('');
     const deferredText = useDeferredValue(text);
@@ -26,9 +27,9 @@ export default function Ab() {
         <a href="https://medium.com/@ahsan-ali-mansoor/usedeferredvalue-hook-explained-bcff03ef7b0c" target='_blank' rel="noreferrer"> ref for useDeferredValue </a>
          {list.map(i => <div>{i}</div>)}
     
-        <div>example from react's docs</div>
+        {/* <div>example from react's docs</div>
         <input value={text} onChange={e => setText(e.target.value)} />
-        <SlowList text={deferredText} />
+        <SlowList text={deferredText} /> */}
     </div>)
 }
 

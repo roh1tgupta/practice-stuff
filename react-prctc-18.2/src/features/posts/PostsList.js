@@ -14,8 +14,8 @@ export const PostsList = () => {
   
   const dispatch = useDispatch();
 
-  const postStatus = useSelector(state => state.posts.status)
-  const error = useSelector(state => state.posts.error)
+  const postStatus = useSelector(state => state.posts?.status)
+  const error = useSelector(state => state.posts?.error)
 
   // useEffect(() => {
 
@@ -29,8 +29,9 @@ export const PostsList = () => {
     if (postStatus === 'idle') {
       const dispatchfn = async () => {
         let ab = await dispatch(fetchPosts()).unwrap()
-        // console.log(ab, "...form inside await")
+        console.log(ab, "...form inside await")
       };
+      dispatchfn()
       dispatchfn()
       
     }

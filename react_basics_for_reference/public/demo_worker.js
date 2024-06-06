@@ -6,7 +6,7 @@ function timedCount(messageFromMainThread) {
   // console.log("demo wokrdre....", i)
   // throw "error"
   postMessage({i, messageFromMainThread});
-  setTimeout(() => timedCount(messageFromMainThread), 1000);
+  setTimeout(() => timedCount(messageFromMainThread), 5000);
 }
 
 // timedCount();
