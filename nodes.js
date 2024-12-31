@@ -20,3 +20,5 @@ function abc(n, str) {
 console.log(abc(2, 'abc de fhg dj'));
 console.log();
 console.log(abc(3, 'abc de fhg dj'));
+
+console.log(window)

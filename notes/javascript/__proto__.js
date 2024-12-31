@@ -5,12 +5,14 @@
 //   jumps: true
 // };
 
-// // let ab = new animal();
-// // console.log(ab);   //TypeError:  animal is not a constructor
+// let ab = new animal();
+// console.log(ab);
+
+//TypeError:  animal is not a constructor
 
 // rabbit.__proto__ = animal; // (*)
 
-// // we can find both properties in rabbit now:
+// // // we can find both properties in rabbit now:
 // console.log( rabbit.eats ); // true (**)
 // console.log( rabbit.jumps ); // true
 // // Here we can say that "animal is the prototype of rabbit" or "rabbit prototypically inherits from animal".
@@ -34,7 +36,7 @@
 //   __proto__: rabbit
 // };
 
-// // walk is taken from the prototype chain
+// // // walk is taken from the prototype chain
 // longEar.walk(); // Animal walk
 // console.log(longEar.jumps); // true (from rabbit)
 
@@ -65,25 +67,28 @@
 //Accessor properties are an exception, as assignment is handled by a setter function.
 //So writing to such a property is actually the same as calling a function.
 
-let user = {
-  name: "John",
-  surname: "Smith",
-  set fullName(value) {
-    [this.name, this.surname] = value.split(" ");
-  },
-  get fullName() {
-    return `${this.name} ${this.surname}`;
-  }
-};
-let admin = {
-  __proto__: user,
-  isAdmin: true,
-};
+// let user = {
+//   name: "John",
+//   surname: "Smith",
+//   set fullName(value) {
+//     [this.name, this.surname] = value.split(" ");
+//   },
+//   get fullName() {
+//     return `${this.name} ${this.surname}`;
+//   }
+// };
+// let admin = {
+//   __proto__: user,
+//   isAdmin: true,
+// };
 
-console.log(admin.fullName); // John Smith (*)
-// setter triggers!
-admin.fullName = "Alice Cooper"; // (**)
-console.log(admin.fullName); // Alice Cooper
+// console.log(admin.fullName); // John Smith (*)
+// // // setter triggers!
+// admin.fullName = "Alice Cooper"; // (**)
+// console.log(admin.fullName, admin); // Alice Cooper
+// delete admin.name;
+// delete admin.surname
+// console.log(admin.fullName)
 
 //No matter where the method is found: in an object or its prototype. In a method call, this is always the object before the dot.
 // let animal = {
@@ -107,7 +112,7 @@ console.log(admin.fullName); // Alice Cooper
 
 
 
-// // The for..in loop iterates over inherited properties too.
+// The for..in loop iterates over inherited properties too.
 // let animal = {
 //   eats: true,
 //   walk() {
@@ -120,6 +125,7 @@ console.log(admin.fullName); // Alice Cooper
 // };
 // // Object.keys only returns own keys
 // console.log(Object.keys(rabbit)); // jumps
+// console.log(Object.entries(rabbit));
 // // for..in loops over both own and inherited keys
 // for(let prop in rabbit) console.log(prop); // jumps, then eats
 
@@ -150,7 +156,7 @@ console.log(admin.fullName); // Alice Cooper
 //it has 'enumerable:false' flag
 
 
-// //question
+// // //question
 // let hamster = {
 //   stomach: [],
 //   eat(food) {
@@ -166,5 +172,5 @@ console.log(admin.fullName); // Alice Cooper
 // // This one found the food
 // speedy.eat("apple");
 // console.log( speedy.stomach ); // apple
-// // This one also has it, why? fix please.
+// // // This one also has it, why? fix please.
 // console.log( lazy.stomach ); // apple

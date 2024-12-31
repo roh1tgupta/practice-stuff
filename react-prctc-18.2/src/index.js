@@ -162,8 +162,8 @@ async function start() {
   root.render(
     <React.StrictMode>
       <Provider store={store} >
-      <RouterProvider router={router1}/>
-      {/* <App/> */}
+      {/* <RouterProvider router={router1}/> */}
+      <App/>
       {/* <ReduxApp /> */}
       </Provider>
     </React.StrictMode>

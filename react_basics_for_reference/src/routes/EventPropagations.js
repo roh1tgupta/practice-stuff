@@ -82,7 +82,9 @@ function Parent2() {
         abc.addEventListener("click", (e) => {
             console.log("parent2 called");
             e.stopImmediatePropagation();
-        })
+        },
+            // true
+        )
         abc.addEventListener("click", (e) => {
             console.log("parent2 called 2nd time");
         })

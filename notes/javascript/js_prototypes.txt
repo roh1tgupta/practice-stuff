@@ -23,12 +23,23 @@ myIterable[Symbol.iterator] = function* () {
 
 
 // Satisfies both the Iterator Protocol and Iterable
-let myIterator = {
+let myIterable1 = {
+    current: 0, // Keep track of the current index
     next: function() {
-        // ...
+        this.current++; // Increment the index
+        // Return the next value and whether the iteration is done
+        if (this.current <= 3) {
+            return { value: this.current, done: false };
+        } else {
+            return { value: undefined, done: true }; // End of iteration
+        }
     },
-    [Symbol.iterator]: function() { return this }
-}
+    [Symbol.iterator]: function() {
+        return this; // Return the iterator itself
+    }
+};
+
+[...myIterable1]  // [1, 2, 3]
 
 hasOwnProperty is the only thing in JavaScript which deals with properties and 
 does not traverse the prototype chain.

@@ -1,0 +1,41 @@
+For integration with Express.js, engines like EJS, Pug, Handlebars, Nunjucks, and Mustache are the most commonly used
+
+
+template engines supported with nodejs
+EJS – Embedded JavaScript templates.
+Pug (formerly Jade) – Clean, indentation-based syntax.
+Handlebars – Logic-based templating with helpers.
+Mustache – Logic-less template engine.
+Nunjucks – Full-featured templating, inspired by Jinja2.
+Liquid – Simple, secure templating engine (inspired by Shopify).
+Twig.js – JavaScript version of the PHP Twig templating engine.
+Hogan.js – Fast and lightweight, based on Mustache.
+dot.js – High-performance, minimal syntax templating engine.
+Freemarker.js – JavaScript version of the Freemarker templating engine.
+React (JSX Templates) – Declarative UI templates, used with React.
+
+
+In Node.js, unhandled exceptions can be caught using the following events:
+process.on('uncaughtException', callback)
+This event is triggered whenever an uncaught exception occurs that is not handled by a try-catch block. You can use this to catch errors that would otherwise terminate the process.
+process.on('uncaughtException', (err) => {
+  console.error('Unhandled Exception:', err);
+  // Handle the error, log it, or clean up resources
+});
+
+// Example of throwing an uncaught exception
+throw new Error('Something went wrong!');
+
+
+
+process.on('unhandledRejection', callback)
+This event is triggered when a Promise rejection is not handled with a .catch() or try-catch in an async function. In Node.js v15 and later, unhandled promise rejections will terminate the process by default, but you can catch them using this event.
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+  // Handle the unhandled rejection
+});
+
+// Example of an unhandled promise rejection
+Promise.reject('Oops, something went wrong!');
+
+

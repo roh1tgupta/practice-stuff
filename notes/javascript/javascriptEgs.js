@@ -14,16 +14,16 @@ var pokemon = {
         return fullName;
     },
     getPokemonNameWithAF: () => {  // Arrow Functions Eg
-        console.log(this)
+        // console.log(this)
         const fullName = this.firstName + ' ' + this.lastName;
         return fullName;
     }
 }
 
-// function getPokemonName () {return "hello"};
-// var pokemonInfo = function (snacks, hobby) {
-//     console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' and ' + hobby);
-// }
+function getPokemonName () {return "hello"};
+var pokemonInfo = function (snacks, hobby) {
+    console.log(this.getPokemonName() + ' ' + 'love ' + snacks + ' and ' + hobby);
+}
 
 // console.log(getPokemonName()) 
 // pokemonInfo('milkButter', 'algorithm');
@@ -33,7 +33,7 @@ var pokemon = {
 // console.log(this.pokemon);
 // console.log(this.pokemon.getPokemonName());  
 // console.log(pokemon.getPokemonName());
-// var pk = { firstName: 'rohit', lastName: 'gupta' };
+var pk = { firstName: 'rohit', lastName: 'gupta' };
 // console.log(this.pokemon.getPokemonName.call(pk));
 // console.log(pokemon.getPokemonName.call(pk));
  
@@ -57,7 +57,7 @@ var pokemon = {
 //     console.log(name + ' -- '+ this.maker);
 // }
 
-// // obj = new bike();
+// obj = new bike();
 // var name = 'pulsar';
 // var maker = 'bajaj';
 // obj = new bike();
@@ -65,9 +65,9 @@ var pokemon = {
 
 
 // console.log(pokemon.getPokemonName())
-// // this.firstName = "rohit";
-// // this.lastName="gupta"
-// // console.log(this)
+// this.firstName = "rohit";
+// this.lastName="gupta"
+// console.log(this)
 // console.log(pokemon.getPokemonNameWithAF())
 
 // Currying With Bind
@@ -87,32 +87,33 @@ var pokemon = {
 // console.log(multiplyByTen(6)); // 60
 
 
-// function pokemon1 () {
-//     this.firstName = 'Pika';
-//     this.lastName = 'chu';
-//     this.getPokemonName = function () {
-//         // console.log(this)
-//         const fullName = this.firstName + ' ' + this.lastName;
-//         return fullName;
-//     };
+function pokemon1 () {
+    this.firstName = 'Pika';
+    this.lastName = 'chu';
+    this.getPokemonName = function () {
+        // console.log(this)
+        const fullName = this.firstName + ' ' + this.lastName;
+        return fullName;
+    };
     
-//     this.getPokemonNameWithAF = () => {  // Arrow Functions Eg
-//         console.log(this)
-//         const fullName = this.firstName + ' ' + this.lastName;
-//         return fullName;
-//         // return pokemon.getPokemonNameWithAF()
-//     }
-//     // console.log(this)
-//     // pokemon.getPokemonNameWithAF()
-//     // console.log(this.getPokemonNameWithAF())
-//     // console.log(this.getPokemonName(), this.firstName);
-// }
-// console.log(pokemon)
-// pokemon1();
+    this.getPokemonNameWithAF = () => {  // Arrow Functions Eg
+        // console.log(this)
+        const fullName = this.firstName + ' ' + this.lastName;
+        return fullName;
+        // return pokemon.getPokemonNameWithAF()
+    }
+    // console.log(this)
+    pokemon.getPokemonNameWithAF()
+    console.log(this.getPokemonNameWithAF())
+    // console.log(this.getPokemonName(), this.firstName);
+}
+console.log(pokemon)
+pokemon1();
 // let ab = new pokemon1();
 // console.log(ab.getPokemonNameWithAF())
-// // console.log(ab.getPokemonName())
+// console.log(ab.getPokemonName())
 
 // let abcd = { firstName: "rohit", lastName: "rahul"}
 // console.log(ab.getPokemonNameWithAF.call(abcd))
 // console.log(ab.getPokemonName.call(abcd))
+// console.log(pokemon.getPokemonNameWithAF.call(abcd))

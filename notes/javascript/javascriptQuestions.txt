@@ -152,7 +152,6 @@ typeof undefined // "undefined"
 typeof null // "object"
 typeof Object // "function"
 typeof object // "undefined"  ....(hint: small o)
-
 function abs () {};
 typeof abs // "function"
 var a = {name: "rohit"};
@@ -181,6 +180,8 @@ arr.toString(); // "1,,,,,";
 var a = 6; var b = a ^ 2 * 2;
 console.log(a,b); // 6 2 // mulitplication (*) has more precedence to xor (^)
 console.log(1^1*3) // 2
+
+The XNOR operation is the opposite of XOR. It returns true (or 1) when both inputs are the same (either both 0 or both 1) and false (or 0) when they are different
 
 console.log('1' == '01'); // false
 console.log(true == '1'); // true
@@ -349,6 +350,12 @@ for(const item in scores) {
 "3"
 "4"
 */
+
+
+javascript obejct and JSON
+Syntax: Objects can contain functions and other complex types, while JSON cannot.
+Use Cases: Objects are used for internal data manipulation in JavaScript, while JSON is used for data transmission and storage.
+Conversion: You can convert a JavaScript object to a JSON string using JSON.stringify() and parse a JSON string back to a JavaScript object using JSON.parse().
 
 
 Nullish coalescing operator '??'

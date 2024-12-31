@@ -9,7 +9,7 @@ onconnect = function (event) {
   
       // Sending a response back to the main thread
       port.postMessage(`Hello from the Shared Worker!, ${messageFromMain} ${porttt}`);
-    //   port.postMessage(porttt);
+      port.postMessage(porttt);
     };
   };
   

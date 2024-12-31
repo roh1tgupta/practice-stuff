@@ -1,0 +1,151 @@
+There are two common paths to describing the children of a component. The first
+is to use the React.ReactNode type, which is a union of all the possible types
+that can be passed as children in JSX:
+
+interface ModalRendererProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+This is a very broad definition of children. The second is to use the 
+React.ReactElement type, which is only JSX elements and not 
+JavaScript primitives like strings or numbers:
+
+interface ModalRendererProps {
+  title: string;
+  children: React.ReactElement;
+}
+
+
+State as a Snapshot explains why this is happening. Setting state requests a 
+new re-render, but does not change it in the already running code. 
+So score continues to be 0 right after you call setScore(score + 1).
+
+
+console.log(score);  // 0
+setScore(score + 1); // setScore(0 + 1);
+console.log(score);  // 0
+setScore(score + 1); // setScore(0 + 1);
+console.log(score);  // 0
+setScore(score + 1); // setScore(0 + 1);
+console.log(score);  // 0
+
+
+You can fix this by passing an updater function when setting state. 
+Notice how replacing setScore(score + 1) with setScore(s => s + 1)
+ fixes the “+3” button. This lets you queue multiple state updates.
+
+ import { useState } from 'react';
+
+export default function Counter() {
+  const [score, setScore] = useState(0);
+
+  function increment() {
+    setScore(s => s + 1);
+  }
+
+  return (
+    <>
+      <button onClick={() => increment()}>+1</button>
+      <button onClick={() => {
+        increment();
+        increment();
+        increment();
+      }}>+3</button>
+      <h1>Score: {score}</h1>
+    </>
+  )
+}
+
+
+Each event propagates in three phases:
+It travels down, calling all onClickCapture handlers.
+It runs the clicked element’s onClick handler.
+It travels upwards, calling all onClick handlers.
+
+
+
+
+e.stopPropagation() stops the event handlers attached to the tags above from firing.
+e.preventDefault() prevents the default browser behavior for the few events that have it.
+
+
+
+
+useEffectEvent: experimental API that has not yet been released
+in a stable version of React.
+function ChatRoom({ roomId, theme }) {
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId);
+    connection.on('connected', () => {
+      showNotification('Connected!', theme);
+    });
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId, theme]);
+
+  return <h1>Welcome to the {roomId} room!</h1>
+}
+
+ to:
+
+ function ChatRoom({ roomId, theme }) {
+  const onConnected = useEffectEvent(() => {
+    showNotification('Connected!', theme);
+  });
+
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId);
+    connection.on('connected', () => {
+      onConnected();
+    });
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId]);
+   return <h1>Welcome to the {roomId} room!</h1>
+}
+
+
+
+an example of customHook which doesnt return anything
+export function useChatRoom({ serverUrl, roomId }) {
+  useEffect(() => {
+    const options = {
+      serverUrl: serverUrl,
+      roomId: roomId
+    };
+    const connection = createConnection(options);
+    connection.connect();
+    connection.on('message', (msg) => {
+      showNotification('New message: ' + msg);
+    });
+    return () => connection.disconnect();
+  }, [roomId, serverUrl]);
+}
+
+export default function ChatRoom({ roomId }) {
+  const [serverUrl, setServerUrl] = useState('https://localhost:1234');
+
+  useChatRoom({
+    roomId: roomId,
+    serverUrl: serverUrl
+  });
+
+  return (
+    <>
+      <label>
+        Server URL:
+        <input value={serverUrl} onChange={e => setServerUrl(e.target.value)} />
+      </label>
+      <h1>Welcome to the {roomId} room!</h1>
+    </>
+  );
+}
+
+
+useEffect expects its callback function to return either nothing i.e. undefined or 
+a cleanup function, and it doesn’t work well with promises returned from the async functions.
+
+When we use lazy() on a component which fetches the API response, React can give us an error 
+i.e. A component suspended while responding to synchronous input. ● To avoid or handle this error, React offers a component i.e. Suspense.
+

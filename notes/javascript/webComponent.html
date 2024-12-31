@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Web component example </title>
+  </head>
+  <body>
+    <h1>My web component example</h1>
+    <Script>
+      class MyButton extends HTMLElement {
+        constructor() {
+          super();
+          const shadow = this.attachShadow({ mode: 'open' }) // try this with closed mode
+          const button = document.createElement('button')
+          button.textContent = "Click Me";
+          button.style.backgroundColor = "lightblue"
+          button.style.border = 'none';
+          button.style.padding = '10px 20px';
+          button.style.fontSize = '16px';
+          button.style.cursor = 'pointer';
+          button.addEventListener('click', () => {
+            button.style.backgroundColor = button.style.backgroundColor === 'lightblue' ? 'lightcoral' : 'lightblue';
+          });
+
+          shadow.appendChild(button);
+        }
+      }
+
+      // Define the new element
+      customElements.define('my-button', MyButton);
+
+    </Script>
+
+  <my-button></my-button>
+  <div id="div" style="margin: 50px"></div>
+  <script>
+    // try with open and closed mode and then see the diff below line makes
+    const myComponent = document.querySelector('my-button');
+    console.log(myComponent, myComponent.shadowRoot)
+    document.getElementById('div').appendChild(myComponent.shadowRoot)
+  </script>
+  </body>
+  </html>
+
+  <!--
+    The Shadow DOM is a web standard that allows developers to encapsulate a part of the DOM (Document Object Model) for a web component.
+     It enables the creation of reusable components with isolated styles and behavior, preventing them from interfering with the rest of the document
+  
+    { mode: 'open' }: This object specifies the mode of the shadow root. The mode can be either 'open' or 'closed'.
+     If you set the mode to 'open', you can access the shadow root from outside the component using the shadowRoot property
+     If you set the mode to 'closed', the shadow root cannot be accessed from outside the component. The shadowRoot property will return null.
+  -->
