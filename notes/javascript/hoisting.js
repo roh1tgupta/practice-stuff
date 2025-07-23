@@ -46,6 +46,8 @@
 // }
 // hoisting4();
 // console.log('....', a4);
+// Important: Since a4 is not declared with var, let, or const, JavaScript looks for it in the outer scopes.
+// Not finding it in any outer scope, JavaScript creates a4 as a property on the global object (window in browsers, global in Node.js).
 
 // function hoisting41() {
 //     "use strict"
@@ -82,7 +84,7 @@
 
 // var a = 20;
 // function abc() {
-//  // var a ;
+// //  var a ;
 //   return a;
 // }
 

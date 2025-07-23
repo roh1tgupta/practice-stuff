@@ -1,0 +1,39 @@
+How would you design a scalable Node.js application to handle millions of requests per second, including considerations for load balancing, clustering, and caching?
+
+Explain the Node.js event loop in detail. How would you debug and optimize performance bottlenecks caused by blocking operations in the event loop?
+
+Design a Node.js microservices architecture for a real-time chat application. Discuss communication protocols, service discovery, and fault tolerance.
+
+How do you handle memory leaks in a Node.js application? Describe tools and techniques you’ve used to identify and resolve them in production.
+
+What are the trade-offs of using Node.js streams for processing large datasets versus in-memory processing? Provide a scenario where streams are critical.
+
+How would you implement a custom Node.js module with both synchronous and asynchronous APIs, ensuring backward compatibility and deprecation warnings?
+
+Explain how you’d secure a Node.js REST API, covering authentication (e.g., JWT, OAuth), rate limiting, input validation, and protection against common vulnerabilities like SQL injection or XSS.
+
+Describe how you’d optimize a Node.js application for CPU-intensive tasks. When would you offload tasks to worker threads or external services, and how would you implement it?
+
+How do you handle database connection pooling in a Node.js application with thousands of concurrent users? Compare approaches using libraries like pg or mongoose.
+
+Design a fault-tolerant file upload system in Node.js that handles large files (e.g., 10GB) with progress tracking, resumable uploads, and error recovery.
+
+What strategies would you use to monitor and profile a Node.js application in production? Discuss tools like PM2, New Relic, or custom metrics with Prometheus.
+
+How would you implement a WebSocket-based real-time feature in Node.js (e.g., live notifications)? Discuss scaling with Redis or message queues and handling connection drops.
+
+Explain the differences between Node.js’s child_process module and Worker Threads. When would you choose one over the other for parallel processing?
+
+How do you handle versioning and backward compatibility in a Node.js API? Provide an example of handling breaking changes in a production environment.
+
+Design a logging system for a Node.js application that supports distributed tracing across microservices, with considerations for performance and log aggregation.
+
+What are the implications of running Node.js in a containerized environment (e.g., Docker)? Discuss challenges like signal handling, memory limits, and orchestration with Kubernetes.
+
+How would you implement a rate limiter in Node.js for an API, including considerations for distributed systems where multiple instances are running?
+
+Explain how you’d use Node.js’s stream.pipeline to process a large dataset with multiple transformations, ensuring robust error handling and backpressure management.
+
+How do you optimize Node.js for low-latency responses in a high-throughput API? Discuss techniques like connection pooling, caching, and async/await patterns.
+
+What are the best practices for writing unit and integration tests for a Node.js application? Compare testing frameworks (e.g., Mocha, Jest) and discuss mocking strategies.

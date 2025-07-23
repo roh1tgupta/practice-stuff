@@ -1,7 +1,34 @@
-import { useState, useTransition , memo} from 'react';
+import { useState, useTransition , memo, useDeferredValue, useEffect} from 'react';
+
+const Tabs = memo(function ({tab}) {
+ console.log(tab)
+  return <>
+  {tab === 'about' && <AboutTab />}
+      {tab === 'posts' && <PostsTab />}
+      {tab === 'contact' && <ContactTab />}
+      </>
+
+})
+
+
+// useDeferredValue defers the UI update that depends on the value — not the value itself.
+//So even though your state (query) updates immediately, any part of the UI that uses the deferred 
+// version (deferredQuery) will update more slowly — only when React thinks it's a good time 
+// (i.e., during idle or low-priority time)
+
+
+
 
 export default function TabContainer() {
   const [tab, setTab] = useState('about');
+  const tab1 = useDeferredValue(tab)
+  // const [tab1, setTab1] = useState(tab);
+  // useEffect(() => {
+  //   setTab1(tab)
+  // }, [tab])
+
+  // const tab1 = tab;
+  // console.log(tab1, "...tab1")
   return (
     <>
       <TabButton
@@ -23,29 +50,20 @@ export default function TabContainer() {
         Contact
       </TabButton>
       <hr />
-      {tab === 'about' && <AboutTab />}
-      {tab === 'posts' && <PostsTab />}
-      {tab === 'contact' && <ContactTab />}
+      <Tabs tab={tab1}/>
     </>
   );
 }
 
 function TabButton({ children, isActive, onClick }) {
-    const [isPending, startTransition] = useTransition();
     if (isActive) {
       return <b>{children}</b>
     }
-    if (isPending) {
-      return <b className="pending" style={{color: 'yellow'}}>{children}</b>;
-    }
+   
     return (
       <button onClick={() => {
         console.log(1)
-        startTransition(() => {
-            console.log(2)
-            onClick();
-        });
-        console.log(3)
+       onClick()
       }}>
         {children}
       </button>
@@ -61,12 +79,14 @@ function AboutTab() {
 
 const PostsTab = memo(function PostsTab() {
     // Log once. The actual slowdown is inside SlowPost.
-    console.log('[ARTIFICIALLY SLOW] Rendering 500 <SlowPost />');
+    // console.log('[ARTIFICIALLY SLOW] Rendering 500 <SlowPost />');
   
     let items = [];
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < 9000; i++) {
+      console.log('lops')
       items.push(<SlowPost key={i} index={i} />);
     }
+    // console.log('[ARTIFICIALLY SLOW] Rendering 500 <SlowPost /> after for loop');
     return (
       <ul className="items">
         {items}

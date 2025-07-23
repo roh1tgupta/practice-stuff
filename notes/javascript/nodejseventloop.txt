@@ -1,0 +1,215 @@
+The event loop is a core component of Node.js, enabling its non-blocking, asynchronous behavior.
+It allows Node.js to handle multiple operations concurrently by processing events in a loop,
+delegating I/O operations (like file reading, network requests) to the system kernel or thread pool,
+and executing callbacks when these operations complete.
+
+
+How the Event Loop Works
+Event Queue: Stores events (e.g., completed I/O operations, timers, or user-triggered events).
+Phases of the Event Loop:
+Timers: Executes callbacks for setTimeout and setInterval when their time expires.
+Pending Callbacks: Executes I/O callbacks deferred from previous cycles (e.g., network or file operations).
+Idle/Prepare: Internal housekeeping for Node.js.
+Poll: Retrieves new I/O events; executes I/O-related callbacks (e.g., reading a file or handling HTTP requests).
+Check: Executes setImmediate callbacks.
+Close Callbacks: Handles cleanup for closed resources (e.g., socket closure).
+Additionally, Node.js processes microtasks (like promise callbacks) at specific points:
+Microtask Queue: Processed after each phase of the event loop and at the end of each tick. This includes Promise.then callbacks and queueMicrotask tasks.
+
+What is queueMicrotask?
+The queueMicrotask function is a JavaScript API (available in browsers and Node.js) that schedules a callback to be executed in the microtask queue.
+Syntax: queueMicrotask(callback), where callback is a function to be executed asynchronously as a microtask.
+Microtasks are high-priority tasks that run:
+After the current synchronous code completes.
+After each phase of the event loop (e.g., Timers, Poll, Check) in Node.js.
+Before the event loop moves to the next phase or tick for macrotasks (e.g., setTimeout, setImmediate).
+Common microtasks include:
+Callbacks registered via Promise.then, Promise.catch, or Promise.finally.
+Callbacks scheduled with queueMicrotask.
+
+
+Node.js Event Loop and Queue Processing
+The Node.js event loop processes tasks in the following order within each tick:
+
+Synchronous Code: Executes immediately in the current call stack.
+nextTick Queue: Processes process.nextTick callbacks before anything else in the event loop, including microtasks.
+Microtask Queue: Processes queueMicrotask and promise callbacks (Promise.then, etc.) after the nextTick queue and after each event loop phase (Timers, Poll, Check, etc.).
+Event Loop Phases:
+Timers: setTimeout, setInterval.
+Pending Callbacks: Deferred I/O callbacks.
+Idle, Prepare: Internal phases.
+Poll: I/O events (e.g., API responses).
+Check: setImmediate.
+Close Callbacks: Close events.
+Microtasks are processed after each phase before moving to the next.
+
+Priority Comparison
+process.nextTick has higher priority than queueMicrotask because:
+The nextTick queue is processed immediately after the current synchronous code or event loop phase, before the microtask queue.
+The microtask queue (including queueMicrotask and promise callbacks) is processed only after the nextTick queue is fully drained.
+This means that process.nextTick callbacks will always execute before queueMicrotask callbacks, even if both are scheduled in the same context.
+
+
+
+Non-Blocking Nature: The event loop continuously checks the queue and processes events, allowing Node.js to
+handle other tasks while waiting for I/O operations.
+Libuv: The event loop is powered by the libuv library, which manages asynchronous operations and delegates tasks like 
+file I/O to a thread pool (default: 4 threads).
+
+
+Key Points
+Single-threaded: The event loop runs in a single thread, but I/O operations are offloaded to the system or thread pool.
+Asynchronous Execution: Callbacks, Promises, and async/await are used to handle results of asynchronous operations.
+
+
+Shows how file operations are handled in the Poll phase.
+const fs = require("fs");
+console.log("Reading file...");
+fs.readFile("./example.txt", "utf8", (err, data) => {
+  if (err) throw err;
+  console.log("File content:", data);
+});
+console.log("This runs before file read");
+
+// Output:
+// Reading file...
+// This runs before file read
+// File content: [content of example.txt]
+
+Explanation:
+fs.readFile is asynchronous and offloaded to the thread pool.
+The event loop continues, executing console.log("This runs before file read") immediately.
+When the file read completes, the callback is queued and executed in the Poll phase.
+
+
+When require("fs") runs, the main thread is in active, synchronous execution mode.
+Only after all top-level code finishes does it switch to the event loop and start processing asynchronous events.
+
+
+setImmediate vs. setTimeout
+Highlights the Check phase (setImmediate) vs. Timers phase (setTimeout).
+console.log("Start");
+setTimeout(() => {
+  console.log("setTimeout callback");
+}, 0);
+setImmediate(() => {
+  console.log("setImmediate callback");
+});
+console.log("End");
+
+// Possible Output:
+// Start
+// End
+// setImmediate callback
+// setTimeout callback
+
+Explanation:
+setTimeout(..., 0) schedules a callback in the Timers phase, but with a minimum delay.
+setImmediate schedules a callback in the Check phase, which often runs before setTimeout if the event loop is in the Poll phase.
+The output order may vary slightly due to timing and event loop phase transitions.
+
+
+
+Demonstrates handling multiple asynchronous HTTP requests.
+const http = require("http");
+const server = http.createServer((req, res) => {
+  console.log("Handling request...");
+  setTimeout(() => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Hello, World!");
+  }, 1000); // Simulate async work
+});
+server.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
+
+// Server running on port 3000  -> as soon as server is up
+
+// Output when two requests are made:
+// Handling request...
+// Handling request...
+// (Responses sent after 1s for each request)
+
+Explanation:
+
+The HTTP server handles requests asynchronously in the Poll phase.
+Each request triggers a callback, and the setTimeout simulates async work (e.g., database query).
+The event loop allows multiple requests to be processed concurrently without blocking.
+
+
+Shows how process.nextTick takes priority over other callbacks.
+console.log("Start");
+process.nextTick(() => {
+  console.log("nextTick callback");
+});
+setTimeout(() => {
+  console.log("setTimeout callback");
+}, 0);
+console.log("End");
+
+// Output:
+// Start
+// End
+// nextTick callback
+// setTimeout callback
+
+Explanation:
+process.nextTick queues a callback to run at the end of the current operation, before the event loop moves to the next phase.
+It has higher priority than setTimeout, so the nextTick callback runs before the setTimeout callback.
+
+
+
+System Kernel: Handles network I/O (TCP/UDP, HTTP, DNS resolution), pipes, and signals using OS-level async mechanisms (e.g., epoll, IOCP).
+Thread Pool: Handles file system operations (fs module), certain DNS lookups, and CPU-intensive tasks (e.g., crypto.pbkdf2).
+Libuv’s Role: Decides whether to delegate to the kernel or thread pool based on the operation and OS capabilities, then queues callbacks in the event loop.
+
+
+
+Thread Pool Bottleneck: The default thread pool size is 4, so if you perform many file operations simultaneously (e.g., 10 fs.readFile calls),
+some tasks will queue until a thread is available. You can increase the thread pool size by setting the environment variable:
+
+export UV_THREADPOOL_SIZE=8
+
+Network vs. File I/O: Network operations (e.g., HTTP requests) scale better than file operations because they rely on the kernel, not the limited thread pool.
+
+
+
+
+
+How the Event Loop Goes to Sleep
+The event loop enters an idle state under these conditions:
+
+No Pending Tasks:
+All Timers (setTimeout, setInterval) have either fired or are waiting for future expiration.
+No Pending Callbacks (e.g., deferred I/O callbacks) are queued.
+No Check phase tasks (setImmediate) are pending.
+No Close callbacks (e.g., socket closures) are queued.
+The Poll phase has no immediate I/O events to process.
+
+Libuv’s Role:
+Libuv uses OS-level mechanisms like epoll (Linux), kqueue (macOS/BSD), or IOCP (Windows) to monitor file descriptors (e.g., sockets, files) for events.
+When no tasks are pending, libuv calls a blocking function (e.g., epoll_wait) in the Poll phase, which suspends the event loop, consuming minimal CPU resources.
+This is the "sleep" state.
+
+Example Scenario:
+
+In an HTTP server waiting for requests, if no requests are received and no timers are active, the event loop pauses in the Poll phase, waiting for network activity.
+
+
+Key Points About Sleep and Wake -> NO true sleep
+Non-Blocking Nature: When "asleep," the event loop doesn’t consume CPU because libuv relies on the OS kernel’s event notification mechanisms (e.g., epoll_wait).
+Exiting the Event Loop: If the event loop is idle (no pending timers, I/O, or callbacks) and there are no active handles (e.g., open sockets or listeners),
+  Node.js exits the process. This is why a server like the one above keeps running—it maintains an active handle (server.listen).
+Poll Phase is Key: The idle/sleep behavior occurs in the Poll phase, where libuv waits for I/O events. If no events arrive and no other phases have tasks, the loop pauses.
+
+Idle/Waiting in the Poll Phase: The event loop can appear to be "asleep" during the poll phase when there are no immediate tasks to process
+(e.g., no pending I/O events, timers, or callbacks). In this phase, the event loop waits for new events, such as incoming network requests,
+file operations, or timers to expire. This waiting is not a true sleep but rather an efficient pause where the event loop is idle,
+consuming minimal resources until something triggers it to proceed.
+
+
+Phase Sequence: The event loop follows a strict sequence of phases (Timers, Pending Callbacks, Idle/Prepare, Poll, Check, Close) in each tick, processing callbacks from each phase’s queue.
+Poll Phase Role: The Poll phase is where the loop waits for I/O events and may appear to "stay" when idle, but it’s just one part of the cycle. The loop doesn’t skip other phases unless their queues are empty.
+Callback Queues: Each phase processes callbacks from its queue (e.g., timers in Timers, I/O in Poll, setImmediate in Check).
+Idle Behavior: When no tasks are pending, the loop pauses in the Poll phase, waiting for events, but resumes the full phase cycle when new tasks arrive.
+

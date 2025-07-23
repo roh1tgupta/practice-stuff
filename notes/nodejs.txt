@@ -1,0 +1,145 @@
+Insert one document: db.myCollection.insertOne({ name: "Alice", age: 25 }).
+Insert multiple documents: db.myCollection.insertMany([{ name: "Bob", age: 30 }, { name: "Charlie", age: 35 }]).
+
+Read (Find):
+Find all documents: db.myCollection.find().
+Find one document: db.myCollection.findOne({ name: "Alice" }).
+Pretty print results: db.myCollection.find().pretty().
+
+Update:
+Update one document: db.myCollection.updateOne({ name: "Alice" }, { $set: { age: 26 } }).
+Update multiple documents: db.myCollection.updateMany({ age: { $gt: 30 } }, { $set: { status: "senior" } }).
+
+Delete one document: db.myCollection.deleteOne({ name: "Bob" }).
+Delete multiple documents: db.myCollection.deleteMany({ age: { $lt: 30 } }).
+
+
+Comparison Operators
+$eq: Matches values equal to a specified value (e.g., { age: { $eq: 25 } }).
+$ne: Not equal to (e.g., { age: { $ne: 25 } }).
+$gt, $gte: Greater than, greater than or equal to.
+$lt, $lte: Less than, less than or equal to.
+Example: db.myCollection.find({ age: { $gt: 25 } }) (finds documents where age > 25).
+
+Logical Operators:
+$and: Matches documents satisfying all conditions (e.g., { $and: [{ age: { $gt: 20 } }, { age: { $lt: 30 } }] }).
+$or: Matches documents satisfying any condition (e.g., { $or: [{ name: "Alice" }, { age: 30 }] }).
+$not: Inverts a condition (e.g., { age: { $not: { $gt: 25 } } }).
+$nor: Matches documents that fail all conditions. (example below)
+
+Element Operators
+$exists: Matches documents with a field (e.g., { name: { $exists: true } }).
+$type: Matches documents by field type (e.g., { age: { $type: "number" } }).
+
+Array Operators:
+$all: Matches arrays containing all specified elements (e.g., { tags: { $all: ["tech", "mongodb"] } }).
+$elemMatch: Matches documents where an array element satisfies multiple conditions.
+$size: Matches arrays with a specific number of elements (e.g., { tags: { $size: 2 } }).
+
+Aggregation Queries:
+Use the aggregation pipeline for advanced data processing (e.g., grouping, sorting, filtering).
+Example: db.myCollection.aggregate([{ $match: { age: { $gt: 25 } } }, { $group: { _id: "$status", total: { $sum: 1 } } }]).
+Common stages: $match (filter), $group (group by), $sort, $project (reshape output).
+
+
+Update Operators:
+$set: Sets a field’s value.
+$unset: Removes a field.
+$inc: Increments a numeric value (e.g., { $inc: { age: 1 } }).
+$push: Adds an element to an array.
+$pull: Removes an element from an array.
+
+Text Search:
+Create a text index: db.myCollection.createIndex({ description: "text" }).
+Search: db.myCollection.find({ $text: { $search: "keyword" } }).
+db.myCollection.createIndex({ description: "text" })
+This creates a text index on the description field of myCollection, enabling text search on that field.
+db.myCollection.find({ $text: { $search: "keyword" } })
+This searches for documents in myCollection where the description field contains the word "keyword" (case-insensitive).
+eg:
+[
+  { "_id": 1, "name": "Laptop", "description": "High-performance laptop with 16GB RAM" },
+  { "_id": 2, "name": "Phone", "description": "Smartphone with advanced camera features" },
+  { "_id": 3, "name": "Tablet", "description": "Lightweight tablet for gaming and productivity" },
+  { "_id": 4, "name": "Monitor", "description": "4K display for high-quality visuals" }
+]
+db.myCollection.find({ $text: { $search: "high" } })
+o/p:
+[
+  { "_id": 1, "name": "Laptop", "description": "High-performance laptop with 16GB RAM" },
+  { "_id": 4, "name": "Monitor", "description": "4K display for high-quality visuals" }
+]
+Explanation: The word "high" appears in the description of the Laptop ("High-performance") and Monitor ("high-quality") documents. The search is case-insensitive, so "High" and "high" both match.
+
+//can go in deep with grok/chatgpt
+
+
+{
+  "_id": 1,
+  "name": "Alice",
+  "scores": [
+    { "subject": "Math", "score": 85 },
+    { "subject": "English", "score": 90 },
+    { "subject": "Science", "score": 75 }
+  ]
+}
+{
+  "_id": 2,
+  "name": "Bob",
+  "scores": [
+    { "subject": "Math", "score": 70 },
+    { "subject": "English", "score": 95 },
+    { "subject": "Science", "score": 80 }
+  ]
+}
+
+
+db.students.find({ "scores.subject": "Math", "scores.score": { $gt: 80 } })
+might return documents where one array element has subject: "Math" and another has score > 80, which could include Bob (since he has a score of 95 in English). This is not what we want.
+
+Using $elemMatch, you ensure both conditions apply to the same array element:
+
+db.students.find({
+  scores: {
+    $elemMatch: { subject: "Math", score: { $gt: 80 } }
+  }
+})\
+Result:
+This query returns only Alice’s document because she has a Math score of 85, which satisfies both conditions (subject: "Math" and score > 80) in the same array element. Bob is excluded since his Math score is 70.
+
+
+
+[
+  { "_id": 1, "name": "Alice", "age": 22, "status": "active" },
+  { "_id": 2, "name": "Bob", "age": 30, "status": "active" },
+  { "_id": 3, "name": "Charlie", "age": 27, "status": "inactive" },
+  { "_id": 4, "name": "David", "age": 35, "status": "active" },
+  { "_id": 5, "name": "Eve", "age": 28, "status": "inactive" }
+]
+
+db.users.find({
+  $nor: [
+    { age: { $gt: 30 } },
+    { status: "active" }
+  ]
+})
+The $nor operator checks that none of the conditions are true:
+{ age: { $gt: 30 } }: Excludes users with age > 30.
+{ status: "active" }: Excludes users with status: "active".
+
+result: 
+[
+  { "_id": 2, "name": "Bob", "age": 30, "status": "inactive" },
+  { "_id": 4, "name": "David", "age": 20, "status": "inactive" }
+]
+
+
+
+db.myCollection.aggregate([
+  { $match: { age: { $gt: 25 } } },
+  { $group: { _id: "$status", total: { $sum: 1 } } }
+])
+[
+  { "_id": "active", "total": 2 },
+  { "_id": "inactive", "total": 2 }
+]

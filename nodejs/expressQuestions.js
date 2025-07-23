@@ -131,10 +131,10 @@ app.get('/ab+cd/', (req, res) => {
 });
 
 app.get('/ab?cd/', (req, res) => {
-  res.send('Matched /abbcd or /abcd/');
+  res.send('Matched /abcd or /acd/');
 });
 // In this case, the ? allows for zero or one b character, which would 
-// match both /abccd and /abbcd.
+// match both /abcd and /acd.
 
 
 app.use("/api", (req, res, next) => {

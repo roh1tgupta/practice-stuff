@@ -155,3 +155,158 @@ abc();
 //   }
 //   console.log('Files in directory:', files);
 // });
+
+
+
+// Stabilized: The fs.promises API was marked as stable in Node.js v14.0.0 (released on April 21, 2020), meaning it was considered production-ready and no longer experimental.
+
+// const fs = require('fs/promises');
+// const path = require('path');
+
+// async function fileOperations() {
+//   const filePath = path.join(__dirname, 'example.txt'); // __dirname is the absolute path to the current directory
+//   try {
+//     // Write to file
+//     await fs.writeFile(filePath, 'Hello, Node.js!');
+//     console.log('File written');
+
+//     // Append to file
+//     await fs.appendFile(filePath, '\nMore text');
+//     console.log('Text appended');
+
+//     // Read file
+//     const data = await fs.readFile(filePath, 'utf8');
+//     console.log('File content:', data);
+
+//     // Check file stats
+//     const stats = await fs.stat(filePath);
+//     console.log('File size:', stats.size, 'bytes');
+
+//     // Delete file
+//     await fs.unlink(filePath);
+//     console.log('File deleted');
+//   } catch (err) {
+//     console.error('Error:', err);
+//   }
+// }
+// fileOperations();
+
+
+
+
+// When to Use fs.readFile/fs.writeFile
+// File Size is Small:
+  // For files that are small (e.g., a few KB or MB), loading the entire file into memory is fast and doesn’t strain system resources.
+  // Example: Configuration files (JSON, YAML), small text files, or short logs.
+// Simplicity is Key:
+  // If the operation is straightforward (e.g., read a file, process it, write it back), these methods are easier to implement than streams.
+  // Example: Reading a small JSON file to parse its contents.
+// One-Time Operations:
+  // When you need to read or write a file in a single operation without processing data incrementally.
+  // Example: Writing a short report to a file.
+// Low Frequency of Operations:
+  // For infrequent file operations where performance optimization isn’t critical.
+
+
+  // When to Use Streams
+  // Use streams (fs.createReadStream/fs.createWriteStream) when:
+  
+  // File Size is Large:
+    // For large files (e.g., videos, large CSVs, logs exceeding tens of MB or GB), streams prevent memory overload by processing data in chunks (default chunk size: 64KB for readable streams).
+    // Example: Processing a 1GB log file or streaming a video.
+  // Memory Efficiency is Critical:
+    // Streams minimize memory usage by reading/writing data incrementally, making them suitable for resource-constrained environments.
+    // Example: Servers handling multiple large file uploads/downloads.
+  // Real-Time or Continuous Processing:
+    // When you need to process data as it’s read (e.g., transforming data, streaming to a client, or piping to another stream).
+    // Example: Compressing a file on-the-fly or sending a file to a client over HTTP.
+  // Pipelining or Chaining Operations:
+    // Streams allow you to pipe data through multiple processing steps (e.g., read → transform → write).
+    // Example: Reading a file, transforming its content (e.g., converting to uppercase), and writing to another file.
+  // Handling Backpressure:
+    // Streams handle backpressure automatically, pausing reading when the write destination can’t keep up, which is useful for network or disk I/O.
+  
+  // What is Backpressure?
+  // Backpressure occurs in systems where data is produced faster than it can be consumed or processed. In Node.js streams, this happens when the source (e.g., a readable stream like fs.createReadStream) generates data faster than the destination (e.g., a writable stream like fs.createWriteStream or a network socket) can handle it. Without proper handling, this mismatch can lead to memory issues, as data accumulates in memory buffers, potentially crashing the application.
+
+// const fs = require('fs');
+// const path = require('path');
+
+// // File paths using __dirname
+// const inputFile = path.join(__dirname, 'large.txt');
+// const outputFile = path.join(__dirname, 'output.txt');
+
+// // Create a large file for testing (e.g., 100MB)
+// try {
+//   fs.writeFileSync(inputFile, Buffer.alloc(100 * 1024 * 1024, 'a')); // 100MB of 'a'
+//   console.log('Test file created: large.txt');
+// } catch (err) {
+//   console.error('Error creating test file:', err);
+//   return;
+// }
+
+// // Create readable and writable streams
+// const readStream = fs.createReadStream(inputFile, {
+//   highWaterMark: 64 * 1024, // 64KB chunks for reading
+// });
+// const writeStream = fs.createWriteStream(outputFile, {
+//   highWaterMark: 16 * 1024, // 16KB buffer for writing (smaller to simulate bottleneck)
+// });
+
+// // Manual handling of backpressure
+// readStream.on('data', (chunk) => {
+//   console.log(`Read chunk: ${chunk.length} bytes`);
+//   const canWrite = writeStream.write(chunk);
+//   if (!canWrite) {
+//     console.log('Buffer full, pausing read stream...');
+//     readStream.pause(); // Pause reading when write buffer is full
+//     writeStream.once('drain', () => {
+//       console.log('Buffer drained, resuming read stream...');
+//       readStream.resume(); // Resume when writable stream is ready
+//     });
+//   }
+// });
+
+// readStream.on('end', () => {
+//   writeStream.end();
+//   console.log('Finished reading and writing');
+// });
+
+// readStream.on('error', (err) => {
+//   console.error('Read error:', err);
+// });
+
+// writeStream.on('error', (err) => {
+//   console.error('Write error:', err);
+// });
+
+// writeStream.on('finish', () => {
+//   console.log('File copy complete');
+// });
+
+
+// Using .pipe() for Automatic Backpressure
+// The above example manually handles backpressure for clarity. In practice, you can use .pipe() to let Node.js handle backpressure automatically:
+// const fs = require('fs');
+// const path = require('path');
+
+// const inputFile = path.join(__dirname, 'large.txt');
+// const outputFile = path.join(__dirname, 'output.txt');
+
+// const readStream = fs.createReadStream(inputFile, { highWaterMark: 64 * 1024 });
+// const writeStream = fs.createWriteStream(outputFile, { highWaterMark: 16 * 1024 });
+
+// readStream.pipe(writeStream);
+
+// readStream.on('end', () => {
+//   console.log('Streaming complete');
+// });
+
+// readStream.on('error', (err) => console.error('Read error:', err));
+// writeStream.on('finish', () => console.log('File copy complete'));
+// writeStream.on('error', (err) => console.error('Write error:', err));
+
+
+// How .pipe() Works:
+// .pipe() internally monitors the writable stream’s buffer. If it fills up, .pipe() pauses the readable stream until the drain event is emitted.
+// This abstracts away manual pause/resume logic, making it simpler and less error-prone.

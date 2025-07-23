@@ -11,6 +11,6 @@ var obj1 = {
 var name = "rohit";
 var bike = obj1.bike;
 
-bike();
+bike(); // undefined
 obj1.bike();
-bike.call(this)
+bike.call(this) // undefined

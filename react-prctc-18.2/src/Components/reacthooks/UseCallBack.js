@@ -13,6 +13,7 @@ export default function HookUseCallback() {
       <button onClick={() => setCoutner(counter + 1)}>click me</button>
       <div></div>you have clicked {counter} times
       <div></div>
+      {/* <ABC onClick={handleSubmit}/> */}
       <ABC onClick={onClickFn}/>
     </div>
   );

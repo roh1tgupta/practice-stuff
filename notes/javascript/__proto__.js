@@ -85,7 +85,7 @@
 // console.log(admin.fullName); // John Smith (*)
 // // // setter triggers!
 // admin.fullName = "Alice Cooper"; // (**)
-// console.log(admin.fullName, admin); // Alice Cooper
+// console.log(admin.fullName, admin, user); // Alice Cooper
 // delete admin.name;
 // delete admin.surname
 // console.log(admin.fullName)
@@ -124,8 +124,8 @@
 //   __proto__: animal
 // };
 // // Object.keys only returns own keys
-// console.log(Object.keys(rabbit)); // jumps
-// console.log(Object.entries(rabbit));
+// console.log(Object.keys(rabbit)); // [ 'jumps' ]
+// console.log(Object.entries(rabbit)); // [ [ 'jumps', true ] ]
 // // for..in loops over both own and inherited keys
 // for(let prop in rabbit) console.log(prop); // jumps, then eats
 

@@ -9,6 +9,7 @@ import HookUseCallback from './Components/reacthooks/UseCallBack';
 import { Suspense } from 'react';
 
 const UseDeferredValueComp = React.lazy(() => import('./Components/reacthooks/UseDeferredValueComp'));
+const UseDeferredValueComp1 = React.lazy(() => import('./Components/reacthooks/UseDeferredValueComp1'));
 const UseImperativeHandleComp = React.lazy(() => import('././Components/reacthooks/UseImperativeHandleComp'));
 const UseTransitionComp = React.lazy(() => import('./Components/reacthooks/UseTransitionComp'));
 const UseContextComp = React.lazy(() => import('././Components/reacthooks/UseContextComp'));
@@ -20,7 +21,8 @@ function App() {
       {/* <UseContextComp /> */}
 
       {/* <UseDeferredValueComp /> */}
-      <HookUseCallback />
+      <UseDeferredValueComp1 />
+      {/* <HookUseCallback /> */}
       {/* <UseImperativeHandleComp /> */}
       {/* <UseTransitionComp /> */}
       </Suspense>

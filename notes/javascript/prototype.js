@@ -55,7 +55,7 @@
 // …JavaScript itself does not ensure the right "constructor" value.
 // Yes, it exists in the default "prototype" for functions, but that’s all. What happens with it later – is totally on us.
 // In particular, if we replace the default prototype as a whole, then there will be no "constructor" in it.
-// for instance
+// // for instance
 // function Rabbit() {}
 // let ab = new Rabbit();
 // console.log(ab.constructor === Rabbit); // true
@@ -106,6 +106,7 @@
 // let rabbit = new Rabbit();
 // Rabbit.prototype = {};
 // console.log( rabbit.eats ); // ? true
+//  because changing the prototype property of a constructor function after object creation doesn't affect the prototype chain of objects that were already created.
 
 
 
@@ -116,6 +117,7 @@
 // let rabbit = new Rabbit();
 // Rabbit.prototype.eats = false;
 // console.log( rabbit.eats ); // ? false
+// Here, we're modifying a property of the existing prototype object rather than replacing the entire prototype object.
 // Rabbit.prototype.jumps = true;
 // console.log(rabbit.jumps); // ? true
 // Rabbit.prototype={
@@ -123,7 +125,7 @@
 // };
 // Rabbit.prototype.eats = true;
 // console.log( rabbit.eats ); // ? false
-// console.log(new Rabbit().eats);
+// console.log(new Rabbit().eats); // true
 
 
 // function Rabbit(naem) {this.naem = naem}
@@ -133,7 +135,7 @@
 // let rabbit = new Rabbit('rohit');
 // delete rabbit.eats;
 // console.log( rabbit.eats ); // ? true
-// console.log(rabbit.naem)
+// console.log(rabbit.naem) // rohit
 // delete rabbit.naem
 // console.log(rabbit.naem) // ? undefined
 
