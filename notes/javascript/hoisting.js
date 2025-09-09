@@ -89,3 +89,17 @@
 // }
 
 // console.log(abc());
+
+
+// function createCounter(initialValue) {
+//   let count = initialValue;
+
+//   return function() {
+//     count++;
+//     console.log(count);
+//   };
+// }
+
+// const counter = createCounter(5);
+// counter()
+// counter(); // 6

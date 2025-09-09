@@ -13,19 +13,6 @@
 //   console.log('File operation callback executed');
 // });
 
-// function createCounter(initialValue) {
-//   let count = initialValue;
-
-//   return function() {
-//     count++;
-//     console.log(count);
-//   };
-// }
-
-// const counter = createCounter(5);
-// counter()
-// counter(); // 6
-
 // const fs = require("fs");
 // // cb1
 // setImmediate(() => console.log("Set immidiate"));
@@ -50,11 +37,11 @@
 // console.log("Last line");
 
 
-console.log('Start');
-process.nextTick(() => console.log('nextTick'));
-queueMicrotask(() => console.log('queueMicrotask1'));
-Promise.resolve().then(() => console.log('Promise1'));
-queueMicrotask(() => console.log('queueMicrotask2'));
-Promise.resolve().then(() => console.log('Promise2'));
-console.log('End');
-setTimeout(() => console.log('Timer'), 0);
+// console.log('Start');
+// process.nextTick(() => console.log('nextTick'));
+// queueMicrotask(() => console.log('queueMicrotask1'));
+// Promise.resolve().then(() => console.log('Promise1'));
+// queueMicrotask(() => console.log('queueMicrotask2'));
+// Promise.resolve().then(() => console.log('Promise2'));
+// console.log('End');
+// setTimeout(() => console.log('Timer'), 0);

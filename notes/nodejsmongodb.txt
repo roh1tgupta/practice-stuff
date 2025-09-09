@@ -40,6 +40,54 @@ Aggregation Queries:
 Use the aggregation pipeline for advanced data processing (e.g., grouping, sorting, filtering).
 Example: db.myCollection.aggregate([{ $match: { age: { $gt: 25 } } }, { $group: { _id: "$status", total: { $sum: 1 } } }]).
 Common stages: $match (filter), $group (group by), $sort, $project (reshape output).
+db.sales.aggregate([
+  // Stage 1: Filter completed orders
+  {
+    $match: {
+      status: "completed"
+    }
+  },
+  // Stage 2: Group by customer
+  {
+    $group: {
+      _id: "$customer",
+      totalSpent: { $sum: { $multiply: ["$price", "$quantity"] } },
+      orderCount: { $sum: 1 }
+    }
+  },
+  // Stage 3: Add spending category
+  {
+    $addFields: {
+      spendingCategory: {
+        $cond: {
+          if: { $gte: ["$totalSpent", 1500] }, //The $gte operator checks if the first value is greater than or equal to the second value. Its syntax is:
+          then: "High Spender",        // { $gte: [ <expression1>, <expression2> ] }
+          else: "Regular Spender"
+        }
+      }
+    }
+  },
+  // Stage 4: Sort by total spent
+  {
+    $sort: {
+      totalSpent: -1
+    }
+  },
+  // Stage 5: Limit to top 2
+  {
+    $limit: 2
+  },
+  // Stage 6: Project relevant fields
+  {
+    $project: {
+      customer: "$_id",
+      totalSpent: 1,
+      orderCount: 1,
+      spendingCategory: 1,
+      _id: 0
+    }
+  }
+]);
 
 
 Update Operators:
@@ -127,12 +175,10 @@ The $nor operator checks that none of the conditions are true:
 { age: { $gt: 30 } }: Excludes users with age > 30.
 { status: "active" }: Excludes users with status: "active".
 
-result: 
 [
-  { "_id": 2, "name": "Bob", "age": 30, "status": "inactive" },
-  { "_id": 4, "name": "David", "age": 20, "status": "inactive" }
+  { "_id": 3, "name": "Charlie", "age": 27, "status": "inactive" },
+  { "_id": 5, "name": "Eve", "age": 28, "status": "inactive" }
 ]
-
 
 
 db.myCollection.aggregate([
@@ -143,3 +189,37 @@ db.myCollection.aggregate([
   { "_id": "active", "total": 2 },
   { "_id": "inactive", "total": 2 }
 ]
+
+
+
+[
+  { "_id": 1, "title": "Post A", "tags": ["tech", "mongodb", "backend"] },
+  { "_id": 2, "title": "Post B", "tags": ["life", "productivity"] },
+  { "_id": 3, "title": "Post C", "tags": ["tech"] },
+  { "_id": 4, "title": "Post D", "tags": [] }
+]
+db.posts.find({ tags: { $size: 2 } })
+o/p
+[
+  { "_id": 2, "title": "Post B", "tags": ["life", "productivity"] }
+]
+Only the document with _id: 2 has exactly 2 elements in the tags array.
+
+in MongoDB's $project stage, the _id field is unique in that it is included by default unless explicitly excluded (by setting _id: 0).
+For all other fields, the opposite is true: they are excluded by default unless explicitly included (by setting them to 1 or
+another valid projection expression)
+
+
+// Sample document: { _id: 1, name: "Alice", age: 30, city: "New York" }
+// _id included by default, only name and age projected
+db.collection.aggregate([
+  { $project: { name: 1, age: 1 } }
+])
+// Output: { _id: 1, name: "Alice", age: 30 }
+// Note: 'city' is excluded because it wasn't specified
+// Excluding _id explicitly, only name and age projected
+db.collection.aggregate([
+  { $project: { _id: 0, name: 1, age: 1 } }
+])
+// Output: { name: "Alice", age: 30 }
+// Note: '_id' is excluded, 'city' is excluded because it wasn't specified

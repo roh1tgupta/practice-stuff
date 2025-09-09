@@ -18,6 +18,11 @@ DOM receives only batched updates to repaint the UI.
 
 
 CORS : Cross-Origin Resource Sharing (CORS) is a mechanism that uses additional HTTP headers to tell a browser to let a web application running at one origin (domain) have permission to access selected resources from a server at a different origin. A web application makes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, and port) than its own origin.
+The Express API responds with a 200 status and the expected response but omits the Access-Control-Allow-Origin
+ header for the frontend’s origin (e.g., http://localhost:8080), triggering a CORS error in the browser.
+ Despite the 200 status in the network tab, the browser blocks the response due to the missing CORS header, 
+ making it inaccessible to the frontend, which logs a CORS error in the console. This edge case occurs when 
+ the server processes the request successfully but fails to satisfy the browser’s CORS policy.
 
 
 when in any file global variable is used directly, linter shows error, to remove this either use it as window.(name_of_variable) or define that on top of file as /* global name_of_variable */

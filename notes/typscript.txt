@@ -1,0 +1,466 @@
+TypeScript is a superset of JavaScript that adds static typing and compile-time type checking. It compiles to plain JavaScript,
+enabling developers to catch type-related errors during development.
+
+Key differences:
+TypeScript: Static typing, interfaces, enums, and advanced features like generics.
+JavaScript: Dynamic typing, no compile-time checks, more prone to runtime errors.
+
+How do you define a variable with a specific type in TypeScript?
+Answer: Use type annotations with a colon (:) followed by the type.
+let age: number = 25; let isStudent: boolean = true; let names: string[] = ["Alice", "Bob"];
+
+Common basic types include:
+number: For integers and floats (e.g., 42, 3.14).
+string: For text (e.g., "hello").
+boolean: For true/false.
+array: For lists (e.g., number[] or Array<number>).
+tuple: For fixed-length arrays with specific types (e.g., [string, number]).
+any: Disables type checking.
+unknown: Safer alternative to any, requires type checking before use.
+void: For functions returning nothing.
+null and undefined: Represent absence of value.
+
+let score: number = 95;
+let tuple: [string, number] = ["Alice", 25];
+let unknownVar: unknown = "Could be anything";
+
+In the context of TypeScript tuples, an array with a fixed length means that the tuple has a predefined number of 
+elements that cannot be changed. Unlike a regular array, which can grow or shrink in size (e.g., by using push or pop),
+a tuple's length is fixed at the time of its type definition, and TypeScript enforces this constraint.
+let person: [string, number] = ["Alice", 25]; // Valid: exactly 2 elements
+person = ["Bob", 30]; // Valid: still 2 elements with correct types
+person = ["Charlie", 40, true]; // Error: Source has 3 elements, but target allows only 2
+person = ["Dave"]; // Error: Source has 1 element, but target requires 2
+
+Caveat: JavaScript Behavior:
+Since TypeScript compiles to JavaScript, and JavaScript arrays (which tuples are compiled to) are 
+not truly fixed-length, you can technically modify a tuple's length at runtime using methods like 
+push or pop. However, TypeScript's type checker will warn you if you try to do this, and 
+it’s considered bad practice because it breaks the tuple's contract.
+
+To enforce stricter tuple behavior, you can use readonly tuples:
+let person: readonly [string, number] = ["Alice", 25];
+// person.push("extra"); // Error: Property 'push' does not exist on type 'readonly [string, number]'
+
+An interface defines the shape of an object, specifying property types and methods.
+interface User {
+  name: string;
+  age: number;
+  isActive?: boolean; // Optional property
+}
+
+const user: User = {
+  name: "Alice",
+  age: 25,
+};
+
+Interface: Primarily for defining object shapes, supports declaration merging, and is commonly used for classes.
+Type: More flexible, can represent unions, intersections, primitives, and complex types.
+Key Differences:
+Interfaces can be extended via declaration merging.
+Types support union (|) and intersection (&) operations.
+
+// Interface
+interface Person {
+  name: string;
+}
+interface Person {
+  age: number; // Declaration merging
+}
+TypeScript merges the two Person interface declarations into a single interface that effectively looks like this:
+interface Person {
+  name: string;
+  age: number;
+}
+
+
+// Type
+type User = {
+  name: string;
+} & { age: number }; // Intersection : A value must satisfy all combined types
+
+type ID = string | number; // Union (not possible with interface): A value can be one of several types
+
+// Intersection
+interface A { x: number; }
+interface B { y: string; }
+type C = A & B;
+const obj: C = { x: 1, y: "test" };
+
+Generics allow creating reusable components that work with any type while maintaining type safety.
+function identity<T>(value: T): T {
+  return value;
+}
+// Explicitly specifying T as string and number resp.
+const str = identity<string>("Hello"); // T is string
+const num = identity<number>(123); // T is number
+
+// Type inference (TypeScript infers T from the argument)
+const result = identity('2');
+
+TypeScript automatically infers types when not explicitly specified, based on the assigned value.
+
+Use strictNullChecks in tsconfig.json to enforce explicit handling of null and undefined.
+Use optional chaining (?.) and nullish coalescing (??) for safe access.
+interface User {
+  name?: string;
+}
+const user: User = {};
+console.log(user.name?.toUpperCase()); // Safe access, undefined if name is absent
+console.log(user.name ?? "Default"); // Returns "Default" if name is null/undefined
+
+Mapped types in TypeScript are a way to create new types by transforming the properties of an existing type.
+type NewType = {
+  [Key in keyof ExistingType]: NewPropertyType;
+};
+examples:
+interface Person {
+  name: string;
+  age: number;
+  email: string;
+}
+// Custom mapped type to make all properties optional
+type OptionalPerson = {
+  [Key in keyof Person]?: Person[Key];
+};
+const person: OptionalPerson = {
+  name: "Alice"
+  // age and email are optional, so this is valid
+};
+console.log(person); // { name: "Alice" }
+example2:
+interface Person {
+  name: string;
+  age: number;
+}
+// Custom mapped type to make all properties readonly
+type ReadonlyPerson = {
+  readonly [Key in keyof Person]: Person[Key];
+};
+const person: ReadonlyPerson = {
+  name: "Bob",
+  age: 30
+};
+// person.name = "Charlie"; // Error: Cannot assign to 'name' because it is a readonly property
+example3:
+interface Person {
+  name: string;
+  age: number;
+}
+// Add "get" prefix to property names
+type GettersPerson = {
+  [Key in keyof Person as `get${Capitalize<Key>}`]: () => Person[Key];
+};
+const person: GettersPerson = {
+  getName: () => "Alice",
+  getAge: () => 25
+};
+console.log(person.getName()); // Output: "Alice"
+console.log(person.getAge()); // Output: 25
+example 4:
+type Keys = "name" | "email";
+interface Person {
+  name: string;
+  email: string;
+  age: number;
+}
+// Map only specific keys to optional
+type PartialByKeys<T, K> = {
+  [Key in K]?: T[Key];
+} & {
+  [Key in Exclude<keyof T, K>]: T[Key];
+};
+type PartialNameAndEmail = PartialByKeys<Person, Keys>;
+const person: PartialNameAndEmail = {
+  age: 30
+  // name and email are optional
+};
+console.log(person); // { age: 30 }
+
+
+In TypeScript, Exclude<keyof T, K> is a type utility that works by leveraging two other built-in utility types: keyof and Exclude.
+keyof T:
+This operator takes a type T and produces a union type of all string or number literal types representing the property keys of T. 
+For example, if you have an interface interface Person { name: string; age: number; }, then keyof Person would result 
+in the union type "name" | "age".
+Exclude<UnionType, ExcludedMembers>:
+This utility type constructs a new union type by removing all members from UnionType that are assignable to ExcludedMembers.
+Therefore, Exclude<keyof T, K> combines these two concepts:
+It first determines all the keys of the type T using keyof T, creating a union of those keys.
+Then, it uses Exclude to filter out any keys from that union that are assignable to K. K is typically a union of specific 
+keys you want to remove.
+
+
+TypeScript provides several built-in mapped types as utility types, which are commonly used:
+Partial<T>: Makes all properties of T optional.
+Required<T>: Makes all properties of T required (removes ?).
+Readonly<T>: Makes all properties of T readonly.
+Pick<T, K>: Picks a subset of properties K from T.
+Omit<T, K>: Excludes properties K from T.
+Record<K, T>: Creates a type with keys K and values of type T.
+
+Conditional types select one of two types based on a condition, using the extends keyword.
+eg1
+type IsString<T> = T extends string ? "Yes" : "No";
+type A = IsString<string>; // "Yes"
+type B = IsString<number>; // "No"
+
+eg2
+type ReturnType<T> = T extends (...args: any) => infer R ? R : never;
+type Func1 = (x: number) => string;
+type Func2 = (x: string) => boolean;
+type R1 = ReturnType<Func1>; // string
+type R2 = ReturnType<Func2>; // boolean
+type R3 = ReturnType<number>; // never (not a function)
+
+eg3
+type NonString<T> = T extends string ? never : T;
+type UnionType = string | number | boolean;
+type Result = NonString<UnionType>; // number | boolean
+
+eg4
+interface Person {
+  name: string;
+  age: number;
+  email: string | null;
+}
+type NonNullableProps<T> = {
+  [K in keyof T]: T[K] extends null | undefined ? never : T[K];
+};
+type PersonNonNullable = NonNullableProps<Person>;
+// { name: string, age: number, email: string }
+
+eg5
+type ExtractFunction<T> = T extends (...args: any) => any ? T : never;
+type MixedUnion = string | number | ((x: number) => string) | boolean;
+type FunctionsOnly = ExtractFunction<MixedUnion>; // (x: number) => string
+
+TypeScript provides several utility types that use conditional types internally:
+ReturnType<T>: Extracts the return type of a function.
+NonNullable<T>: Removes null and undefined from a type.
+Extract<T, U>: Extracts types from T that are assignable to U.
+Exclude<T, U>: Excludes types from T that are assignable to U.
+InstanceType<T>: Gets the instance type of a constructor function.
+
+The never type represents values that never occur, such as functions that throw errors or never return.
+
+Discriminated unions use a common property (discriminant) to narrow types in a union.
+eg
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
+interface Square {
+  kind: "square";
+  side: number;
+}
+type Shape = Circle | Square;
+function getArea(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2; // TypeScript knows radius exists
+    case "square":
+      return shape.side ** 2; // TypeScript knows side exists
+  }
+}
+Discriminant: The kind property with literal values "circle" or "square".
+Union Type: Shape is Circle | Square.
+Type Narrowing: The switch statement checks shape.kind, allowing TypeScript to narrow shape to Circle or Square,
+so radius or sideLength can be accessed safely.
+
+TypeScript provides built-in utility types like Partial, Required, Pick, Omit, etc., to transform types.
+interface User {
+  name: string;
+  age?: number;
+}
+// Make all properties optional
+type PartialUser = Partial<User>;
+// { name?: string; age?: number }
+// Pick specific properties
+type UserName = Pick<User, "name">;
+// { name: string }
+
+The unknown type requires type checking (e.g., type guards, assertions) before performing operations.
+eg
+function process(value: unknown) {
+  if (typeof value === "string") {
+    return value.toUpperCase(); // Type narrowed to string
+  }
+  throw new Error("Not a string");
+}
+
+Template literal types allow creating string literal types using string interpolation syntax
+eg
+type Color = "red" | "blue";
+type Size = "small" | "large";
+type Item = `${Color}-${Size}`;
+const item: Item = "red-small"; // Valid
+const invalid: Item = "green-medium"; // Error
+
+How do you implement a generic type constraint?
+Answer: Use extends to constrain a generic type to a specific type or interface.
+eg
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+const user = { name: "Alice", age: 25 };
+const name = getProperty(user, "name"); // string
+const age = getProperty(user, "age"); // number
+
+How do you type a higher-order function in TypeScript?
+Answer: Higher-order functions take or return functions, and their types are defined using function signatures.
+eg:
+type Callback<T> = (value: T) => void;
+function withCallback<T>(value: T, cb: Callback<T>): void {
+  cb(value);
+}
+withCallback("Hello", (str) => console.log(str.toUpperCase()));
+
+How do you create a type-safe event emitter in TypeScript?
+Use generics and mapped types to ensure type safety for event names and their payloads.
+eg:
+type EventMap = {
+  click: { x: number; y: number };
+  error: { message: string };
+};
+class EventEmitter<T extends Record<string, any>> {
+  private listeners: { [K in keyof T]?: ((data: T[K]) => void)[] } = {};
+
+  on<K extends keyof T>(event: K, callback: (data: T[K]) => void) {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event]!.push(callback);
+  }
+
+  emit<K extends keyof T>(event: K, data: T[K]) {
+    const callbacks = this.listeners[event];
+    if (callbacks) {
+      callbacks.forEach((cb) => cb(data));
+    }
+  }
+}
+
+const emitter = new EventEmitter<EventMap>();
+emitter.on("click", ({ x, y }) => console.log(`Clicked at ${x}, ${y}`));
+emitter.emit("click", { x: 10, y: 20 }); // Type-safe
+emitter.emit("error", { x: 10 }); // Error: Wrong payload
+
+How do you use infer in conditional types
+type GetReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+type Fn = () => string;
+type Return = GetReturnType<Fn>; // string
+
+How do you type a recursive data structure
+Answer: Use recursive type aliases or interfaces to define structures like trees.
+eg:
+interface TreeNode<T> {
+  value: T;
+  children?: TreeNode<T>[];
+}
+const tree: TreeNode<string> = {
+  value: "root",
+  children: [
+    { value: "child1", children: [{ value: "grandchild" }] },
+    { value: "child2" },
+  ],
+};
+
+How do you implement a type-safe dependency injection system?
+Answer: Use generics, interfaces, and dependency mapping to ensure type-safe injections.
+eg:
+interface Service {
+  execute(): void;
+}
+class Logger implements Service {
+  execute() {
+    console.log("Logging...");
+  }
+}
+class Database implements Service {
+  execute() {
+    console.log("Querying database...");
+  }
+}
+type ServiceMap = {
+  logger: Logger;
+  db: Database;
+};
+class Container {
+  private services: Partial<ServiceMap> = {};
+  register<K extends keyof ServiceMap>(key: K, service: ServiceMap[K]) {
+    this.services[key] = service;
+  }
+  get<K extends keyof ServiceMap>(key: K): ServiceMap[K] {
+    const service = this.services[key];
+    if (!service) throw new Error(`Service ${String(key)} not found`);
+    return service;
+  }
+}
+
+const container = new Container();
+container.register("logger", new Logger());
+container.register("db", new Database());
+const logger = container.get("logger"); // Type: Logger
+logger.execute(); // Logging...
+
+
+What is a Dependency Injection System?
+Dependency Injection (DI) is a design pattern used in software engineering to achieve loose coupling between components
+by providing dependencies (services, objects, or resources) to a class from an external source, rather
+than having the class create or manage them itself. A Dependency Injection System is a framework or mechanism
+that automates the process of injecting these dependencies into components, typically at runtime, making the
+code more modular, testable, and maintainable.
+In TypeScript (and JavaScript), dependency injection is commonly used in frameworks like Angular, NestJS, or
+InversifyJS to manage dependencies in a structured way. It promotes the Inversion of Control (IoC) principle,
+where the control of creating and managing dependencies is inverted from the consuming
+class to an external system (the DI container).
+
+
+
+
+How do you handle TypeScript’s type system with asynchronous operations?
+Answer: Use Promise<T> for async functions and handle errors with try/catch or type guards.
+eg:
+async function fetchData<T>(url: string): Promise<T> {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Failed to fetch");
+  return response.json() as Promise<T>;
+}
+interface User {
+  id: number;
+  name: string;
+}
+async function example() {
+  try {
+    const user = await fetchData<User>("https://api.example.com/user");
+    console.log(user.name); // Type-safe access
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+Dependency Injection is a design pattern where a class or module receives its dependencies from an 
+external source rather than creating them internally. Instead of a class instantiating its own dependencies 
+(e.g., using new), the dependencies are "injected" into the class, typically via constructor parameters, setters, or properties.
+Purpose: To decouple components, making them easier to test, maintain, and reuse.
+Key Idea: The class doesn’t control the creation of its dependencies; an external entity 
+(e.g., a DI container or manual injection) provides them.
+
+What is Inversion of Control (IoC)?
+Inversion of Control is a broader principle where the control over the flow of a program is inverted from the 
+component to an external framework or system. In the context of DI, IoC refers to the idea that a class doesn’t 
+create or manage its dependencies; instead, a higher-level system (like a DI container) is responsible for providing them.
+Purpose: To reduce tight coupling and delegate control of dependency creation and lifecycle management to an external entity.
+Key Idea: The framework or container “controls” the instantiation and injection of dependencies, inverting the 
+responsibility from the consuming class.
+DI as a Form of IoC: Dependency Injection is one way to implement IoC. By injecting dependencies, the control of 
+their creation is inverted to an external system.
+
+How DI and IoC Work Together
+IoC is the principle: It says a class shouldn’t control its dependencies or program flow.
+DI is a technique to achieve IoC: It provides dependencies to a class externally, 
+typically via a DI container or manual injection.
+In Node.js, DI can be implemented manually (passing dependencies explicitly) or using a DI container like
+InversifyJS or frameworks like NestJS, which handle IoC automatically.
