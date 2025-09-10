@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "J.R.R. Tolkien",
+    "age": 81,
+    "country": "United Kingdom"
+  },
+  {
+    "id": "2",
+    "name": "J.K. Rowling",
+    "age": 57,
+    "country": "United Kingdom"
+  },
+  {
+    "id": "3",
+    "name": "Stephen Hawking",
+    "age": 76,
+    "country": "United Kingdom"
+  },
+  {
+    "id": "4",
+    "name": "F. Scott Fitzgerald",
+    "age": 44,
+    "country": "United States"
+  },
+  {
+    "id": "5",
+    "name": "Dan Brown",
+    "age": 58,
+    "country": "United States"
+  },
+  {
+    "id": "8defe383-a588-449a-a3bc-1bec04cedc6c",
+    "name": "rohit",
+    "age": 34,
+    "country": "India"
+  }
+]

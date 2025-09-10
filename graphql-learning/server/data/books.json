@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "name": "The Lord of the Rings",
+    "genre": "Fantasy",
+    "authorId": "1"
+  },
+  {
+    "id": "2",
+    "name": "The Hobbit",
+    "genre": "Fantasy",
+    "authorId": "1"
+  },
+  {
+    "id": "3",
+    "name": "Harry Potter and the Chamber of Secrets",
+    "genre": "Fantasy",
+    "authorId": "2"
+  },
+  {
+    "id": "4",
+    "name": "Harry Potter and the Prisoner of Azkaban",
+    "genre": "Fantasy",
+    "authorId": "2"
+  },
+  {
+    "id": "5",
+    "name": "A Brief History of Time",
+    "genre": "Science",
+    "authorId": "3"
+  },
+  {
+    "id": "6",
+    "name": "The Grand Design",
+    "genre": "Science",
+    "authorId": "3"
+  },
+  {
+    "id": "7",
+    "name": "The Great Gatsby",
+    "genre": "Fiction",
+    "authorId": "4"
+  },
+  {
+    "id": "8",
+    "name": "The Da Vinci Code",
+    "genre": "Mystery",
+    "authorId": "5"
+  },
+  {
+    "id": "9",
+    "name": "Angels & Demons",
+    "genre": "Mystery",
+    "authorId": "5"
+  },
+  {
+    "id": "0fb82944-a681-4e4c-9d13-a10718ef8f84",
+    "name": "rohit",
+    "genre": "tech",
+    "authorId": "1"
+  },
+  {
+    "id": "75147ab1-5d8b-48b9-b2b5-871f0666b079",
+    "name": "rohit",
+    "genre": "tech",
+    "authorId": "4"
+  },
+  {
+    "id": "8aabf6c8-0022-44c5-aa45-b3879bbce438",
+    "name": "rohit",
+    "genre": "tech",
+    "authorId": "4"
+  },
+  {
+    "id": "103132af-98fb-42bc-a86f-0e42511122b6",
+    "name": "rohit",
+    "genre": "tech",
+    "authorId": "5"
+  },
+  {
+    "id": "d2de4e29-76df-48f1-9348-a6cc198fe559",
+    "name": "rohit",
+    "genre": "tech",
+    "authorId": "4"
+  },
+  {
+    "id": "ee3c6210-178d-443f-94b1-da03d02c7e3b",
+    "name": "new samle campaign",
+    "genre": "tech",
+    "authorId": "4"
+  },
+  {
+    "id": "0699858f-a89c-484e-a93e-01979818d0c0",
+    "name": "new samle campaign",
+    "genre": "tech",
+    "authorId": "4"
+  }
+]

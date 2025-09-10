@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "username": "bookworm123",
+    "email": "bookworm@example.com",
+    "role": "READER"
+  },
+  {
+    "id": "2",
+    "username": "scifi_fan",
+    "email": "scifi@example.com",
+    "role": "READER"
+  },
+  {
+    "id": "3",
+    "username": "literary_critic",
+    "email": "critic@example.com",
+    "role": "CRITIC"
+  },
+  {
+    "id": "4",
+    "username": "casual_reader",
+    "email": "casual@example.com",
+    "role": "READER"
+  },
+  {
+    "id": "5",
+    "username": "admin_user",
+    "email": "admin@example.com",
+    "role": "ADMIN"
+  }
+]

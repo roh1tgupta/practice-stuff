@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "userId": "1",
+    "bookId": "1",
+    "rating": 5,
+    "comment": "A masterpiece of fantasy literature."
+  },
+  {
+    "id": "2",
+    "userId": "1",
+    "bookId": "3",
+    "rating": 4,
+    "comment": "Great sequel in the Harry Potter series."
+  },
+  {
+    "id": "3",
+    "userId": "2",
+    "bookId": "5",
+    "rating": 5,
+    "comment": "Profound insights into the universe."
+  },
+  {
+    "id": "4",
+    "userId": "3",
+    "bookId": "7",
+    "rating": 3,
+    "comment": "Classic American literature."
+  },
+  {
+    "id": "5",
+    "userId": "4",
+    "bookId": "8",
+    "rating": 4,
+    "comment": "Thrilling mystery with historical elements."
+  }
+]
