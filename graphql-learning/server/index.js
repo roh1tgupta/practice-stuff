@@ -32,6 +32,13 @@ const serverCleanup = useServer({ schema }, wsServer);
 // Create Apollo Server
 const server = new ApolloServer({
   schema,
+//   Apollo Server's Plugin Hook Resolution Process
+// During server shutdown, Apollo Server follows this sequence:
+// First, it checks if a plugin has a direct serverWillStop() method
+// If not, it looks for a drainServer() method in the object that was returned by the plugin's serverWillStart()
+// This behavior is intentional and documented in Apollo Server's plugin architecture to support both:
+// The newer, more direct API (explicit serverWillStop)
+// The legacy API (returning drainServer from serverWillStart)
   plugins: [
     // Proper shutdown for the HTTP server
     ApolloServerPluginDrainHttpServer({ httpServer }),

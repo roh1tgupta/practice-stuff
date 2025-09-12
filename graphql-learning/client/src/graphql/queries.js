@@ -1,112 +1,145 @@
 import { gql } from '@apollo/client';
 
+// Basic fragments for reuse
+export const BOOK_BASIC_FRAGMENT = gql`
+  fragment BookBasicFields on Book {
+    id
+    name
+    genre
+  }
+`;
+
+export const AUTHOR_BASIC_FRAGMENT = gql`
+  fragment AuthorBasicFields on Author {
+    id
+    name
+  }
+`;
+
+export const AUTHOR_DETAILS_FRAGMENT = gql`
+  fragment AuthorDetailFields on Author {
+    id
+    name
+    age
+    country
+  }
+`;
+
+export const REVIEW_BASIC_FRAGMENT = gql`
+  fragment ReviewBasicFields on Review {
+    id
+    rating
+    comment
+  }
+`;
+
+// In the GraphQL query you're highlighting, ${BOOK_BASIC_FRAGMENT} is a crucial part of using fragments in GraphQL with Apollo Client.
+
+// When you use a fragment in a GraphQL query with Apollo Client, you need to:
+
+// First reference the fragment in your query with the spread operator (...FragmentName)
+// Then include the actual fragment definition with ${FRAGMENT_NAME} at the end of your template literal
+// The line ${BOOK_BASIC_FRAGMENT} is necessary because:
+
+// It tells Apollo Client where to find the definition of the BookBasicFields fragment that you're using in your query
+// At runtime, Apollo Client will replace this reference with the actual fragment definition
+// Without it, Apollo wouldn't know what fields ...BookBasicFields refers to
+
 export const GET_BOOKS = gql`
   query GetBooks {
     books {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
         id
         name
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
 `;
 
 // $id: ID! declares a variable named id of type ID (non-null).
 export const GET_BOOK = gql`
   query GetBook($id: ID!) {
     book(id: $id) {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
-        id
-        name
-        age
-        country
+        ...AuthorDetailFields
       }
       reviews {
-        id
-        rating
-        comment
+        ...ReviewBasicFields
         user {
           username
         }
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_DETAILS_FRAGMENT}
+  ${REVIEW_BASIC_FRAGMENT}
 `;
 
 export const GET_AUTHORS = gql`
   query GetAuthors {
     authors {
-      id
-      name
-      age
-      country
+      ...AuthorDetailFields
       books {
         id
         name
       }
     }
   }
+  ${AUTHOR_DETAILS_FRAGMENT}
 `;
 
 export const GET_AUTHOR = gql`
   query GetAuthor($id: ID!) {
     author(id: $id) {
-      id
-      name
-      age
-      country
+      ...AuthorDetailFields
       books {
-        id
-        name
-        genre
+        ...BookBasicFields
       }
     }
   }
+  ${AUTHOR_DETAILS_FRAGMENT}
+  ${BOOK_BASIC_FRAGMENT}
 `;
 
 // Advanced queries
 export const GET_BOOKS_BY_GENRE = gql`
   query GetBooksByGenre($genre: String!) {
     booksByGenre(genre: $genre) {
-      id
-      name
+      ...BookBasicFields
       author {
-        id
-        name
+        ...AuthorBasicFields
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const GET_BOOKS_BY_AUTHOR = gql`
   query GetBooksByAuthor($authorId: ID!) {
     booksByAuthor(authorId: $authorId) {
-      id
-      name
-      genre
+      ...BookBasicFields
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
 `;
 
 // BookFilter is defined in GraphQL server schema as an input type.
 export const GET_FILTERED_BOOKS = gql`
   query GetFilteredBooks($filter: BookFilter) {
     filteredBooks(filter: $filter) {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
-        id
-        name
+        ...AuthorBasicFields
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const GET_PAGINATED_BOOKS = gql`
@@ -121,32 +154,30 @@ export const GET_PAGINATED_BOOKS = gql`
       order: $order
     ) {
       books {
-        id
-        name
-        genre
+        ...BookBasicFields
         author {
-          id
-          name
+          ...AuthorBasicFields
         }
       }
       totalCount
       hasNextPage
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const SEARCH_BOOKS = gql`
   query SearchBooks($query: String!) {
     searchBooks(query: $query) {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
-        id
-        name
+        ...AuthorBasicFields
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const GET_AUTHOR_STATS = gql`
@@ -164,31 +195,25 @@ export const GET_AUTHOR_STATS = gql`
 
 // Mutations
 export const ADD_BOOK = gql`
-  mutation AddBook($book: BookInput!) {
-    addBook(book: $book) {
-      id
-      name
-      genre
-      author {
-        id
-        name
-      }
+  mutation AddBook($name: String!, $genre: String!, $authorId: ID!) {
+    addBook(name: $name, genre: $genre, authorId: $authorId) {
+      ...BookBasicFields
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
 `;
 
 export const UPDATE_BOOK = gql`
   mutation UpdateBook($id: ID!, $book: UpdateBookInput!) {
     updateBook(id: $id, book: $book) {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
-        id
-        name
+        ...AuthorBasicFields
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const DELETE_BOOK = gql`
@@ -198,22 +223,18 @@ export const DELETE_BOOK = gql`
 `;
 
 export const ADD_AUTHOR = gql`
-  mutation AddAuthor($author: AuthorInput!) {
-    addAuthor(author: $author) {
-      id
-      name
-      age
-      country
+  mutation AddAuthor($name: String!, $age: Int!, $country: String) {
+    addAuthor(name: $name, age: $age, country: $country) {
+      ...AuthorDetailFields
     }
   }
+  ${AUTHOR_DETAILS_FRAGMENT}
 `;
 
 export const ADD_REVIEW = gql`
   mutation AddReview($review: ReviewInput!) {
     addReview(review: $review) {
-      id
-      rating
-      comment
+      ...ReviewBasicFields
       book {
         id
         name
@@ -224,29 +245,27 @@ export const ADD_REVIEW = gql`
       }
     }
   }
+  ${REVIEW_BASIC_FRAGMENT}
 `;
 
 // Subscriptions
 export const BOOK_ADDED_SUBSCRIPTION = gql`
   subscription BookAdded {
     bookAdded {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
-        id
-        name
+        ...AuthorBasicFields
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;
 
 export const REVIEW_ADDED_SUBSCRIPTION = gql`
   subscription ReviewAdded {
     reviewAdded {
-      id
-      rating
-      comment
+      ...ReviewBasicFields
       book {
         id
         name
@@ -257,18 +276,18 @@ export const REVIEW_ADDED_SUBSCRIPTION = gql`
       }
     }
   }
+  ${REVIEW_BASIC_FRAGMENT}
 `;
 
 export const BOOK_UPDATED_SUBSCRIPTION = gql`
   subscription BookUpdated {
     bookUpdated {
-      id
-      name
-      genre
+      ...BookBasicFields
       author {
-        id
-        name
+        ...AuthorBasicFields
       }
     }
   }
+  ${BOOK_BASIC_FRAGMENT}
+  ${AUTHOR_BASIC_FRAGMENT}
 `;

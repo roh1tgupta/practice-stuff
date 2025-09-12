@@ -18,24 +18,24 @@ useQuery returns { data, loading, error, refetch, networkStatus, fetchMore, vari
 
 // Checks cache first. If data is found, uses it; otherwise, fetches from network.
 // Best for: Fast UI, minimal network requests.
-// network-only
 
+// network-only
 // Always fetches from network, ignores cache.
 // Best for: Always fresh data, real-time updates.
-// cache-and-network
 
+// cache-and-network
 // Returns cached data immediately (if available), then fetches from network and updates cache/UI.
 // Best for: Fast UI with background refresh.
-// cache-only
 
+// cache-only
 // Only reads from cache, never fetches from network.
 // Best for: Offline mode, or when you know data is already cached.
-// no-cache
 
+// no-cache
 // Always fetches from network, does not store result in cache.
 // Best for: Sensitive data, or when you don’t want to cache results.
-// standby
 
+// standby
 // Query is not executed unless refetched manually.
 // Best for: Pausing queries until needed.
 
@@ -237,4 +237,77 @@ const [addAuthor, { data, loading, error }] = useMutation(ADD_AUTHOR, {
   context: { /* ... */ },
   errorPolicy: 'all',
 });
+
+
+-----------------------------------------------
+const { 
+  data,
+  loading,
+  error,
+  variables,
+  called,
+  subscribeToMore,
+  unsubscribe  // <-- This function lets you manually unsubscribe
+} = useSubscription(SUBSCRIPTION_DOCUMENT);
+
+data: The subscription result data.
+loading: Boolean, true until the first response is received.
+error: Any errors that occurred.
+
+------------------------------------------------------------
+loading is typically only true briefly when the page first mounts while the WebSocket connection is being established.
+--------------------------------------------------
+Once the subscription connection is active, loading stays false regardless of whether any subscription events have been received.
+----------------------------------
+The subscription continues listening for events indefinitely until the component unmounts or the connection is closed.
+------------------------------------------------------------
+
+
+
+Parameters for [useSubscription]:
+useSubscription(
+  subscriptionDocument,  // Required: GraphQL subscription document
+  {
+    variables,           // Optional: Variables for the subscription
+    onSubscriptionData,  // Optional: Function called when new data arrives
+    onSubscriptionComplete, // Optional: Function called when subscription completes
+    fetchPolicy,         // Optional: How to merge subscription results
+    shouldResubscribe,   // Optional: Boolean or function to determine if subscription should restart
+    client              // Optional: ApolloClient instance
+  }
+);
+
+-----------------------------------------------------------------------------------
+diff between using onSubscriptionData and data returned by useSubscription:
+
+If you only use the onSubscriptionData callback and don't access the data property from useSubscription, your component won't automatically re-render when new subscription data arrives.
+
+Here's how it works:
+When you access data in your component, React creates a dependency on that value
+When new subscription data arrives, the data value changes
+This triggers a re-render of your component
+But if you only use onSubscriptionData:
+
+The callback runs when new data arrives
+React doesn't know about this new data unless you update state
+The component doesn't automatically re-render
+This pattern is useful when you want to:
+
+Handle incoming subscription data without re-rendering
+Manually control when/if to update the UI
+Process subscription data but only update specific parts of your app
+-----------------------------------------------------------------------------------
+
+Purpose of client in useSubscription Options
+The client parameter in useSubscription allows you to specify which Apollo Client instance to use for the subscription.
+When is this useful?
+Multiple Apollo Clients
+If your app uses multiple Apollo Client instances (perhaps connecting to different GraphQL endpoints), you can specify which client should handle a particular subscription.
+Testing
+You can pass a mock client for testing components that use subscriptions.
+Dynamic Client Selection
+You might need to change which client to use at runtime based on user preferences or other conditions.
+Most applications use a single Apollo Client instance provided through ApolloProvider at the app root, so this parameter is often omitted.
+
+
 
