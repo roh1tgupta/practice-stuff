@@ -16,6 +16,7 @@ import resolvers from './resolvers.js';
 import { verifyToken } from './utils/auth.js';
 import { createAliasAbusePreventionPlugin } from './middleware/aliasAbusePrevention.js';
 import { createQueryComplexityPlugin } from './middleware/queryComplexityAnalysis.js';
+import { createRateLimitingPlugin } from './middleware/rateLimiting.js';
 import fs from 'fs/promises';
 
 // Create the schema
@@ -82,6 +83,12 @@ const server = new ApolloServer({
         };
       }
     },
+    // Rate Limiting Plugin
+    createRateLimitingPlugin({
+      windowMs: 60000, // 1 minute
+      maxRequests: 100 // 100 requests per minute
+    }),
+
     // Query Complexity Analysis Plugin
     createQueryComplexityPlugin({
       maxComplexity: 1000,

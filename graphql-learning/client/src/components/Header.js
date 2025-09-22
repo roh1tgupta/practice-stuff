@@ -29,6 +29,7 @@ const pages = [
   { name: 'Subscriptions', path: '/subscriptions' },
   { name: 'Alias Abuse Prevention', path: '/alias-abuse-prevention' },
   { name: 'Query Complexity', path: '/query-complexity' },
+  { name: 'Rate Limiting', path: '/rate-limiting' },
 ];
 
 function Header() {

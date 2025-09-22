@@ -13,6 +13,7 @@ import AdvancedGraphQLPage from './pages/AdvancedGraphQLPage';
 import QueryComplexityPage from './pages/QueryComplexityPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AliasAbusePreventionPage from './pages/AliasAbusePreventionPage';
+import RateLimitingPage from './pages/RateLimitingPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/advanced-graphql" element={<AdvancedGraphQLPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/alias-abuse-prevention" element={<AliasAbusePreventionPage />} />
+          <Route path="/rate-limiting" element={<RateLimitingPage />} />
           <Route path="/query-complexity" element={<QueryComplexityPage />} />
         </Routes>
       </Container>
