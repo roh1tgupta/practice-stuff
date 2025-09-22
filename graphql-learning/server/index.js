@@ -12,6 +12,8 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 // Import schema and resolvers
 import typeDefs from './schema.js';
 import resolvers from './resolvers.js';
+import { verifyToken } from './utils/auth.js';
+import fs from 'fs/promises';
 
 // Create the schema
 const schema = makeExecutableSchema({ typeDefs, resolvers });
@@ -59,12 +61,48 @@ const server = new ApolloServer({
 // Start the server
 await server.start();
 
+// Helper function to read JSON data from files
+async function readData(filename) {
+  try {
+    const data = await fs.readFile(`./data/${filename}.json`, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(`Error reading ${filename}.json:`, error);
+    return [];
+  }
+}
+
 // Apply middleware
 app.use(
   '/graphql',
   cors(),
   bodyParser.json(),
-  expressMiddleware(server),
+  expressMiddleware(server, {
+    context: async ({ req }) => {
+      // Get the user token from the headers
+      const token = req.headers.authorization?.replace('Bearer ', '');
+      
+      let user = null;
+      if (token) {
+        try {
+          const decoded = verifyToken(token);
+          const users = await readData('users');
+          user = users.find(u => u.id === decoded.userId);
+          if (user) {
+            // Remove password from user object
+            const { password, ...userWithoutPassword } = user;
+            user = userWithoutPassword;
+          }
+        } catch (error) {
+          // Token is invalid, but we don't throw an error here
+          // We just don't set the user in context
+          console.log('Invalid token:', error.message);
+        }
+      }
+      
+      return { user };
+    },
+  }),
 );
 
 // Add a route for the root path

@@ -22,7 +22,8 @@ graphql-learning/
 ## Features
 
 - **Basic GraphQL Operations**: Queries, mutations, and subscriptions
-- **Relationships**: Connected data types (Books, Authors, Reviews)
+- **Authentication & Authorization**: JWT-based authentication with role-based access control
+- **Relationships**: Connected data types (Books, Authors, Reviews, Users)
 - **Advanced Queries**: Filtering, pagination, sorting, and search
 - **Real-time Updates**: GraphQL subscriptions with WebSockets
 - **Error Handling**: Proper error management in GraphQL
@@ -92,7 +93,42 @@ The React app will be running at http://localhost:3000.
 - **Authors**: List and manage authors with statistics
 - **Query Playground**: Interactive interface to try different queries
 - **Advanced Examples**: Examples of filtering, pagination, and search
+- **Advanced GraphQL**: Authentication, authorization, and protected queries
 - **Subscriptions**: Real-time updates demonstration
+
+## Login Credentials
+
+For testing authentication features, use these credentials:
+
+### Admin User (Full Access)
+- **Username:** `admin_user`
+- **Password:** `admin2023`
+- **Role:** ADMIN
+- **Access:** All queries + admin-only features (user management, system stats)
+
+### Regular Users
+- **Username:** `bookworm123`
+- **Password:** `password123`
+- **Role:** READER
+
+- **Username:** `scifi_fan`
+- **Password:** `scifi2023`
+- **Role:** READER
+
+- **Username:** `literary_critic`
+- **Password:** `critic456`
+- **Role:** CRITIC
+
+- **Username:** `casual_reader`
+- **Password:** `casual789`
+- **Role:** READER
+
+### Testing Authentication
+1. Navigate to "Advanced GraphQL" page
+2. Use above credentials to login
+3. Test protected queries (require authentication)
+4. Test admin-only queries (require ADMIN role)
+5. Try unauthenticated requests to see server-side errors
 
 ## Data Structure
 

@@ -25,6 +25,7 @@ const pages = [
   { name: 'Authors', path: '/authors' },
   { name: 'Query Playground', path: '/playground' },
   { name: 'Advanced Examples', path: '/advanced' },
+  { name: 'Advanced GraphQL', path: '/advanced-graphql' },
   { name: 'Subscriptions', path: '/subscriptions' },
 ];
 

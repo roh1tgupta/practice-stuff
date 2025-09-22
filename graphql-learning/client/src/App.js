@@ -9,6 +9,7 @@ import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
 import QueryPlayground from './pages/QueryPlayground';
 import AdvancedExamplesPage from './pages/AdvancedExamplesPage';
+import AdvancedGraphQLPage from './pages/AdvancedGraphQLPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/authors" element={<AuthorsPage />} />
           <Route path="/playground" element={<QueryPlayground />} />
           <Route path="/advanced" element={<AdvancedExamplesPage />} />
+          <Route path="/advanced-graphql" element={<AdvancedGraphQLPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
         </Routes>
       </Container>

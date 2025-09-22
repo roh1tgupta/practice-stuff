@@ -195,8 +195,8 @@ export const GET_AUTHOR_STATS = gql`
 
 // Mutations
 export const ADD_BOOK = gql`
-  mutation AddBook($name: String!, $genre: String!, $authorId: ID!) {
-    addBook(name: $name, genre: $genre, authorId: $authorId) {
+  mutation AddBook($book: BookInput!) {
+    addBook(book: $book) {
       ...BookBasicFields
     }
   }

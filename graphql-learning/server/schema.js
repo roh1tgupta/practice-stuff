@@ -90,6 +90,26 @@ const typeDefs = `#graphql
     role: UserRole!
   }
 
+  # Input for user login
+  input LoginInput {
+    username: String!
+    password: String!
+  }
+
+  # Input for user registration
+  input RegisterInput {
+    username: String!
+    email: String!
+    password: String!
+    role: UserRole = READER
+  }
+
+  # Authentication response
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   # Book filter input
   input BookFilter {
     genre: String
@@ -156,6 +176,15 @@ const typeDefs = `#graphql
     
     # Statistics
     authorStatistics(id: ID!): AuthorStats!
+    
+    # Protected queries (require authentication)
+    protectedBooks: [Book!]!
+    protectedAuthors: [Author!]!
+    myProfile: User!
+    
+    # Admin-only queries (require ADMIN role)
+    adminStats: AdminStats!
+    allUsersAdmin: [User!]!
   }
 
   # Statistics for an author
@@ -163,6 +192,21 @@ const typeDefs = `#graphql
     totalBooks: Int!
     averageBookRating: Float!
     mostPopularGenre: String
+  }
+
+  # Admin statistics type
+  type AdminStats {
+    totalUsers: Int!
+    totalBooks: Int!
+    totalAuthors: Int!
+    totalReviews: Int!
+    usersByRole: [RoleCount!]!
+  }
+
+  # Role count type
+  type RoleCount {
+    role: UserRole!
+    count: Int!
   }
 
   # Mutation type - write operations
@@ -187,6 +231,14 @@ const typeDefs = `#graphql
 
     # Complex mutations
     promoteUserToAdmin(id: ID!): User!
+    
+    # Authentication mutations
+    login(input: LoginInput!): AuthPayload!
+    register(input: RegisterInput!): AuthPayload!
+    
+    # Admin-only mutations (require ADMIN role)
+    deleteUserAdmin(id: ID!): ID!
+    promoteUserToRole(id: ID!, role: UserRole!): User!
   }
 
   # Subscription type - real-time updates

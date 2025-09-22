@@ -3,30 +3,35 @@
     "id": "1",
     "username": "bookworm123",
     "email": "bookworm@example.com",
+    "password": "$2b$10$oUwuC6WqJ21VVaiNozamF.bpv9mmvUq2anJMCUPoXmK/8ibm1r3Gq",
     "role": "READER"
   },
   {
     "id": "2",
     "username": "scifi_fan",
     "email": "scifi@example.com",
+    "password": "$2b$10$x.l7ehmCBWAg88NhxKrT7uKt/miLqSvYStQHkGijJgidSaLXlEqWy",
     "role": "READER"
   },
   {
     "id": "3",
     "username": "literary_critic",
     "email": "critic@example.com",
+    "password": "$2b$10$fpsUAdUL81IGsJeU9vibw.q1ZbVV77TgKmD7FZ5L3UwvR.Iuzzzs.",
     "role": "CRITIC"
   },
   {
     "id": "4",
     "username": "casual_reader",
     "email": "casual@example.com",
+    "password": "$2b$10$NZKmFLf8BAOiJnz6Pg9YmezIFSsYb2/aAnqTRKGumNba6g5Grme7q",
     "role": "READER"
   },
   {
     "id": "5",
     "username": "admin_user",
     "email": "admin@example.com",
+    "password": "$2b$10$DsZNziyCuHpFFCrJwjXyAuqkWyQJWJwtXPR0gDegb8aslD90nlEpa",
     "role": "ADMIN"
   }
 ]

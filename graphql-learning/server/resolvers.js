@@ -1,6 +1,13 @@
 import fs from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 import { PubSub } from 'graphql-subscriptions';
+import { 
+  generateToken, 
+  hashPassword, 
+  comparePassword, 
+  getAuthenticatedUser,
+  requireRole 
+} from './utils/auth.js';
 
 
 // ...existing code...
@@ -226,6 +233,63 @@ const resolvers = {
         averageBookRating,
         mostPopularGenre
       };
+    },
+
+    // Protected queries
+    protectedBooks: async (_, __, context) => {
+      const user = getAuthenticatedUser(context);
+      return readData('books');
+    },
+
+    protectedAuthors: async (_, __, context) => {
+      const user = getAuthenticatedUser(context);
+      return readData('authors');
+    },
+
+    myProfile: async (_, __, context) => {
+      const user = getAuthenticatedUser(context);
+      return user;
+    },
+
+    // Admin-only queries
+    adminStats: async (_, __, context) => {
+      const user = getAuthenticatedUser(context);
+      requireRole(user, 'ADMIN');
+      
+      const [users, books, authors, reviews] = await Promise.all([
+        readData('users'),
+        readData('books'),
+        readData('authors'),
+        readData('reviews')
+      ]);
+      
+      // Count users by role
+      const usersByRole = users.reduce((acc, user) => {
+        const existing = acc.find(item => item.role === user.role);
+        if (existing) {
+          existing.count++;
+        } else {
+          acc.push({ role: user.role, count: 1 });
+        }
+        return acc;
+      }, []);
+      
+      return {
+        totalUsers: users.length,
+        totalBooks: books.length,
+        totalAuthors: authors.length,
+        totalReviews: reviews.length,
+        usersByRole
+      };
+    },
+
+    allUsersAdmin: async (_, __, context) => {
+      const user = getAuthenticatedUser(context);
+      requireRole(user, 'ADMIN');
+      
+      const users = await readData('users');
+      // Remove passwords from all users before returning
+      return users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
     }
   },
 
@@ -518,6 +582,124 @@ const resolvers = {
       await writeData('users', users);
       
       return updatedUser;
+    },
+
+    // Authentication mutations
+    login: async (_, { input }) => {
+      const users = await readData('users');
+      const user = users.find(u => u.username === input.username);
+      
+      if (!user) {
+        throw new Error('Invalid username or password');
+      }
+      
+      // Use secure password comparison
+      const isPasswordValid = await comparePassword(input.password, user.password);
+      if (!isPasswordValid) {
+        throw new Error('Invalid username or password');
+      }
+      
+      const token = generateToken(user.id);
+      
+      // Remove password from user object before returning
+      const { password, ...userWithoutPassword } = user;
+      
+      return {
+        token,
+        user: userWithoutPassword
+      };
+    },
+
+    register: async (_, { input }) => {
+      const users = await readData('users');
+      
+      // Check if username or email already exists
+      const existingUser = users.find(
+        u => u.username === input.username || u.email === input.email
+      );
+      
+      if (existingUser) {
+        throw new Error('Username or email already exists');
+      }
+      
+      // Hash the password before storing
+      const hashedPassword = await hashPassword(input.password);
+      
+      const newUser = {
+        id: uuidv4(),
+        username: input.username,
+        email: input.email,
+        password: hashedPassword,
+        role: input.role || 'READER'
+      };
+      
+      users.push(newUser);
+      await writeData('users', users);
+      
+      const token = generateToken(newUser.id);
+      
+      // Remove password from user object before returning
+      const { password, ...userWithoutPassword } = newUser;
+      
+      return {
+        token,
+        user: userWithoutPassword
+      };
+    },
+
+    // Admin-only mutations
+    deleteUserAdmin: async (_, { id }, context) => {
+      const user = getAuthenticatedUser(context);
+      requireRole(user, 'ADMIN');
+      
+      const [users, reviews] = await Promise.all([
+        readData('users'),
+        readData('reviews')
+      ]);
+      
+      const userIndex = users.findIndex(u => u.id === id);
+      
+      if (userIndex === -1) {
+        throw new Error(`User with ID ${id} not found`);
+      }
+      
+      // Prevent admin from deleting themselves
+      if (users[userIndex].id === user.id) {
+        throw new Error('Cannot delete your own account');
+      }
+      
+      users.splice(userIndex, 1);
+      await writeData('users', users);
+      
+      // Also delete related reviews
+      const updatedReviews = reviews.filter(review => review.userId !== id);
+      await writeData('reviews', updatedReviews);
+      
+      return id;
+    },
+
+    promoteUserToRole: async (_, { id, role }, context) => {
+      const user = getAuthenticatedUser(context);
+      requireRole(user, 'ADMIN');
+      
+      const users = await readData('users');
+      const userIndex = users.findIndex(u => u.id === id);
+      
+      if (userIndex === -1) {
+        throw new Error(`User with ID ${id} not found`);
+      }
+      
+      const updatedUser = {
+        ...users[userIndex],
+        role: role
+      };
+      
+      users[userIndex] = updatedUser;
+      await writeData('users', users);
+      
+      // Remove password from user object before returning
+      const { password, ...userWithoutPassword } = updatedUser;
+      return userWithoutPassword;
     }
   },
 
