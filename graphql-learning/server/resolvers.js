@@ -180,8 +180,16 @@ const resolvers = {
       };
     },
     
-  // ...removed search resolver, not in schema...
-  // ...existing code...
+    searchBooks: async (_, { query }) => {
+      const books = await readData('books');
+      const searchTerm = query.toLowerCase();
+      
+      return books.filter(book => 
+        book.name.toLowerCase().includes(searchTerm) ||
+        book.genre.toLowerCase().includes(searchTerm)
+      );
+    },
+
     
     authorStatistics: async (_, { id }) => {
       const [authors, books, reviews] = await Promise.all([

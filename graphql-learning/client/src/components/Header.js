@@ -28,6 +28,7 @@ const pages = [
   { name: 'Advanced GraphQL', path: '/advanced-graphql' },
   { name: 'Subscriptions', path: '/subscriptions' },
   { name: 'Alias Abuse Prevention', path: '/alias-abuse-prevention' },
+  { name: 'Query Complexity', path: '/query-complexity' },
 ];
 
 function Header() {

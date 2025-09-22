@@ -8,12 +8,14 @@ import bodyParser from 'body-parser';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { getComplexity, fieldExtensionsEstimator, simpleEstimator } from 'graphql-query-complexity';
 
 // Import schema and resolvers
 import typeDefs from './schema.js';
 import resolvers from './resolvers.js';
 import { verifyToken } from './utils/auth.js';
 import { createAliasAbusePreventionPlugin } from './middleware/aliasAbusePrevention.js';
+import { createQueryComplexityPlugin } from './middleware/queryComplexityAnalysis.js';
 import fs from 'fs/promises';
 
 // Create the schema
@@ -43,6 +45,49 @@ const server = new ApolloServer({
 // The newer, more direct API (explicit serverWillStop)
 // The legacy API (returning drainServer from serverWillStart)
   plugins: [
+    // Package-based Query Complexity (graphql-query-complexity)
+    {
+      async requestDidStart() {
+        return {
+          async didResolveOperation({ request, document, contextValue }) {
+            try {
+              const mode = contextValue?.complexityMode;
+              // Run package analyzer when explicitly selected or when auto (header absent)
+              const shouldRun = mode === 'package' || !mode; // auto => no header
+              if (!shouldRun) return;
+
+              const complexity = getComplexity({
+                schema,
+                query: document,
+                variables: request.variables,
+                operationName: request.operationName,
+                estimators: [
+                  fieldExtensionsEstimator(),
+                  simpleEstimator({ defaultComplexity: 1 })
+                ],
+              });
+
+              // Log and enforce limit
+              if (complexity > 1000) {
+                throw new Error(`Query rejected: Complexity score too high (${complexity}). Maximum allowed: 1000`);
+              }
+              if (complexity > 800) {
+                console.warn(`⚠️  [Package] Query complexity approaching limit: ${complexity}/1000`);
+              }
+            } catch (err) {
+              // Re-throw to surface as GraphQL error
+              throw err;
+            }
+          }
+        };
+      }
+    },
+    // Query Complexity Analysis Plugin
+    createQueryComplexityPlugin({
+      maxComplexity: 1000,
+      enabled: true
+    }),
+    
     // Alias Abuse Prevention Plugin
     createAliasAbusePreventionPlugin({
       maxAliases: 15,
@@ -108,7 +153,13 @@ app.use(
         }
       }
       
-      return { user };
+      // Read header-driven complexity mode from FE
+      const complexityModeHeader = req.headers['x-complexity-mode'];
+      const complexityMode = typeof complexityModeHeader === 'string'
+        ? complexityModeHeader.toLowerCase()
+        : undefined;
+
+      return { user, complexityMode };
     },
   }),
 );

@@ -10,6 +10,7 @@ import AuthorsPage from './pages/AuthorsPage';
 import QueryPlayground from './pages/QueryPlayground';
 import AdvancedExamplesPage from './pages/AdvancedExamplesPage';
 import AdvancedGraphQLPage from './pages/AdvancedGraphQLPage';
+import QueryComplexityPage from './pages/QueryComplexityPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AliasAbusePreventionPage from './pages/AliasAbusePreventionPage';
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/advanced-graphql" element={<AdvancedGraphQLPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/alias-abuse-prevention" element={<AliasAbusePreventionPage />} />
+          <Route path="/query-complexity" element={<QueryComplexityPage />} />
         </Routes>
       </Container>
       <Box component="footer" sx={{ py: 3, bgcolor: 'background.paper' }}>
