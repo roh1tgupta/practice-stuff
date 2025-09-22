@@ -11,6 +11,7 @@ import QueryPlayground from './pages/QueryPlayground';
 import AdvancedExamplesPage from './pages/AdvancedExamplesPage';
 import AdvancedGraphQLPage from './pages/AdvancedGraphQLPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
+import AliasAbusePreventionPage from './pages/AliasAbusePreventionPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/advanced" element={<AdvancedExamplesPage />} />
           <Route path="/advanced-graphql" element={<AdvancedGraphQLPage />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/alias-abuse-prevention" element={<AliasAbusePreventionPage />} />
         </Routes>
       </Container>
       <Box component="footer" sx={{ py: 3, bgcolor: 'background.paper' }}>

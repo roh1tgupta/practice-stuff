@@ -27,6 +27,7 @@ const pages = [
   { name: 'Advanced Examples', path: '/advanced' },
   { name: 'Advanced GraphQL', path: '/advanced-graphql' },
   { name: 'Subscriptions', path: '/subscriptions' },
+  { name: 'Alias Abuse Prevention', path: '/alias-abuse-prevention' },
 ];
 
 function Header() {

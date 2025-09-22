@@ -13,6 +13,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import typeDefs from './schema.js';
 import resolvers from './resolvers.js';
 import { verifyToken } from './utils/auth.js';
+import { createAliasAbusePreventionPlugin } from './middleware/aliasAbusePrevention.js';
 import fs from 'fs/promises';
 
 // Create the schema
@@ -42,6 +43,13 @@ const server = new ApolloServer({
 // The newer, more direct API (explicit serverWillStop)
 // The legacy API (returning drainServer from serverWillStart)
   plugins: [
+    // Alias Abuse Prevention Plugin
+    createAliasAbusePreventionPlugin({
+      maxAliases: 15,
+      maxDepth: 10,
+      enabled: true
+    }),
+    
     // Proper shutdown for the HTTP server
     ApolloServerPluginDrainHttpServer({ httpServer }),
     
