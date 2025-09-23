@@ -1,6 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { GraphQLError } from 'graphql';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -35,6 +36,9 @@ const wsServer = new WebSocketServer({
 // Set up WebSocket server with the schema
 const serverCleanup = useServer({ schema }, wsServer);
 
+// In-memory cache for persisted queries
+const persistedQueryCache = new Map();
+
 // Create Apollo Server
 const server = new ApolloServer({
   schema,
@@ -46,43 +50,111 @@ const server = new ApolloServer({
 // The newer, more direct API (explicit serverWillStop)
 // The legacy API (returning drainServer from serverWillStart)
   plugins: [
-    // Package-based Query Complexity (graphql-query-complexity)
+    // Persisted Queries Plugin
     {
       async requestDidStart() {
         return {
-          async didResolveOperation({ request, document, contextValue }) {
-            try {
-              const mode = contextValue?.complexityMode;
-              // Run package analyzer when explicitly selected or when auto (header absent)
-              const shouldRun = mode === 'package' || !mode; // auto => no header
-              if (!shouldRun) return;
-
-              const complexity = getComplexity({
-                schema,
-                query: document,
-                variables: request.variables,
-                operationName: request.operationName,
-                estimators: [
-                  fieldExtensionsEstimator(),
-                  simpleEstimator({ defaultComplexity: 1 })
-                ],
-              });
-
-              // Log and enforce limit
-              if (complexity > 1000) {
-                throw new Error(`Query rejected: Complexity score too high (${complexity}). Maximum allowed: 1000`);
-              }
-              if (complexity > 800) {
-                console.warn(`⚠️  [Package] Query complexity approaching limit: ${complexity}/1000`);
-              }
-            } catch (err) {
-              // Re-throw to surface as GraphQL error
-              throw err;
+          async willSendResponse({ response, contextValue }) {
+            // Add persisted query info to response extensions for client metrics
+            if (contextValue.persistedQueryCacheHit !== undefined) {
+              response.extensions = response.extensions || {};
+              response.extensions.persistedQuery = {
+                cacheHit: contextValue.persistedQueryCacheHit,
+                cacheSize: contextValue.persistedQueryCacheSize || persistedQueryCache.size,
+                actualRequestSize: contextValue.actualRequestSize
+              };
             }
+          },
+          async didResolveOperation({ request, document, contextValue }) {
+            console.log('=== REQUEST DEBUG ===');
+            console.log('Request extensions:', JSON.stringify(request.extensions, null, 2));
+            console.log('Has query:', !!request.query);
+            console.log('Query length:', request.query?.length || 0);
+            console.log('Full request body size:', JSON.stringify(request).length);
+            
+            const persistedQuery = request.extensions?.persistedQuery;
+            
+            if (persistedQuery) {
+              const { sha256Hash, version } = persistedQuery;
+              console.log('🔄 PERSISTED QUERY REQUEST');
+              console.log('Hash:', sha256Hash?.substring(0, 12) + '...');
+              console.log('Version:', version);
+              console.log('Cache size:', persistedQueryCache.size);
+              console.log('Request has query field:', !!request.query);
+              
+              // If we have a hash but no query, try to get from cache
+              if (sha256Hash && !request.query) {
+                const cachedQuery = persistedQueryCache.get(sha256Hash);
+                if (cachedQuery) {
+                  request.query = cachedQuery;
+                  contextValue.persistedQueryCacheHit = true;
+                  contextValue.actualRequestSize = 64; // Only hash was sent
+                  console.log('✅ CACHE HIT - Retrieved query from cache, request size: 64 bytes');
+                } else {
+                  console.log('❌ CACHE MISS - Query not found in cache');
+                  contextValue.persistedQueryCacheHit = false;
+                  // Return error to trigger Apollo Client retry with full query
+                  throw new GraphQLError('PersistedQueryNotFound', {
+                    extensions: { code: 'PERSISTED_QUERY_NOT_FOUND' }
+                  });
+                }
+              }
+              
+              // If we have both hash and query, cache it
+              if (sha256Hash && request.query) {
+                persistedQueryCache.set(sha256Hash, request.query);
+                contextValue.persistedQueryCacheHit = false;
+                contextValue.persistedQueryCacheSize = persistedQueryCache.size;
+                contextValue.actualRequestSize = request.query.length;
+                console.log('💾 CACHING - Stored query with hash, full query size:', request.query.length);
+              }
+            } else {
+              console.log('📝 REGULAR QUERY - No persisted query extension');
+              contextValue.persistedQueryCacheHit = false;
+              contextValue.actualRequestSize = request.query?.length || 0;
+            }
+            console.log('===================');
           }
         };
       }
     },
+    // Package-based Query Complexity (graphql-query-complexity)
+    // {
+    //   async requestDidStart() {
+    //     return {
+    //       async didResolveOperation({ request, document, contextValue }) {
+    //         try {
+    //           const mode = contextValue?.complexityMode;
+    //           // Run package analyzer when explicitly selected or when auto (header absent)
+    //           const shouldRun = mode === 'package' || !mode; // auto => no header
+    //           if (!shouldRun) return;
+
+    //           const complexity = getComplexity({
+    //             schema,
+    //             query: document,
+    //             variables: request.variables,
+    //             operationName: request.operationName,
+    //             estimators: [
+    //               fieldExtensionsEstimator(),
+    //               simpleEstimator({ defaultComplexity: 1 })
+    //             ],
+    //           });
+
+    //           // Log and enforce limit
+    //           if (complexity > 1000) {
+    //             throw new Error(`Query rejected: Complexity score too high (${complexity}). Maximum allowed: 1000`);
+    //           }
+    //           if (complexity > 800) {
+    //             console.warn(`⚠️  [Package] Query complexity approaching limit: ${complexity}/1000`);
+    //           }
+    //         } catch (err) {
+    //           // Re-throw to surface as GraphQL error
+    //           throw err;
+    //         }
+    //       }
+    //     };
+    //   }
+    // },
     // Rate Limiting Plugin
     createRateLimitingPlugin({
       windowMs: 60000, // 1 minute
@@ -90,10 +162,10 @@ const server = new ApolloServer({
     }),
 
     // Query Complexity Analysis Plugin
-    createQueryComplexityPlugin({
-      maxComplexity: 1000,
-      enabled: true
-    }),
+    // createQueryComplexityPlugin({
+    //   maxComplexity: 1000,
+    //   enabled: true
+    // }),
     
     // Alias Abuse Prevention Plugin
     createAliasAbusePreventionPlugin({
@@ -166,7 +238,13 @@ app.use(
         ? complexityModeHeader.toLowerCase()
         : undefined;
 
-      return { user, complexityMode };
+      return { 
+        user, 
+        complexityMode,
+        // Add persisted query cache stats for demo purposes
+        persistedQueryCacheSize: persistedQueryCache.size,
+        persistedQueryCacheHit: false // Will be overridden by plugin if applicable
+      };
     },
   }),
 );

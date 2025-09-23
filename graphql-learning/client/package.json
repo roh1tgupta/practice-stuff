@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
+    "crypto-hash": "^4.0.0",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.1",
     "react": "^18.2.0",

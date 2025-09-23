@@ -3,6 +3,8 @@ import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import { sha256 } from 'crypto-hash';
 
 // Create an HTTP link for queries and mutations
 const httpLink = new HttpLink({
@@ -22,6 +24,23 @@ const authLink = setContext((_, { headers }) => {
       'x-client-version': '1.0.0',
     }
   };
+});
+
+// Create persisted query link for performance optimization
+const persistedQueriesLink = createPersistedQueryLink({
+  sha256,
+  useGETForHashedQueries: false, // Use POST for both - easier to debug
+  disable: ({ operationName, variables, query, context }) => {
+    // Allow dynamic enabling/disabling based on localStorage flag
+    const isDisabled = localStorage.getItem('disablePersistedQueries') === 'true';
+    console.log('🔍 Persisted Query Link Check:', {
+      disabled: isDisabled,
+      queryLength: query?.length,
+      operationName,
+      hasContext: !!context
+    });
+    return isDisabled;
+  }
 });
 
 // Create a WebSocket link for subscriptions
@@ -56,12 +75,13 @@ const splitLink = split(
 const client = new ApolloClient({
   // link: splitLink, -> Open GraphQL API, no auth needed
   
-// Purpose: Adds authentication headers to HTTP requests
+// Purpose: Adds authentication headers to HTTP requests and persisted queries optimization
 // How it works:
-// authLink (lines 13-25) automatically adds authorization: Bearer ${token} header
+// authLink (lines 14-27) automatically adds authorization: Bearer ${token} header
+// persistedQueriesLink (lines 30-37) handles query caching and hash generation
 // Applied to all HTTP GraphQL queries and mutations
 // Runs before the request goes to the server
-  link: authLink.concat(splitLink), // Chain auth link before split link
+  link: authLink.concat(persistedQueriesLink).concat(splitLink), // Chain auth -> persisted queries -> split link
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
