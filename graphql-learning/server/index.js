@@ -18,6 +18,7 @@ import { verifyToken } from './utils/auth.js';
 import { createAliasAbusePreventionPlugin } from './middleware/aliasAbusePrevention.js';
 import { createQueryComplexityPlugin } from './middleware/queryComplexityAnalysis.js';
 import { createRateLimitingPlugin } from './middleware/rateLimiting.js';
+import { createPersistedQueriesPlugin } from './plugins/persistedQueries.js';
 import fs from 'fs/promises';
 
 // Create the schema
@@ -51,73 +52,7 @@ const server = new ApolloServer({
 // The legacy API (returning drainServer from serverWillStart)
   plugins: [
     // Persisted Queries Plugin
-    {
-      async requestDidStart() {
-        return {
-          async willSendResponse({ response, contextValue }) {
-            // Add persisted query info to response extensions for client metrics
-            if (contextValue.persistedQueryCacheHit !== undefined) {
-              response.extensions = response.extensions || {};
-              response.extensions.persistedQuery = {
-                cacheHit: contextValue.persistedQueryCacheHit,
-                cacheSize: contextValue.persistedQueryCacheSize || persistedQueryCache.size,
-                actualRequestSize: contextValue.actualRequestSize
-              };
-            }
-          },
-          async didResolveOperation({ request, document, contextValue }) {
-            console.log('=== REQUEST DEBUG ===');
-            console.log('Request extensions:', JSON.stringify(request.extensions, null, 2));
-            console.log('Has query:', !!request.query);
-            console.log('Query length:', request.query?.length || 0);
-            console.log('Full request body size:', JSON.stringify(request).length);
-            
-            const persistedQuery = request.extensions?.persistedQuery;
-            
-            if (persistedQuery) {
-              const { sha256Hash, version } = persistedQuery;
-              console.log('🔄 PERSISTED QUERY REQUEST');
-              console.log('Hash:', sha256Hash?.substring(0, 12) + '...');
-              console.log('Version:', version);
-              console.log('Cache size:', persistedQueryCache.size);
-              console.log('Request has query field:', !!request.query);
-              
-              // If we have a hash but no query, try to get from cache
-              if (sha256Hash && !request.query) {
-                const cachedQuery = persistedQueryCache.get(sha256Hash);
-                if (cachedQuery) {
-                  request.query = cachedQuery;
-                  contextValue.persistedQueryCacheHit = true;
-                  contextValue.actualRequestSize = 64; // Only hash was sent
-                  console.log('✅ CACHE HIT - Retrieved query from cache, request size: 64 bytes');
-                } else {
-                  console.log('❌ CACHE MISS - Query not found in cache');
-                  contextValue.persistedQueryCacheHit = false;
-                  // Return error to trigger Apollo Client retry with full query
-                  throw new GraphQLError('PersistedQueryNotFound', {
-                    extensions: { code: 'PERSISTED_QUERY_NOT_FOUND' }
-                  });
-                }
-              }
-              
-              // If we have both hash and query, cache it
-              if (sha256Hash && request.query) {
-                persistedQueryCache.set(sha256Hash, request.query);
-                contextValue.persistedQueryCacheHit = false;
-                contextValue.persistedQueryCacheSize = persistedQueryCache.size;
-                contextValue.actualRequestSize = request.query.length;
-                console.log('💾 CACHING - Stored query with hash, full query size:', request.query.length);
-              }
-            } else {
-              console.log('📝 REGULAR QUERY - No persisted query extension');
-              contextValue.persistedQueryCacheHit = false;
-              contextValue.actualRequestSize = request.query?.length || 0;
-            }
-            console.log('===================');
-          }
-        };
-      }
-    },
+    createPersistedQueriesPlugin(),
     // Package-based Query Complexity (graphql-query-complexity)
     // {
     //   async requestDidStart() {

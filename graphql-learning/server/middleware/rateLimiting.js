@@ -107,15 +107,18 @@ export function createRateLimitingPlugin(options = {}) {
             };
           }
 
-          // Add rate limit info to response extensions
-          response.extensions = {
-            ...response.extensions,
-            rateLimits: {
-              limit: options.maxRequests,
-              remaining,
-              reset: Math.ceil(rateLimiter.getTimeToReset(clientId) / 1000)
-            }
-          };
+          // Apollo Server v4: attach to singleResult extensions
+          const single = response?.body?.singleResult;
+          if (single) {
+            single.extensions = {
+              ...(single.extensions || {}),
+              rateLimits: {
+                limit: options.maxRequests,
+                remaining,
+                reset: Math.ceil(rateLimiter.getTimeToReset(clientId) / 1000)
+              }
+            };
+          }
         }
       };
     }

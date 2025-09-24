@@ -1,14 +1,37 @@
-import { ApolloClient, InMemoryCache, HttpLink, split } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, split, ApolloLink, makeVar } from '@apollo/client';
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import { sha256 } from 'crypto-hash';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
-import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
-import { sha256 } from 'crypto-hash';
 
 // Create an HTTP link for queries and mutations
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'http://localhost:4000/graphql', // Make sure this matches server endpoint
+});
+
+
+// Reactive var mailbox for extensions so components can reliably read the latest response extensions
+export const lastExtensionsVar = makeVar(null);
+
+// Link to write into the mailbox 
+const extensionsMailboxLink = new ApolloLink((operation, forward) => {
+  return forward(operation).map((response) => {
+    if (response && response.extensions) {
+      lastExtensionsVar(response.extensions);
+    }
+    return response;
+  });
+});
+
+// Create persisted query link
+const persistedQueriesLink = createPersistedQueryLink({
+  sha256,
+  useGETForHashedQueries: false,
+  disable: () => {
+    return localStorage.getItem('disablePersistedQueries') === 'true';
+  }
 });
 
 // Create authentication link that automatically adds headers
@@ -26,22 +49,6 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Create persisted query link for performance optimization
-const persistedQueriesLink = createPersistedQueryLink({
-  sha256,
-  useGETForHashedQueries: false, // Use POST for both - easier to debug
-  disable: ({ operationName, variables, query, context }) => {
-    // Allow dynamic enabling/disabling based on localStorage flag
-    const isDisabled = localStorage.getItem('disablePersistedQueries') === 'true';
-    console.log('🔍 Persisted Query Link Check:', {
-      disabled: isDisabled,
-      queryLength: query?.length,
-      operationName,
-      hasContext: !!context
-    });
-    return isDisabled;
-  }
-});
 
 // Create a WebSocket link for subscriptions
 const wsLink = new GraphQLWsLink(
@@ -81,7 +88,10 @@ const client = new ApolloClient({
 // persistedQueriesLink (lines 30-37) handles query caching and hash generation
 // Applied to all HTTP GraphQL queries and mutations
 // Runs before the request goes to the server
-  link: authLink.concat(persistedQueriesLink).concat(splitLink), // Chain auth -> persisted queries -> split link
+  link: authLink
+    .concat(extensionsMailboxLink)
+    .concat(persistedQueriesLink)
+    .concat(splitLink), // Chain auth -> debug -> mailbox -> persisted queries -> split link
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
@@ -103,6 +113,10 @@ const client = new ApolloClient({
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-and-network',
+      includeExtensions: true,
+    },
+    query: {
+      includeExtensions: true,
     },
   },
 });

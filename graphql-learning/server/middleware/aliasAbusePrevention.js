@@ -139,12 +139,12 @@ export function createAliasAbusePreventionPlugin(options = {}) {
                 const analysis = analyzeQueryForAliases(definition, config);
 
                 // Log analysis for monitoring
-                console.log('🔍 Alias Analysis:', {
-                  operation: definition.operation,
-                  aliasCount: analysis.aliasCount,
-                  maxDepth: analysis.maxDepth,
-                  suspiciousPatterns: analysis.suspiciousPatterns.length
-                });
+                // console.log('🔍 Alias Analysis:', {
+                //   operation: definition.operation,
+                //   aliasCount: analysis.aliasCount,
+                //   maxDepth: analysis.maxDepth,
+                //   suspiciousPatterns: analysis.suspiciousPatterns.length
+                // });
 
                 // Check for violations
                 if (analysis.aliasCount > config.maxAliases) {

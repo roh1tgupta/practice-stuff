@@ -35,7 +35,8 @@ import {
   AccordionDetails
 } from '@mui/material';
 import { ExpandMore, Speed, Security, Storage, NetworkCheck } from '@mui/icons-material';
-import { useLazyQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
+import { lastExtensionsVar } from '../apollo-client';
 import { DEMO_QUERIES } from '../graphql/persistedQueriesDemo';
 
 function TabPanel({ children, value, index, ...other }) {
@@ -53,6 +54,7 @@ function TabPanel({ children, value, index, ...other }) {
 }
 
 function PersistedQueriesPage() {
+  const apolloClient = useApolloClient();
   const [tabValue, setTabValue] = useState(0);
   const [persistedQueriesEnabled, setPersistedQueriesEnabled] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('simple');
@@ -65,38 +67,11 @@ function PersistedQueriesPage() {
     executionCount: 0
   });
   const [executionHistory, setExecutionHistory] = useState([]);
+  const [resultData, setResultData] = useState(null);
+  const [executing, setExecuting] = useState(false);
+  const [errorState, setErrorState] = useState(null);
 
-  // GraphQL lazy query hook - recreate when category/query changes
-  const currentQuery = DEMO_QUERIES[selectedCategory]?.[selectedQuery];
-  const [executeQuery, { data, loading, error }] = useLazyQuery(
-    currentQuery?.query || DEMO_QUERIES.simple[0].query,
-    {
-      fetchPolicy: 'network-only', // Always fetch to see cache behavior
-      onCompleted: (data, { extensions }) => {
-        const endTime = Date.now();
-        const responseTime = endTime - startTime;
-        
-        console.log('onCompleted triggered:', {
-          responseTime,
-          extensions,
-          persistedEnabled: persistedQueriesEnabled
-        });
-        
-        // Get cache hit info from server response extensions
-        const persistedQueryInfo = extensions?.persistedQuery;
-        const cacheHit = persistedQueryInfo?.cacheHit || false;
-        const actualRequestSize = persistedQueryInfo?.actualRequestSize;
-        
-        updateMetrics(responseTime, cacheHit, actualRequestSize);
-      },
-      onError: (error) => {
-        console.error('Query execution error:', error);
-        const endTime = Date.now();
-        const responseTime = endTime - startTime;
-        updateMetrics(responseTime, false);
-      }
-    }
-  );
+  // Current query is derived at execution time based on selectedCategory/selectedQuery
 
   let startTime = 0;
 
@@ -119,7 +94,6 @@ function PersistedQueriesPage() {
   };
 
   const updateMetrics = (responseTime, cacheHit, actualRequestSize = null) => {
-    console.log('updateMetrics called:', { responseTime, cacheHit, selectedCategory, selectedQuery, actualRequestSize });
     
     const currentQueryObj = DEMO_QUERIES[selectedCategory]?.[selectedQuery];
     if (!currentQueryObj) {
@@ -143,15 +117,7 @@ function PersistedQueriesPage() {
     // Format response time to max 3 digits
     const formattedResponseTime = responseTime > 999 ? 999 : responseTime;
     
-    console.log('Updating metrics with:', {
-      fullQuerySize,
-      requestSize,
-      formattedResponseTime,
-      cacheHit,
-      persistedEnabled: persistedQueriesEnabled,
-      queryName: currentQueryObj.name
-    });
-    
+  
     setMetrics(prev => {
       const newMetrics = {
         ...prev,
@@ -174,33 +140,27 @@ function PersistedQueriesPage() {
       persistedEnabled: persistedQueriesEnabled
     };
     
-    console.log('Adding to execution history:', execution);
     
     setExecutionHistory(prev => {
       const newHistory = [execution, ...prev.slice(0, 9)];
-      console.log('New execution history:', newHistory);
       return newHistory;
     });
   };
 
   const executeSelectedQuery = async () => {
-    console.log('Execute button clicked');
     startTime = Date.now();
     const currentQuery = DEMO_QUERIES[selectedCategory][selectedQuery];
     
-    console.log('Current query:', {
-      category: selectedCategory,
-      index: selectedQuery,
-      queryName: currentQuery?.name,
-      hasQuery: !!currentQuery?.query
-    });
-    
     if (currentQuery) {
       try {
-        console.log('Executing query with variables:', currentQuery.variables);
-        
-        const result = await executeQuery({
+        setExecuting(true);
+        setErrorState(null);
+
+        // Execute via apolloClient.query to get { data, extensions }
+        const result = await apolloClient.query({
+          query: currentQuery.query,
           variables: currentQuery.variables,
+          fetchPolicy: 'network-only',
           context: {
             headers: {
               'x-force-refresh': Date.now().toString(),
@@ -208,25 +168,28 @@ function PersistedQueriesPage() {
             }
           }
         });
-        
-        console.log('Query execution result:', result);
-        
-        // Manual fallback if onCompleted doesn't trigger
-        if (!loading && result?.data) {
-          const endTime = Date.now();
-          const responseTime = endTime - startTime;
-          console.log('Manual metrics update - onCompleted may not have fired');
-          // Check if extensions contain persisted query info
-          const persistedQueryInfo = result.extensions?.persistedQuery;
-          const cacheHit = persistedQueryInfo?.cacheHit || false;
-          updateMetrics(responseTime, cacheHit);
-        }
-        
+
+        const { data, extensions } = result;
+        setResultData(data);
+
+        // Compute metrics (read extensions from reactive mailbox to be bulletproof)
+        const endTime = Date.now();
+        const responseTime = endTime - startTime;
+        const mailboxExtensions = lastExtensionsVar();
+        const effectiveExtensions = mailboxExtensions || extensions;
+        const persistedQueryInfo = effectiveExtensions?.persistedQuery;
+        const cacheHit = persistedQueryInfo?.cacheHit || false;
+        const actualRequestSize = persistedQueryInfo?.actualRequestSize;
+        updateMetrics(responseTime, cacheHit, actualRequestSize);
+
       } catch (error) {
         console.error('Query execution failed:', error);
         const endTime = Date.now();
         const responseTime = endTime - startTime;
         updateMetrics(responseTime, false);
+        setErrorState(error);
+      } finally {
+        setExecuting(false);
       }
     } else {
       console.error('No current query found');
@@ -322,10 +285,10 @@ function PersistedQueriesPage() {
                     variant="contained"
                     fullWidth
                     onClick={executeSelectedQuery}
-                    disabled={loading}
+                    disabled={executing}
                     sx={{ mb: 2 }}
                   >
-                    {loading ? <CircularProgress size={24} /> : 'Execute Query'}
+                    {executing ? <CircularProgress size={24} /> : 'Execute Query'}
                   </Button>
 
                   <Button
@@ -457,22 +420,22 @@ function PersistedQueriesPage() {
           </Grid>
 
           {/* Query Results */}
-          {data && (
+          {resultData && (
             <Card sx={{ mt: 3 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>Query Results</Typography>
                 <Box sx={{ maxHeight: 300, overflow: 'auto' }}>
                   <pre style={{ fontSize: '12px', whiteSpace: 'pre-wrap' }}>
-                    {JSON.stringify(data, null, 2)}
+                    {JSON.stringify(resultData, null, 2)}
                   </pre>
                 </Box>
               </CardContent>
             </Card>
           )}
 
-          {error && (
+          {errorState && (
             <Alert severity="error" sx={{ mt: 2 }}>
-              Query Error: {error.message}
+              Query Error: {errorState.message}
             </Alert>
           )}
         </TabPanel>
