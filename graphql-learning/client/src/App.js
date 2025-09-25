@@ -14,6 +14,7 @@ import QueryComplexityPage from './pages/QueryComplexityPage';
 import SubscriptionsPage from './pages/SubscriptionsPage';
 import AliasAbusePreventionPage from './pages/AliasAbusePreventionPage';
 import RateLimitingPage from './pages/RateLimitingPage';
+import PersistedQueriesPage from './pages/PersistedQueriesPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/alias-abuse-prevention" element={<AliasAbusePreventionPage />} />
           <Route path="/rate-limiting" element={<RateLimitingPage />} />
           <Route path="/query-complexity" element={<QueryComplexityPage />} />
+          <Route path="/persisted-queries" element={<PersistedQueriesPage />} />
         </Routes>
       </Container>
       <Box component="footer" sx={{ py: 3, bgcolor: 'background.paper' }}>

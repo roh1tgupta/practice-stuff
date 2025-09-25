@@ -129,7 +129,11 @@ export function createAliasAbusePreventionPlugin(options = {}) {
   return {
     requestDidStart() {
       return {
-        didResolveOperation({ request, document }) {
+        didResolveOperation({ request, document, contextValue }) {
+          // Strict demo mode gating: only run when demoMode === 'alias-abuse'
+          if (!contextValue?.demoMode || contextValue.demoMode !== 'alias-abuse') {
+            return;
+          }
           if (!config.enabled) return;
 
           try {
@@ -139,12 +143,12 @@ export function createAliasAbusePreventionPlugin(options = {}) {
                 const analysis = analyzeQueryForAliases(definition, config);
 
                 // Log analysis for monitoring
-                console.log('🔍 Alias Analysis:', {
-                  operation: definition.operation,
-                  aliasCount: analysis.aliasCount,
-                  maxDepth: analysis.maxDepth,
-                  suspiciousPatterns: analysis.suspiciousPatterns.length
-                });
+                // console.log('🔍 Alias Analysis:', {
+                //   operation: definition.operation,
+                //   aliasCount: analysis.aliasCount,
+                //   maxDepth: analysis.maxDepth,
+                //   suspiciousPatterns: analysis.suspiciousPatterns.length
+                // });
 
                 // Check for violations
                 if (analysis.aliasCount > config.maxAliases) {

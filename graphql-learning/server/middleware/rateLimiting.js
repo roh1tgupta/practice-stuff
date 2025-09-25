@@ -73,6 +73,10 @@ export function createRateLimitingPlugin(options = {}) {
       return {
         // Check rate limits before resolving operation
         async didResolveOperation({ request, contextValue }) {
+          // Strict demo mode gating: only run when demoMode === 'rate-limit'
+          if (!contextValue?.demoMode || contextValue.demoMode !== 'rate-limit') {
+            return;
+          }
           const clientId = request?.http?.headers?.get('x-client-id') || contextValue?.clientId || 'anonymous';
           
           // Check rate limit first
@@ -95,6 +99,10 @@ export function createRateLimitingPlugin(options = {}) {
 
         // Add rate limit info to response
         async willSendResponse({ request, contextValue, response }) {
+          // Strict demo mode gating: only attach when demoMode === 'rate-limit'
+          if (!contextValue?.demoMode || contextValue.demoMode !== 'rate-limit') {
+            return;
+          }
           const clientId = request?.http?.headers?.get('x-client-id') || contextValue?.clientId || 'anonymous';
           const remaining = rateLimiter.getRemainingRequests(clientId);
           
@@ -107,15 +115,18 @@ export function createRateLimitingPlugin(options = {}) {
             };
           }
 
-          // Add rate limit info to response extensions
-          response.extensions = {
-            ...response.extensions,
-            rateLimits: {
-              limit: options.maxRequests,
-              remaining,
-              reset: Math.ceil(rateLimiter.getTimeToReset(clientId) / 1000)
-            }
-          };
+          // Apollo Server v4: attach to singleResult extensions
+          const single = response?.body?.singleResult;
+          if (single) {
+            single.extensions = {
+              ...(single.extensions || {}),
+              rateLimits: {
+                limit: options.maxRequests,
+                remaining,
+                reset: Math.ceil(rateLimiter.getTimeToReset(clientId) / 1000)
+              }
+            };
+          }
         }
       };
     }
