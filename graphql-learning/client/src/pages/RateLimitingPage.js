@@ -38,7 +38,8 @@ export default function RateLimitingPage() {
         query: SIMPLE_QUERY,
         context: {
           headers: {
-            'x-client-id': 'demo-user' // Identify client for rate limiting
+            'x-client-id': 'demo-user', // Identify client for rate limiting
+            'x-demo-mode': 'rate-limit'
           }
         }
       });
@@ -97,7 +98,8 @@ export default function RateLimitingPage() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-client-id': 'demo-user'
+            'x-client-id': 'demo-user',
+            'x-demo-mode': 'rate-limit'
           },
           body: JSON.stringify(queryPayload)
         })

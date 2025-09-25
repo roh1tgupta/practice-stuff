@@ -1,7 +1,6 @@
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import { GraphQLError } from 'graphql';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -9,7 +8,6 @@ import bodyParser from 'body-parser';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { getComplexity, fieldExtensionsEstimator, simpleEstimator } from 'graphql-query-complexity';
 
 // Import schema and resolvers
 import typeDefs from './schema.js';
@@ -19,6 +17,7 @@ import { createAliasAbusePreventionPlugin } from './middleware/aliasAbusePrevent
 import { createQueryComplexityPlugin } from './middleware/queryComplexityAnalysis.js';
 import { createRateLimitingPlugin } from './middleware/rateLimiting.js';
 import { createPersistedQueriesPlugin } from './plugins/persistedQueries.js';
+import { createPackageQueryComplexityPlugin } from './middleware/packageQueryComplexity.js';
 import fs from 'fs/promises';
 
 // Create the schema
@@ -54,42 +53,7 @@ const server = new ApolloServer({
     // Persisted Queries Plugin
     createPersistedQueriesPlugin(),
     // Package-based Query Complexity (graphql-query-complexity)
-    // {
-    //   async requestDidStart() {
-    //     return {
-    //       async didResolveOperation({ request, document, contextValue }) {
-    //         try {
-    //           const mode = contextValue?.complexityMode;
-    //           // Run package analyzer when explicitly selected or when auto (header absent)
-    //           const shouldRun = mode === 'package' || !mode; // auto => no header
-    //           if (!shouldRun) return;
-
-    //           const complexity = getComplexity({
-    //             schema,
-    //             query: document,
-    //             variables: request.variables,
-    //             operationName: request.operationName,
-    //             estimators: [
-    //               fieldExtensionsEstimator(),
-    //               simpleEstimator({ defaultComplexity: 1 })
-    //             ],
-    //           });
-
-    //           // Log and enforce limit
-    //           if (complexity > 1000) {
-    //             throw new Error(`Query rejected: Complexity score too high (${complexity}). Maximum allowed: 1000`);
-    //           }
-    //           if (complexity > 800) {
-    //             console.warn(`⚠️  [Package] Query complexity approaching limit: ${complexity}/1000`);
-    //           }
-    //         } catch (err) {
-    //           // Re-throw to surface as GraphQL error
-    //           throw err;
-    //         }
-    //       }
-    //     };
-    //   }
-    // },
+    createPackageQueryComplexityPlugin({ schema, maxComplexity: 1000, warnThreshold: 800 }),
     // Rate Limiting Plugin
     createRateLimitingPlugin({
       windowMs: 60000, // 1 minute
@@ -97,10 +61,10 @@ const server = new ApolloServer({
     }),
 
     // Query Complexity Analysis Plugin
-    // createQueryComplexityPlugin({
-    //   maxComplexity: 1000,
-    //   enabled: true
-    // }),
+    createQueryComplexityPlugin({
+      maxComplexity: 1000,
+      enabled: true
+    }),
     
     // Alias Abuse Prevention Plugin
     createAliasAbusePreventionPlugin({
@@ -173,9 +137,23 @@ app.use(
         ? complexityModeHeader.toLowerCase()
         : undefined;
 
+      // Read demo mode to determine which plugin(s) should run for a given example
+      // Expected values (by convention):
+      //  - 'persisted'      -> Only persisted-queries plugin
+      //  - 'complexity'     -> Only complexity plugins
+      //  - 'rate-limit'     -> Only rate limiting plugin
+      //  - 'alias-abuse'    -> Only alias abuse prevention plugin
+      // When absent, all plugins behave as configured (backward compatible)
+      const demoModeHeader = req.headers['x-demo-mode'];
+      const demoMode = typeof demoModeHeader === 'string'
+        ? demoModeHeader.toLowerCase()
+        : undefined;
+
+
       return { 
         user, 
         complexityMode,
+        demoMode,
         // Add persisted query cache stats for demo purposes
         persistedQueryCacheSize: persistedQueryCache.size,
         persistedQueryCacheHit: false // Will be overridden by plugin if applicable

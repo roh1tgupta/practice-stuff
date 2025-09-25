@@ -164,7 +164,8 @@ function PersistedQueriesPage() {
           context: {
             headers: {
               'x-force-refresh': Date.now().toString(),
-              'x-persisted-enabled': persistedQueriesEnabled.toString()
+              'x-persisted-enabled': persistedQueriesEnabled.toString(),
+              'x-demo-mode': 'persisted'
             }
           }
         });

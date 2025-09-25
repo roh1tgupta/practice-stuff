@@ -26,11 +26,18 @@ const extensionsMailboxLink = new ApolloLink((operation, forward) => {
 });
 
 // Create persisted query link
+// Enable only when:
+//  - The operation explicitly sets context.headers['x-demo-mode'] === 'persisted'
+//  - AND the global localStorage flag does not disable it
 const persistedQueriesLink = createPersistedQueryLink({
   sha256,
   useGETForHashedQueries: false,
-  disable: () => {
-    return localStorage.getItem('disablePersistedQueries') === 'true';
+  disable: (operation) => {
+    const globallyDisabled = localStorage.getItem('disablePersistedQueries') === 'true';
+    const demoMode = operation?.getContext?.()?.headers?.['x-demo-mode'];
+    const isPersistedDemo = demoMode === 'persisted';
+    // Disable when globally disabled OR not explicitly in persisted demo
+    return globallyDisabled || !isPersistedDemo;
   }
 });
 

@@ -129,7 +129,12 @@ function ModeRunner({ modeLabel, headerValue }) {
         query: doc,
         variables: parsedVariables,
         fetchPolicy: 'no-cache',
-        context: headerValue ? { headers: { 'x-complexity-mode': headerValue } } : undefined,
+        context: {
+          headers: {
+            'x-demo-mode': 'complexity',
+            ...(headerValue ? { 'x-complexity-mode': headerValue } : {})
+          }
+        },
       });
       setResult(res);
     } catch (e) {

@@ -129,7 +129,11 @@ export function createAliasAbusePreventionPlugin(options = {}) {
   return {
     requestDidStart() {
       return {
-        didResolveOperation({ request, document }) {
+        didResolveOperation({ request, document, contextValue }) {
+          // Strict demo mode gating: only run when demoMode === 'alias-abuse'
+          if (!contextValue?.demoMode || contextValue.demoMode !== 'alias-abuse') {
+            return;
+          }
           if (!config.enabled) return;
 
           try {

@@ -166,6 +166,7 @@ function AliasAbusePreventionPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-demo-mode': 'alias-abuse'
         },
         body: JSON.stringify({
           query: currentQuery

@@ -267,6 +267,10 @@ export function createQueryComplexityPlugin(options = {}) {
     requestDidStart() {
       return {
         didResolveOperation({ request, document, contextValue }) {
+          // Strict demo mode gating: only run when demoMode === 'complexity'
+          if (!contextValue?.demoMode || contextValue.demoMode !== 'complexity') {
+            return;
+          }
           if (!config.enabled) return;
 
           try {

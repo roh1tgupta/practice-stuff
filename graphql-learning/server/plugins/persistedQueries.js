@@ -27,6 +27,10 @@ export const createPersistedQueriesPlugin = () => {
 
       return {
         async didResolveOperation({ request, contextValue }) {
+          // Demo mode gating: if a demo mode is set, only run this plugin when mode === 'persisted'
+          if (!contextValue.demoMode || contextValue.demoMode !== 'persisted') {
+            return;
+          }
           const persistedQuery = request.extensions?.persistedQuery;
           
           if (!persistedQuery) {
@@ -87,6 +91,10 @@ export const createPersistedQueriesPlugin = () => {
           }
         },
         async willSendResponse({ response, contextValue }) {
+          // Demo mode gating: if a demo mode is set and it's not 'persisted', don't attach extensions
+          if (!contextValue.demoMode || contextValue.demoMode !== 'persisted') {
+            return;
+          }
           const persistedInfo = {
             cacheHit: contextValue.persistedQueryCacheHit || false,
             cacheSize: queryCache.size,
