@@ -149,7 +149,6 @@ app.use(
         ? demoModeHeader.toLowerCase()
         : undefined;
 
-
       return { 
         user, 
         complexityMode,

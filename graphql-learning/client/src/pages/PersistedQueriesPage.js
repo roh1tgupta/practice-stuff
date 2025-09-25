@@ -166,7 +166,9 @@ function PersistedQueriesPage() {
               'x-force-refresh': Date.now().toString(),
               'x-persisted-enabled': persistedQueriesEnabled.toString(),
               'x-demo-mode': 'persisted'
-            }
+            },
+            // Dedicated flag for the persisted-queries link to detect demo mode reliably
+            persistedDemo: true
           }
         });
 
