@@ -1,0 +1,54 @@
+Design a URL Shortener (e.g., TinyURL)
+
+Key aspects: URL encoding, storage, redirection, analytics.
+Components: Web server, database (NoSQL for scalability), caching (Redis).
+Challenges: Unique key generation, collision handling, scalability.
+
+
+Design a Ride-Sharing System (e.g., Uber)
+
+Key aspects: Driver-passenger matching, trip management, pricing, geolocation.
+Components: Load balancer, microservices, geospatial database, message queues.
+Challenges: Real-time matching, scalability, ETA calculation.
+
+
+Design a Social Media Feed (e.g., Twitter/X)
+
+Key aspects: Posting, following, feed generation, notifications.
+Components: Fan-out on write/read, caching, sharding.
+Challenges: Handling high read/write traffic, timeline consistency.
+
+
+Design a Chat Application (e.g., WhatsApp)
+
+Key aspects: Messaging, group chats, media sharing, read receipts.
+Components: WebSocket for real-time, message queues, NoSQL database.
+Challenges: Scalability, message delivery guarantees, encryption.
+
+
+Design an E-commerce Platform (e.g., Amazon)
+
+Key aspects: Product catalog, search, cart, payments, recommendations.
+Components: Microservices, Elasticsearch, caching, CDN.
+Challenges: High availability, inventory consistency, search scalability.
+
+
+Design a Notification System
+
+Key aspects: Push, email, SMS notifications; rate limiting.
+Components: Message queues (Kafka), event-driven architecture.
+Challenges: Reliability, deduplication, prioritization.
+
+
+Design a File Storage System (e.g., Dropbox)
+
+Key aspects: File upload/download, syncing, versioning.
+Components: Object storage (S3), metadata database, chunking.
+Challenges: Data consistency, bandwidth optimization.
+
+
+Design a Food Delivery System (e.g., DoorDash)
+
+Key aspects: Order placement, restaurant selection, delivery tracking.
+Components: Geospatial indexing, microservices, real-time updates.
+Challenges: Scalability, ETA accuracy, order dispatching.
