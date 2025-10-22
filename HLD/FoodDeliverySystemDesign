@@ -1,0 +1,163 @@
+Food Delivery System Design
+Overview
+The food delivery system, inspired by platforms like DoorDash, operates as a three-sided marketplace connecting customers, restaurants (merchants), and delivery drivers (couriers). It uses a microservices architecture for modularity, scalability, and fault tolerance, deployed on container orchestration platforms like Kubernetes. The system includes mobile apps (iOS/Android) for users, restaurants, and drivers, an API gateway for request routing, and backend services for core logic. Data storage combines relational databases (e.g., PostgreSQL with PostGIS) for transactional data, NoSQL databases (e.g., Cassandra or DynamoDB) for unstructured data, and in-memory caches (e.g., Redis) for low-latency access. Event-driven processing relies on Apache Kafka for asynchronous communication, with WebSockets or gRPC enabling real-time updates. Geospatial operations integrate with APIs like Google Maps for routing and proximity queries.
+The system handles high query-per-second (QPS) loads, such as millions of daily orders and frequent location pings (every 2-5 seconds from drivers). Geo-partitioning by city or region reduces latency, and stateless services enable horizontal scaling.
+Key Aspects
+Order Placement
+Order placement ensures reliable and secure transactions:
+
+Browsing and Cart Management: Users browse restaurants and menus, adding items to a cart. The system validates availability against real-time inventory.
+Checkout and Payment: Users select delivery address and payment method. The order service integrates with payment gateways (e.g., Stripe) using tokenization and two-phase commits for consistency.
+Order Creation: Upon payment success, an order is created with status "Placed." Notifications are sent to the restaurant for confirmation. ACID-compliant transactions in PostgreSQL prevent issues like duplicate charges, with idempotent APIs handling retries. Eventual consistency is used for non-critical updates (e.g., status logs).
+
+Restaurant Selection
+Restaurant selection leverages geospatial data for hyper-local relevance:
+
+Search and Filtering: Users input location (via GPS) and filters (e.g., cuisine, ratings). The search service queries Elasticsearch or Redis with geospatial indexing (e.g., GeoHash) to find nearby restaurants, sorted by distance, ETA, or promotions.
+Availability Check: Real-time data confirms restaurant status, menu availability, and prep times.
+Personalization: ML models recommend restaurants based on user preferences and history, ensuring viable options to reduce cancellations.
+
+Delivery Tracking
+Delivery tracking provides live visibility using a finite state machine (FSM):
+
+Assignment and Pickup: After restaurant confirmation ("Ready for Pickup"), the dispatch service assigns a driver, with routes shown via Google Maps API.
+Real-Time Monitoring: Driver GPS pings (every 2-5 seconds) update locations in Redis. WebSockets push updates to customer and restaurant apps, showing ETA and status (e.g., "In Transit").
+Completion: Upon delivery, status updates to "Delivered," with notifications and feedback prompts. Polling handles connection issues.
+
+Components
+Geospatial Indexing
+Geospatial indexing enables efficient location-based operations:
+
+Proximity Searches: Uses GeoHash or quadtrees in PostGIS/Elasticsearch to find nearby restaurants or drivers (e.g., within 5 miles).
+Routing: Algorithms like Dijkstra or A* compute optimal paths, incorporating traffic data from Google Maps API.
+Partitioning: Data is sharded by region to minimize cross-region queries, reducing latency.
+
+Microservices
+The system uses independent microservices, communicating via REST, gRPC, or Kafka. The API gateway routes requests, with circuit breakers preventing failures. Below are the services, their roles, responsibilities, and call patterns:
+
+
+
+Microservice
+Role and Responsibilities
+How and When Called
+
+
+
+User Service
+Manages user data: registration, authentication (OAuth/JWT), profiles, preferences, sessions, privacy compliance.
+Synchronous: login/signup, profile updates. Async: password changes. Triggered on authenticated requests. High frequency during peaks.
+
+
+Restaurant Service
+Handles restaurant operations: menu updates, inventory, availability, promo management, order acceptance. Integrates with POS systems.
+Synchronous: menu browsing, order placement. Async: inventory sync. Triggered on order confirmation or admin updates.
+
+
+Search Service
+Powers discovery: geospatial searches, filters, ML-based recommendations. Aggregates data for results.
+Synchronous: user searches, app home loads. Async: re-indexing on data changes. Triggered on location changes.
+
+
+Order Service
+Manages orders: creation, payment processing (Stripe), status updates, cancellations, invoices. Uses Saga pattern for distributed transactions.
+Synchronous: checkout. Async: status updates. Triggered on payment success or cancellations. Peaks during meal times.
+
+
+Dispatch Service
+Optimizes driver assignment: matching, re-assignment, batching, ETA calculations. Uses ML for predictions.
+Async: post-order confirmation. Synchronous: driver availability checks. Triggered on "Ready for Pickup" or driver app refreshes.
+
+
+Tracking Service
+Manages real-time tracking: GPS pings, dynamic ETAs, state transitions. Stores transient data.
+Async: location updates via WebSockets (every 2-5s). Synchronous: tracking queries. Triggered on dispatch and during delivery.
+
+
+Notification Service
+Sends alerts: push notifications (FCM/APNs), SMS/email, in-app messages. Handles retries and templating.
+Async: via events (e.g., status changes). Synchronous: support requests. Triggered on key order events. Rate-limited.
+
+
+Analytics Service
+Provides insights: metrics, demand forecasting, reporting, fraud detection. Processes logs for A/B testing.
+Async: batch processing (nightly reports). Synchronous: real-time dashboards. Triggered on order completions. Compute-intensive.
+
+
+Real-Time Updates
+Real-time updates use pub/sub for responsiveness:
+
+Event Streaming: Kafka topics (partitioned by region) ingest events like location updates or status changes.
+Push Mechanisms: WebSockets for sub-second client updates; FCM/APNs for notifications.
+Caching: Redis stores transient data (e.g., GPS positions) with TTL.
+Fault Tolerance: Retries, dead-letter queues, and heartbeats ensure reliability.
+
+Databases
+Databases store persistent data, optimized with indexing, sharding, and read replicas:
+
+
+
+Database Type
+Role and Responsibilities
+How and When Accessed
+
+
+
+Relational (PostgreSQL with PostGIS)
+Stores orders, user profiles, payments, geospatial data. Enforces relationships and supports complex queries.
+Synchronous: CRUD operations (e.g., order placement). Async: backups. Triggered on transactions; reads cached.
+
+
+NoSQL (Cassandra/DynamoDB)
+Manages logs, session data, metrics. Offers eventual consistency for scalability.
+Async: logging, bulk reads. Synchronous: session lookups. Triggered on non-critical updates.
+
+
+Cache
+Caching reduces database load using Redis:
+
+
+
+Cache Component
+Role and Responsibilities
+How and When Called
+
+
+
+Redis (General)
+Caches sessions, menus, search results, order statuses. Uses cache-aside or write-through patterns.
+Synchronous: reads (before DB). Async: population. Triggered on app loads; invalidated on updates.
+
+
+RedisGeo
+Stores driver/restaurant positions for proximity queries. Supports GeoHash for radius searches.
+Synchronous: tracking, driver matching. Triggered on pings; expires frequently (e.g., every minute).
+
+
+Pub/Sub
+Pub/sub enables asynchronous communication:
+
+
+
+Component
+Role and Responsibilities
+How and When Called
+
+
+
+Kafka Topics
+Broadcasts events (e.g., order status, location updates). Supports stream processing.
+Async: producers publish on events, consumers process. Triggered on state changes; high throughput.
+
+
+WebSockets
+Pushes live data to apps (e.g., tracking). Uses Socket.IO for reliability.
+Synchronous: on connections. Async: for pushes via Kafka. Triggered on subscriptions.
+
+
+Challenges and Solutions
+Scalability
+Challenge: Managing traffic spikes (e.g., 2x during peaks) and high QPS (e.g., 1M+ location writes/sec).Solutions: Horizontal scaling with auto-scaling groups, load balancers (AWS ELB), database sharding, async queues, and CDN for static assets. Geo-partitioning and caching reduce DB hits by 80-90%.
+ETA Accuracy
+Challenge: Accounting for traffic, prep time, and driver speed.Solutions: Real-time traffic APIs, ML models trained on historical data, continuous updates via geospatial algorithms (A*/Dijkstra), and city-specific models for variations.
+Order Dispatching
+Challenge: Efficiently matching orders to drivers amid cancellations and multi-stop needs.Solutions: Priority queues, weighted scoring (proximity, workload), ML for acceptance predictions, event-driven re-matching, and TSP algorithms for batching.

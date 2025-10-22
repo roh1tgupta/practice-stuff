@@ -2,14 +2,6 @@ Linux Commands Guide for Beginners
 This guide covers essential Linux commands you can use in the macOS Terminal (and Linux) for file and directory management, text processing, and system tasks. Each command is explained with its purpose, syntax, and common options, with examples relevant to working with files like nodes.js or directories like Data-Structure.
 
 
-
-Command
-Purpose
-Syntax
-Common Options and Examples
-
-
-
 mkdir
 Creates a new directory. Useful for organizing projects (e.g., creating a folder for Node.js scripts).
 mkdir [directory]

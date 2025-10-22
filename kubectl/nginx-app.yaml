@@ -1,0 +1,38 @@
+# --- Deployment Resource ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-nginx-deployment
+  labels:
+    app: simple-nginx
+spec:
+  replicas: 1 # Run one instance of the application
+  selector:
+    matchLabels:
+      app: simple-nginx
+  template:
+    metadata:
+      labels:
+        app: simple-nginx
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest # The Docker image to use
+        ports:
+        - containerPort: 80
+---
+# --- Service Resource ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-nginx-service
+spec:
+  # This selector finds the Pods created by the Deployment
+  selector:
+    app: simple-nginx 
+  type: NodePort # Exposes the service on a port on each Node (easy for local access)
+  ports:
+    - protocol: TCP
+      port: 80 # The port the Service exposes internally
+      targetPort: 80 # The port the container is listening on (Nginx's default)
+      # nodePort: A port in the 30000-32767 range. K8s will assign one if not specified.

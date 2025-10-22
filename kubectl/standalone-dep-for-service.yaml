@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: standalone-deployment-for-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: standalone-dep
+  template:
+    metadata:
+      labels:
+        app: standalone-dep
+    spec:
+      containers:
+      - name: standalone-container
+        image: maf-daltese
+        imagePullPolicy: Never # to use local image it will never fetch from docker hub if we use this
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP

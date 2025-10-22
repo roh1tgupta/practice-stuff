@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-rolling-update-deployment
+spec:
+  strategy: 
+    type: RollingUpdate # default strategy is RollingUpdate even if not specified it would be RollingUpdate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-rolling-update
+  template:
+    metadata:
+      labels:
+        app: nginx-rolling-update
+    spec:
+      containers:
+      - name: nginx-rolling-update-container
+        image: nginx
